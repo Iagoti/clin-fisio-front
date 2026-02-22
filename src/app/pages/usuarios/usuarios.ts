@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { Observable, of } from 'rxjs';
+import { catchError, delay, startWith } from 'rxjs/operators';
 import { InputNmUsuario } from './components/input-nm-usuario/input-nm-usuario';
 import { TableUsuario } from './components/table-usuario/table-usuario';
 import { SHARED_INPUT_IMPORTS } from '../../shared/input-modules';
@@ -22,9 +24,9 @@ import { UsuarioService } from '../../core/usuario/usuario.service';
   templateUrl: './usuarios.html',
   styleUrl: './usuarios.scss',
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent {
   form: FormGroup;
-  usuarios: UsuarioResponse[] = [];
+  usuarios: Observable<UsuarioResponse[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -35,13 +37,12 @@ export class UsuariosComponent implements OnInit {
         nmUsuario: ['', [Validators.required]],
       }),
     });
-  }
-
-  ngOnInit(): void {
-    this.usuarioService.listar().subscribe({
-      next: (lista) => setTimeout(() => (this.usuarios = lista), 0),
-      error: () => setTimeout(() => (this.usuarios = []), 0),
-    });
+   
+    this.usuarios = this.usuarioService.listar().pipe(
+      catchError(() => of([])),
+      delay(0),
+      startWith([])
+    );
   }
 
   get credentialsGroup(): FormGroup {
