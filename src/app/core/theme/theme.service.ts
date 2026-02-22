@@ -1,4 +1,4 @@
-import { Injectable, inject, signal, PLATFORM_ID } from '@angular/core';
+import { ApplicationRef, Injectable, inject, isDevMode, signal, PLATFORM_ID } from '@angular/core';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 type Theme = 'light' | 'dark';
@@ -8,6 +8,7 @@ const STORAGE_KEY = 'app_theme';
 export class ThemeService {
   private platformId = inject(PLATFORM_ID);
   private doc = inject(DOCUMENT);
+  private appRef = inject(ApplicationRef);
 
   theme = signal<Theme>('light');
 
@@ -21,20 +22,23 @@ export class ThemeService {
   toggle(): void {
     const next: Theme = this.theme() === 'dark' ? 'light' : 'dark';
     this.theme.set(next);
-    if (isPlatformBrowser(this.platformId)) {
-      try {
-        this.doc.defaultView?.localStorage?.setItem(STORAGE_KEY, next);
-      } catch {
-        // localStorage indisponível (ex.: modo privado)
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, next);
       }
-      this.apply(next);
+    } catch {
+      if (isDevMode()) {
+        console.warn('ThemeService: não foi possível salvar o tema no localStorage.');
+      }
     }
+    this.apply(next);
+    this.appRef.tick();
   }
 
   private apply(theme: Theme): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-    const root = this.doc.documentElement;
-    const body = this.doc.body;
+    const doc = typeof document !== 'undefined' ? document : this.doc;
+    const root = doc.documentElement;
+    const body = doc.body;
     if (!root || !body) return;
 
     root.classList.toggle('dark', theme === 'dark');

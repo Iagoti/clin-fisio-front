@@ -51,6 +51,7 @@ export class LoginComponent {
   }
 
   toggleTheme(): void {
+    console.log('Clicou no toggleTheme');
     this.theme.toggle();
   }
 
