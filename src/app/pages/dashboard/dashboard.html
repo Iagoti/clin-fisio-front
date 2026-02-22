@@ -1,5 +1,4 @@
 <div class="dashboard-layout min-h-screen bg-slate-50 dark:bg-slate-950">
-  <!-- Menu lateral -->
   <aside class="sidebar bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-700">
     <div class="sidebar-header border-b border-slate-200 dark:border-slate-700">
       <div class="logo text-slate-800 dark:text-slate-100">
@@ -31,9 +30,7 @@
     </div>
   </aside>
 
-  <!-- Conteúdo principal -->
   <main class="main-content">
-    <!-- Barra superior -->
     <header class="top-bar bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
       <div class="top-bar-actions">
         <button
@@ -51,7 +48,6 @@
           class="user-menu-trigger text-slate-700 dark:text-slate-200"
           matTooltip="Menu do usuário"
         >
-        <mat-icon class="!text-emerald-600 dark:!text-emerald-400">person</mat-icon>
         <span>Bem-vindo, {{ user()?.nmUsuario ?? 'Usuário' }}</span>
         <mat-icon class="dropdown-icon">expand_more</mat-icon>
         </button>

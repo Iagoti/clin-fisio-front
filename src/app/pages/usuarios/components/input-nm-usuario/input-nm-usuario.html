@@ -1,0 +1,11 @@
+<div [formGroup]="parentFormGroup" class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Nome do usuário</mat-label>
+        <mat-icon matPrefix class="mr-2">person</mat-icon>
+        <input matInput type="text" [formControlName]="controlName" autocomplete="username" />
+    
+        <mat-error *ngIf="parentFormGroup.get(controlName)?.touched && parentFormGroup.get(controlName)?.hasError('required')">
+          Informe o nome do usuário.
+        </mat-error>
+      </mat-form-field>
+</div>

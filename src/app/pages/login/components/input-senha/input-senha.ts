@@ -1,21 +1,11 @@
 import { Component, Input, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
+import { FormGroup } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { SHARED_INPUT_IMPORTS } from '../../../../shared/input-modules';
 
 @Component({
   selector: 'app-input-senha',
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-  ],
+  imports: [...SHARED_INPUT_IMPORTS, MatButtonModule],
   templateUrl: './input-senha.html',
   styleUrl: './input-senha.scss',
 })

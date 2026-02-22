@@ -3,13 +3,14 @@ import { FormGroup } from '@angular/forms';
 import { SHARED_INPUT_IMPORTS } from '../../../../shared/input-modules';
 
 @Component({
-  selector: 'app-input-email',
+  selector: 'app-input-nm-usuario',
+  standalone: true,
   imports: [...SHARED_INPUT_IMPORTS],
-  templateUrl: './input-email.html',
-  styleUrl: './input-email.scss',
+  templateUrl: './input-nm-usuario.html',
+  styleUrl: './input-nm-usuario.scss',
 })
-export class InputEmail {
+export class InputNmUsuario {
   @Input({ required: true }) parentFormGroup!: FormGroup;
-  @Input() controlName = 'email';
-  @Input() label = 'E-mail';  
+  @Input() controlName = 'nmUsuario';
+  @Input() label = 'Nome do usuário';
 }

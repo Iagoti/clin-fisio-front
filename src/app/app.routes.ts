@@ -10,8 +10,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent),
     children: [
       { path: '', loadComponent: () => import('./pages/dashboard/dashboard-home/dashboard-home').then(m => m.DashboardHomeComponent) },
-      { path: 'perfil', loadComponent: () => import('./pages/dashboard/perfil/perfil').then(m => m.PerfilComponent) },
-      { path: 'usuarios', loadComponent: () => import('./pages/dashboard/usuarios/usuarios').then(m => m.UsuariosComponent) },
+      { path: 'perfil', loadComponent: () => import('./pages/perfil/perfil').then(m => m.PerfilComponent) },
+      { path: 'usuarios', loadComponent: () => import('./pages/usuarios/usuarios').then(m => m.UsuariosComponent) },
     ],
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
