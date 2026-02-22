@@ -4,7 +4,16 @@ import { authGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  //{ path: 'dashboard', canActivate: [authGuard], loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent) },
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'login' },
+  {
+    path: 'dashboard',
+    canActivate: [authGuard],
+    loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent),
+    children: [
+      { path: '', loadComponent: () => import('./pages/dashboard/dashboard-home/dashboard-home').then(m => m.DashboardHomeComponent) },
+      { path: 'perfil', loadComponent: () => import('./pages/dashboard/perfil/perfil').then(m => m.PerfilComponent) },
+      { path: 'usuarios', loadComponent: () => import('./pages/dashboard/usuarios/usuarios').then(m => m.UsuariosComponent) },
+    ],
+  },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: 'dashboard' },
 ];

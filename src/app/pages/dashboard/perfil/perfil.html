@@ -1,0 +1,10 @@
+<div class="perfil-page">
+  <h1 class="page-title text-slate-800 dark:text-slate-100">
+    <mat-icon class="!text-emerald-600 dark:!text-emerald-400">person</mat-icon>
+    Meu perfil
+  </h1>
+  <p class="page-description text-slate-500 dark:text-slate-400">Edite suas informações. (Página em construção.)</p>
+  @if (user) {
+    <p class="text-slate-600 dark:text-slate-300 text-sm mt-2">{{ user.nmUsuario }}</p>
+  }
+</div>

@@ -1,6 +1,9 @@
 {
   "routes": {
     "/": {},
+    "/dashboard": {},
+    "/dashboard/perfil": {},
+    "/dashboard/usuarios": {},
     "/login": {}
   }
 }

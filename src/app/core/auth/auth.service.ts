@@ -9,6 +9,15 @@ import { LoginRequest } from '../../models/login/LoginRequest';
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
 
+/** Tipo de usuário: 1 = administrador (acesso ao menu Usuários) */
+export const TP_USUARIO_ADMIN = 1;
+
+export interface AuthUser {
+  tpUsuario: number;
+  cdUsuario: number;
+  nmUsuario: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private platformId = inject(PLATFORM_ID);
@@ -47,5 +56,20 @@ export class AuthService {
 
   getToken(): string | null {
     return this.storage?.getItem(TOKEN_KEY) ?? null;
+  }
+
+  getCurrentUser(): AuthUser | null {
+    const raw = this.storage?.getItem(USER_KEY);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as AuthUser;
+    } catch {
+      return null;
+    }
+  }
+
+  isAdmin(): boolean {
+    const user = this.getCurrentUser();
+    return user?.tpUsuario === TP_USUARIO_ADMIN;
   }
 }
