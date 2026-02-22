@@ -4,19 +4,6 @@
       <div class="relative hidden lg:block">
         <img src="assets/pilates.jpg" class="h-full w-full object-cover" alt="Pilates" />
         <div class="absolute inset-0 bg-gradient-to-tr from-black/40 via-black/10 to-transparent pointer-events-none" aria-hidden="true"></div>
-  
-        <div class="absolute top-6 left-6 z-10">
-          <button
-            mat-stroked-button
-            class="!border-white/40 !text-white"
-            type="button"
-            (click)="toggleTheme()"
-          >
-            <mat-icon class="mr-2">dark_mode</mat-icon>
-            Alternar tema
-          </button>
-        </div>
-  
         <div class="absolute bottom-10 left-10 right-10 text-white">
           <h2 class="text-3xl font-semibold leading-tight">Cuidado, movimento e bem-estar.</h2>
           <p class="mt-2 text-sm text-white/90">Acesso seguro ao sistema da clínica.</p>
@@ -36,12 +23,12 @@
                   <mat-icon class="text-emerald-600 dark:text-emerald-400">spa</mat-icon>
                 </div>
                 <div>
-                  <h1 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Clínica Movimento &amp; Vida</h1>
+                  <h1 class="text-lg font-semibold text-slate-800 dark:text-slate-100">Clin Fisio</h1>
                   <p class="text-sm text-slate-500 dark:text-slate-400">Fisioterapia &amp; Pilates</p>
                 </div>
               </div>
   
-              <button mat-icon-button type="button" (click)="toggleTheme()" class="lg:hidden">
+              <button mat-icon-button type="button" (click)="toggleTheme()" class="lg:hidden" matTooltip="Alterar tema">
                 <mat-icon class="dark:text-slate-100">contrast</mat-icon>
               </button>
             </div>
@@ -59,11 +46,12 @@
                 [disabled]="loading()"
               >
                 <span class="flex items-center justify-center gap-2">
-                  <mat-progress-spinner
-                    *ngIf="loading()"
-                    diameter="18"
-                    mode="indeterminate"
-                  ></mat-progress-spinner>
+                  @if (loading()) {
+                    <mat-progress-spinner
+                      diameter="18"
+                      mode="indeterminate"
+                    ></mat-progress-spinner>
+                  }
                   <span>{{ loading() ? 'Entrando...' : 'Entrar' }}</span>
                 </span>
               </button>

@@ -5,6 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { InputEmail } from './components/input-email/input-email';
 import { InputSenha } from './components/input-senha/input-senha';
 import { AuthService } from '../../core/auth/auth.service';
@@ -21,6 +22,7 @@ import { ThemeService } from '../../core/theme/theme.service';
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatTooltipModule,
     InputEmail,
     InputSenha,
   ],
