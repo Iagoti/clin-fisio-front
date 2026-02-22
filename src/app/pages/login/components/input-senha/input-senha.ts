@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class InputSenha {
   @Input({ required: true }) parentFormGroup!: FormGroup;
-  @Input() controlName = 'password';
+  @Input() controlName = 'senha';
   @Input() label = 'Senha';
 
   hide = signal(true);

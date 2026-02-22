@@ -43,7 +43,7 @@ export class LoginComponent {
     this.form = this.fb.group({
       credentials: this.fb.group({
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
+        senha: ['', [Validators.required, Validators.minLength(6)]],
       }),
     });
   }
@@ -53,7 +53,6 @@ export class LoginComponent {
   }
 
   toggleTheme(): void {
-    console.log('Clicou no toggleTheme');
     this.theme.toggle();
   }
 
@@ -63,10 +62,10 @@ export class LoginComponent {
       return;
     }
 
-    const { email, password } = this.credentialsGroup.value as { email: string; password: string };
+    const { email, senha } = this.credentialsGroup.value as { email: string; senha: string };
 
     this.loading.set(true);
-    this.auth.login({ email, password }).subscribe({
+    this.auth.login({ email, senha }).subscribe({
       next: () => {
         this.loading.set(false);
         this.router.navigateByUrl('/dashboard'); // ajuste
