@@ -1,0 +1,14 @@
+<div [formGroup]="parentFormGroup" class="w-full">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-label>{{ label }}</mat-label>
+      <mat-icon matPrefix class="mr-2">mail</mat-icon>
+      <input matInput type="email" [formControlName]="controlName" autocomplete="email" />
+  
+      <mat-error *ngIf="parentFormGroup.get(controlName)?.touched && parentFormGroup.get(controlName)?.hasError('required')">
+        Informe seu e-mail.
+      </mat-error>
+      <mat-error *ngIf="parentFormGroup.get(controlName)?.touched && parentFormGroup.get(controlName)?.hasError('email')">
+        E-mail inválido.
+      </mat-error>
+    </mat-form-field>
+  </div>
