@@ -99,6 +99,9 @@
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  span {
+    color: rgb(4 120 87);
+  }
 }
 
 .user-menu-trigger {
