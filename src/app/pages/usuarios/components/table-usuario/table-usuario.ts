@@ -1,13 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuarioResponse } from '../../../../models/usuario/UsuarioResponse';
+import { BtnEditarUsuario } from '../btn-editar-usuario/btn-editar-usuario';
+import { BtnExcluirUsuario } from '../btn-excluir-usuario/btn-excluir-usuario';
 
 @Component({
   selector: 'app-table-usuario',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatIconModule],
+  imports: [CommonModule, MatTableModule, MatIconModule, BtnEditarUsuario, BtnExcluirUsuario],
   templateUrl: './table-usuario.html',
   styleUrl: './table-usuario.scss',
 })
@@ -16,8 +18,11 @@ export class TableUsuario {
     this.dataSource.data = value ?? [];
   }
 
+  @Output() editar = new EventEmitter<UsuarioResponse>();
+  @Output() excluir = new EventEmitter<UsuarioResponse>();
+
   dataSource = new MatTableDataSource<UsuarioResponse>([]);
-  displayedColumns: string[] = ['nmUsuario', 'email', 'login', 'stUsuario', 'tpUsuario', 'dtCadastro'];
+  displayedColumns: string[] = ['nmUsuario', 'email', 'login', 'stUsuario', 'tpUsuario', 'dtCadastro', 'acao'];
 
   formatarData(iso: string): string {
     if (!iso) return '—';

@@ -18,6 +18,10 @@
 
   <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
     <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-4">Lista de usuários</h2>
-    <app-table-usuario [usuarios]="(usuarios | async) ?? []"></app-table-usuario>
+    <app-table-usuario
+      [usuarios]="(usuarios | async) ?? []"
+      (editar)="onEditar($event)"
+      (excluir)="onExcluir($event)"
+    ></app-table-usuario>
   </div>
 </div>

@@ -44,6 +44,17 @@
         </th>
         <td mat-cell *matCellDef="let row">{{ formatarData(row.dtCadastro) }}</td>
       </ng-container>
+      <ng-container matColumnDef="acao">
+        <th mat-header-cell *matHeaderCellDef>
+          <span class="column-label">Ação</span>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="action-buttons">
+            <app-btn-editar-usuario [usuario]="row" (editar)="editar.emit($event)"></app-btn-editar-usuario>
+            <app-btn-excluir-usuario [usuario]="row" (excluir)="excluir.emit($event)"></app-btn-excluir-usuario>
+          </div>
+        </td>
+      </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns" class="table-row"></tr>
