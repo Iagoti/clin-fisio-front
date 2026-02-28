@@ -9,7 +9,31 @@ import { LoginRequest } from '../../models/login/LoginRequest';
 const TOKEN_KEY = 'auth_token';
 const USER_KEY = 'auth_user';
 
-/** Tipo de usuário: 1 = administrador (acesso ao menu Usuários) */
+function getJwtPayload(token: string): { exp?: number } | null {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const json = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(json) as { exp?: number };
+  } catch {
+    return null;
+  }
+}
+
+export function isTokenExpired(token: string | null): boolean {
+  if (!token) return true;
+  const payload = getJwtPayload(token);
+  if (!payload?.exp) return true;
+  const nowSec = Math.floor(Date.now() / 1000);
+  return payload.exp < nowSec;
+}
+
 export const TP_USUARIO_ADMIN = 1;
 
 export interface AuthUser {
@@ -26,7 +50,12 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     if (isPlatformBrowser(this.platformId)) {
-      this.isAuthenticated.set(!!localStorage.getItem(TOKEN_KEY));
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (token && isTokenExpired(token)) {
+        this.logout();
+      } else {
+        this.isAuthenticated.set(!!token);
+      }
     }
   }
 
@@ -55,7 +84,12 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return this.storage?.getItem(TOKEN_KEY) ?? null;
+    const token = this.storage?.getItem(TOKEN_KEY) ?? null;
+    if (token && isTokenExpired(token)) {
+      this.logout();
+      return null;
+    }
+    return token;
   }
 
   getCurrentUser(): AuthUser | null {
