@@ -21,3 +21,28 @@
   margin: 0;
   font-size: 0.9375rem;
 }
+
+.filtro-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  // Evita que o filtro ocupe 100% e empurre os botões para fora da tela
+  app-filtro-nome-usuario {
+    flex: 1 1 auto;
+    min-width: 200px;
+    max-width: 320px;
+  }
+}
+
+.filtro-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 56px;
+  box-sizing: border-box;
+}
+

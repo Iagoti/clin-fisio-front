@@ -1,0 +1,18 @@
+.filtro-nome-usuario {
+  min-width: 200px;
+  flex: 1;
+  max-width: 320px;
+
+  // Bordas mais arredondadas no outline do Material (variável oficial MDC)
+  ::ng-deep .mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 0.75rem;
+  }
+}
+
+.w-full {
+  width: 100%;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}

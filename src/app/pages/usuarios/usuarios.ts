@@ -4,8 +4,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatIconModule } from '@angular/material/icon';
 import { Observable, of } from 'rxjs';
 import { catchError, delay, startWith } from 'rxjs/operators';
-import { InputNmUsuario } from './components/input-nm-usuario/input-nm-usuario';
 import { TableUsuario } from './components/table-usuario/table-usuario';
+import { FiltroNomeUsuario } from './components/filtro-nome-usuario/filtro-nome-usuario';
+import { BtnPesquisar } from './components/btn-pesquisar/btn-pesquisar';
+import { BtnLimpar } from './components/btn-limpar/btn-limpar';
 import { SHARED_INPUT_IMPORTS } from '../../shared/input-modules';
 import { UsuarioResponse } from '../../models/usuario/UsuarioResponse';
 import { UsuarioService } from '../../core/usuario/usuario.service';
@@ -17,8 +19,10 @@ import { UsuarioService } from '../../core/usuario/usuario.service';
     CommonModule,
     ReactiveFormsModule,
     MatIconModule,
-    InputNmUsuario,
     TableUsuario,
+    FiltroNomeUsuario,
+    BtnPesquisar,
+    BtnLimpar,
     SHARED_INPUT_IMPORTS,
   ],
   templateUrl: './usuarios.html',
@@ -27,6 +31,8 @@ import { UsuarioService } from '../../core/usuario/usuario.service';
 export class UsuariosComponent {
   form: FormGroup;
   usuarios: Observable<UsuarioResponse[]>;
+  filtroNome = '';
+  termoAplicado = '';
 
   constructor(
     private fb: FormBuilder,
@@ -57,5 +63,20 @@ export class UsuariosComponent {
   onExcluir(usuario: UsuarioResponse): void {
     // TODO: confirmar e chamar serviço de exclusão
     console.log('Excluir usuário:', usuario);
+  }
+
+  getFiltered(usuarios: UsuarioResponse[]): UsuarioResponse[] {
+    if (!this.termoAplicado.trim()) return usuarios;
+    const termo = this.termoAplicado.trim().toLowerCase();
+    return usuarios.filter((u) => (u.nmUsuario || '').toLowerCase().includes(termo));
+  }
+
+  pesquisar(): void {
+    this.termoAplicado = this.filtroNome.trim();
+  }
+
+  limpar(): void {
+    this.termoAplicado = '';
+    this.filtroNome = '';
   }
 }
