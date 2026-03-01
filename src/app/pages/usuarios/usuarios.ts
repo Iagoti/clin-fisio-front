@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { RouterModule } from '@angular/router';
 import { Observable, of, Subject } from 'rxjs';
 import { catchError, delay, startWith, switchMap } from 'rxjs/operators';
 import { TableUsuario } from './components/table-usuario/table-usuario';
@@ -20,6 +22,8 @@ import { UsuarioService, UsuarioFiltro } from '../../core/usuario/usuario.servic
     CommonModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatButtonModule,
+    RouterModule,
     TableUsuario,
     FiltroNomeUsuario,
     FiltroUsuarioAtivo,
@@ -68,16 +72,6 @@ export class UsuariosComponent {
 
   get credentialsGroup(): FormGroup {
     return this.form.get('credentials') as FormGroup;
-  }
-
-  onEditar(usuario: UsuarioResponse): void {
-    // TODO: abrir modal/dialog de edição ou navegar para tela de edição
-    console.log('Editar usuário:', usuario);
-  }
-
-  onExcluir(usuario: UsuarioResponse): void {
-    // TODO: confirmar e chamar serviço de exclusão
-    console.log('Excluir usuário:', usuario);
   }
 
   pesquisar(): void {

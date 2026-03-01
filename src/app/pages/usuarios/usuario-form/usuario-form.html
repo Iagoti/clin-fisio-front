@@ -1,0 +1,147 @@
+<div class="usuario-form-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="header-actions">
+      <button type="button" mat-icon-button (click)="voltar()" aria-label="Voltar">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="page-title text-slate-800 dark:text-slate-100">
+        <mat-icon class="!text-emerald-600 dark:!text-emerald-400">person_add</mat-icon>
+        {{ isEdicao ? 'Editar usuário' : 'Novo usuário' }}
+      </h1>
+    </div>
+    <p class="page-description text-slate-500 dark:text-slate-400">
+      {{ isEdicao ? 'Altere os dados do usuário.' : 'Preencha os dados para cadastrar um novo usuário.' }}
+    </p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    @if (loading) {
+      <div class="loading-wrap">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="text-slate-500 dark:text-slate-400">Carregando...</p>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="salvar()" class="form-fields">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome</mat-label>
+            <mat-icon matPrefix class="mr-2">person</mat-icon>
+            <input matInput formControlName="nome" type="text" autocomplete="name" />
+            <mat-error *ngIf="form.get('nome')?.touched && form.get('nome')?.hasError('required')">
+              Nome é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-mail</mat-label>
+            <mat-icon matPrefix class="mr-2">mail</mat-icon>
+            <input matInput formControlName="email" type="email" autocomplete="email" />
+            <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">
+              E-mail é obrigatório.
+            </mat-error>
+            <mat-error *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">
+              E-mail inválido.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Login</mat-label>
+            <mat-icon matPrefix class="mr-2">badge</mat-icon>
+            <input matInput formControlName="login" type="text" autocomplete="username" />
+            <mat-error *ngIf="form.get('login')?.touched && form.get('login')?.hasError('required')">
+              Login é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>{{ isEdicao ? 'Nova senha (deixe em branco para manter)' : 'Senha' }}</mat-label>
+            <mat-icon matPrefix class="mr-2">lock</mat-icon>
+            <input
+              matInput
+              [type]="mostrarSenha ? 'text' : 'password'"
+              formControlName="senha"
+              autocomplete="new-password"
+            />
+            <button type="button" mat-icon-button matSuffix (click)="mostrarSenha = !mostrarSenha" aria-label="Alternar visibilidade da senha">
+              <mat-icon>{{ mostrarSenha ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="form.get('senha')?.touched && form.get('senha')?.hasError('required')">
+              Senha é obrigatória.
+            </mat-error>
+            <mat-error *ngIf="form.get('senha')?.touched && form.get('senha')?.hasError('minlength')">
+              Mínimo de 6 caracteres.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        @if (!isEdicao) {
+          <p class="hint text-slate-500 dark:text-slate-400">Mínimo de 6 caracteres.</p>
+        }
+
+        <div class="form-row two-cols">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="stUsuario">
+              @for (op of statusOpcoes; track op.value) {
+                <mat-option [value]="op.value">{{ op.label }}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="form.get('stUsuario')?.touched && form.get('stUsuario')?.hasError('required')">
+              Status é obrigatório.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tipo de usuário</mat-label>
+            <mat-select formControlName="tipoCodigo">
+              @for (t of tipoOpcoes; track t.codigo) {
+                <mat-option [value]="t.codigo">{{ t.descricao }}</mat-option>
+              }
+            </mat-select>
+            <mat-error *ngIf="form.get('tipoCodigo')?.touched && form.get('tipoCodigo')?.hasError('required')">
+              Tipo é obrigatório.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" mat-button (click)="voltar()">Cancelar</button>
+          <div class="right-actions">
+            @if (isEdicao) {
+              <button
+                type="button"
+                mat-button
+                color="warn"
+                (click)="excluir()"
+                [disabled]="excluindo"
+              >
+                <span class="btn-content">
+                  <mat-spinner *ngIf="excluindo" diameter="20"></mat-spinner>
+                  <mat-icon *ngIf="!excluindo">delete</mat-icon>
+                  <span *ngIf="!excluindo">Excluir</span>
+                </span>
+              </button>
+            }
+            <button
+              type="submit"
+              mat-raised-button
+              color="primary"
+              [disabled]="salvando"
+            >
+              <span class="btn-content">
+                <mat-spinner *ngIf="salvando" diameter="20"></mat-spinner>
+                <mat-icon *ngIf="!salvando">save</mat-icon>
+                <span *ngIf="!salvando">{{ isEdicao ? 'Salvar' : 'Cadastrar' }}</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+</div>

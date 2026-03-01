@@ -1,15 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuarioResponse } from '../../../../models/usuario/UsuarioResponse';
-import { BtnEditarUsuario } from '../btn-editar-usuario/btn-editar-usuario';
-import { BtnExcluirUsuario } from '../btn-excluir-usuario/btn-excluir-usuario';
 
 @Component({
   selector: 'app-table-usuario',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatIconModule, BtnEditarUsuario, BtnExcluirUsuario],
+  imports: [CommonModule, MatTableModule, MatIconModule],
   templateUrl: './table-usuario.html',
   styleUrl: './table-usuario.scss',
 })
@@ -18,11 +17,21 @@ export class TableUsuario {
     this.dataSource.data = value ?? [];
   }
 
-  @Output() editar = new EventEmitter<UsuarioResponse>();
-  @Output() excluir = new EventEmitter<UsuarioResponse>();
+  @Output() rowClick = new EventEmitter<UsuarioResponse>();
 
   dataSource = new MatTableDataSource<UsuarioResponse>([]);
-  displayedColumns: string[] = ['nmUsuario', 'email', 'login', 'stUsuario', 'tpUsuario', 'dtCadastro', 'acao'];
+  displayedColumns: string[] = ['nmUsuario', 'email', 'login', 'stUsuario', 'tpUsuario', 'dtCadastro'];
+
+  constructor(private router: Router) {}
+
+  onRowClick(row: UsuarioResponse): void {
+    const id = row.cdUsuario ?? row.id;
+    if (id != null) {
+      this.router.navigate(['/dashboard/usuarios', id]);
+    } else {
+      this.rowClick.emit(row);
+    }
+  }
 
   formatarData(iso: string): string {
     if (!iso) return '—';

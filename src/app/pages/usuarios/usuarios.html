@@ -17,7 +17,13 @@
   </div> -->
 
   <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
-    <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-4">Lista de usuários</h2>
+    <div class="list-header">
+      <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-0">Lista de usuários</h2>
+      <a mat-raised-button color="primary" routerLink="/dashboard/usuarios/novo">
+        <mat-icon>add</mat-icon>
+        Novo usuário
+      </a>
+    </div>
 
     <div class="filtro-row">
       <app-filtro-nome-usuario [(value)]="filtroNome" label="Nome" placeholder="Digite o nome para buscar"></app-filtro-nome-usuario>
@@ -28,10 +34,6 @@
       </div>
     </div>
 
-    <app-table-usuario
-      [usuarios]="(usuarios | async) ?? []"
-      (editar)="onEditar($event)"
-      (excluir)="onExcluir($event)"
-    ></app-table-usuario>
+    <app-table-usuario [usuarios]="(usuarios | async) ?? []"></app-table-usuario>
   </div>
 </div>

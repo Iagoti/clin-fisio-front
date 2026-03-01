@@ -9,6 +9,8 @@ export interface CodigoDescricao {
 }
 
 export interface UsuarioResponse {
+  cdUsuario?: number;
+  id?: number;
   nmUsuario: string;
   email: string;
   login: string;
