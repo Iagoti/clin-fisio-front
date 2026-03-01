@@ -6,7 +6,7 @@ import { UsuarioResponse } from '../../models/usuario/UsuarioResponse';
 
 export interface UsuarioFiltro {
   nmUsuario?: string;
-  usuarioAtivo?: number; // 1 = ativos, 0 = inativos
+  usuarioAtivo?: number;
 }
 
 @Injectable({ providedIn: 'root' })
