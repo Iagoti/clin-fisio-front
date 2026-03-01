@@ -21,6 +21,7 @@
 
     <div class="filtro-row">
       <app-filtro-nome-usuario [(value)]="filtroNome" label="Nome" placeholder="Digite o nome para buscar"></app-filtro-nome-usuario>
+      <app-filtro-usuario-ativo [(value)]="filtroAtivo" label="Somente ativos"></app-filtro-usuario-ativo>
       <div class="filtro-actions">
         <app-btn-pesquisar (pesquisar)="pesquisar()"></app-btn-pesquisar>
         <app-btn-limpar (limpar)="limpar()"></app-btn-limpar>
@@ -28,7 +29,7 @@
     </div>
 
     <app-table-usuario
-      [usuarios]="getFiltered((usuarios | async) ?? [])"
+      [usuarios]="(usuarios | async) ?? []"
       (editar)="onEditar($event)"
       (excluir)="onExcluir($event)"
     ></app-table-usuario>

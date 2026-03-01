@@ -37,6 +37,11 @@
   display: block;
 }
 
+.filtro-row app-filtro-usuario-ativo {
+  flex-shrink: 0;
+  transform: translateY(-20px);
+}
+
 .filtro-actions {
   display: flex;
   flex-shrink: 0;
