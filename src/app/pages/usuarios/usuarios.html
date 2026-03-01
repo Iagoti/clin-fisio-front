@@ -18,6 +18,16 @@
 
   <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
     <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-4">Lista de usuários</h2>
+
+    <div class="filtro-row">
+      <app-filtro-nome-usuario [(value)]="filtroNome" label="Nome" placeholder="Digite o nome para buscar"></app-filtro-nome-usuario>
+      <app-filtro-usuario-ativo [(value)]="filtroAtivo" label="Somente ativos"></app-filtro-usuario-ativo>
+      <div class="filtro-actions">
+        <app-btn-pesquisar (pesquisar)="pesquisar()"></app-btn-pesquisar>
+        <app-btn-limpar (limpar)="limpar()"></app-btn-limpar>
+      </div>
+    </div>
+
     <app-table-usuario
       [usuarios]="(usuarios | async) ?? []"
       (editar)="onEditar($event)"

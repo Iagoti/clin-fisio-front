@@ -1,0 +1,10 @@
+<div class="filtro-usuario-ativo">
+  <mat-slide-toggle
+    [checked]="value"
+    (change)="onChange($event.checked)"
+    color="primary"
+    [attr.aria-label]="label"
+  >
+    {{ label }}
+  </mat-slide-toggle>
+</div>

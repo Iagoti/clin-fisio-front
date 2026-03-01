@@ -21,3 +21,32 @@
   margin: 0;
   font-size: 0.9375rem;
 }
+
+.filtro-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtro-row app-filtro-nome-usuario {
+  flex: 1 1 auto;
+  min-width: 200px;
+  max-width: 320px;
+  display: block;
+}
+
+.filtro-row app-filtro-usuario-ativo {
+  flex-shrink: 0;
+  transform: translateY(-20px);
+}
+
+.filtro-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.5rem;
+  align-items: center;
+  transform: translateY(-20px);
+}
+

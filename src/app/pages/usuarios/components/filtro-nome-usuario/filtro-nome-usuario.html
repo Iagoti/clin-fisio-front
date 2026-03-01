@@ -1,0 +1,14 @@
+<div class="filtro-nome-usuario">
+  <mat-form-field appearance="outline" class="w-full">
+    <mat-label>{{ label }}</mat-label>
+    <mat-icon matPrefix class="mr-2">search</mat-icon>
+    <input
+      matInput
+      type="text"
+      [value]="value"
+      (input)="onInput($any($event.target).value)"
+      [placeholder]="placeholder"
+      autocomplete="off"
+    />
+  </mat-form-field>
+</div>
