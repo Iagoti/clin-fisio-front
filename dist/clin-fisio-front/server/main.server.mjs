@@ -28784,9 +28784,9 @@ var routes = [
     children: [
       { path: "", loadComponent: () => import("./chunk-R7JRKLTH.mjs").then((m) => m.DashboardHomeComponent) },
       { path: "perfil", loadComponent: () => import("./chunk-VDHS6EBZ.mjs").then((m) => m.PerfilComponent) },
-      { path: "usuarios", loadComponent: () => import("./chunk-INWTMNEM.mjs").then((m) => m.UsuariosComponent) },
-      { path: "usuarios/novo", loadComponent: () => import("./chunk-CA5244WY.mjs").then((m) => m.UsuarioFormComponent) },
-      { path: "usuarios/:id", loadComponent: () => import("./chunk-CA5244WY.mjs").then((m) => m.UsuarioFormComponent) }
+      { path: "usuarios", loadComponent: () => import("./chunk-AJWRV4U6.mjs").then((m) => m.UsuariosComponent) },
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },

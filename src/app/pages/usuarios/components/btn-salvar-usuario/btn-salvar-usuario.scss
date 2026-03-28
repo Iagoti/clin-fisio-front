@@ -1,0 +1,19 @@
+:host {
+  display: inline-block;
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-content mat-spinner {
+  margin-right: 0.25rem;
+}
+
+.btn-content mat-icon {
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}

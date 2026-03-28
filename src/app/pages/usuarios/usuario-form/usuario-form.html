@@ -127,18 +127,7 @@
                 </span>
               </button>
             }
-            <button
-              type="submit"
-              mat-raised-button
-              color="primary"
-              [disabled]="salvando"
-            >
-              <span class="btn-content">
-                <mat-spinner *ngIf="salvando" diameter="20"></mat-spinner>
-                <mat-icon *ngIf="!salvando">save</mat-icon>
-                <span *ngIf="!salvando">{{ isEdicao ? 'Salvar' : 'Cadastrar' }}</span>
-              </span>
-            </button>
+            <app-btn-salvar-usuario [salvando]="salvando" [isEdicao]="isEdicao"></app-btn-salvar-usuario>
           </div>
         </div>
       </form>

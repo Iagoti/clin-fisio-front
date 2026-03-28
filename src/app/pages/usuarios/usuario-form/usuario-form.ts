@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { BtnSalvarUsuario } from '../components/btn-salvar-usuario/btn-salvar-usuario';
 import { UsuarioService } from '../../../core/usuario/usuario.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
@@ -36,6 +37,7 @@ const TIPO_OPCOES = [
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
+    BtnSalvarUsuario,
   ],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.scss',
