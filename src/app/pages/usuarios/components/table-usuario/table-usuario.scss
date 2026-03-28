@@ -1,4 +1,3 @@
-// Garante cursor de "mão" nas linhas clicáveis (evita perda de especificidade com estilos do Material).
 :host ::ng-deep tr.row-clickable {
   cursor: pointer;
 

@@ -45,8 +45,10 @@ export class UsuarioService {
     );
   }
 
-  atualizar(id: number, body: UsuarioRequest): Observable<UsuarioResponse> {
-    return this.http.put<UsuarioResponse>(`${environment.apiUrl}/usuario/${id}`, body);
+  atualizar(body: UsuarioRequest): Observable<UsuarioResponse> {
+    return this.http.post<UsuarioResponse>(`${environment.apiUrl}/usuario/update`, body).pipe(
+      timeout(HTTP_TIMEOUT_MS)
+    );
   }
 
   excluir(id: number): Observable<void> {

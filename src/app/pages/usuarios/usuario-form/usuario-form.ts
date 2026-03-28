@@ -14,14 +14,15 @@ import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
 import { finalize } from 'rxjs/operators';
 
+/** Valores iguais a `AtivoInativoEnum` no backend (1 = ATIVO, 2 = INATIVO). */
 const STATUS_OPCOES = [
   { value: 1, label: 'Ativo' },
-  { value: 0, label: 'Inativo' },
+  { value: 2, label: 'Inativo' },
 ];
 
 const TIPO_OPCOES = [
   { codigo: 1, descricao: 'Administrador' },
-  { codigo: 2, descricao: 'Usuário' },
+  { codigo: 2, descricao: 'Recepção' },
 ];
 
 @Component({
@@ -138,6 +139,9 @@ export class UsuarioFormComponent implements OnInit {
       stUsuario: Number(this.form.get('stUsuario')?.value),
       tipo: Number(this.form.get('tipoCodigo')?.value),
     };
+    if (this.id != null) {
+      payload.cdUsuario = this.id;
+    }
     if (senha) payload.senha = senha;
     return payload;
   }
@@ -156,7 +160,7 @@ export class UsuarioFormComponent implements OnInit {
     this.salvando = true;
     const body = this.toRequest(senha);
     const req = this.isEdicao
-      ? this.usuarioService.atualizar(this.id!, body)
+      ? this.usuarioService.atualizar(body)
       : this.usuarioService.salvar(body);
     req.pipe(
       finalize(() => (this.salvando = false))
