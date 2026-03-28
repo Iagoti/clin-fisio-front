@@ -12,6 +12,8 @@ export const routes: Routes = [
       { path: '', loadComponent: () => import('./pages/dashboard/dashboard-home/dashboard-home').then(m => m.DashboardHomeComponent) },
       { path: 'perfil', loadComponent: () => import('./pages/perfil/perfil').then(m => m.PerfilComponent) },
       { path: 'usuarios', loadComponent: () => import('./pages/usuarios/usuarios').then(m => m.UsuariosComponent) },
+      { path: 'usuarios/novo', loadComponent: () => import('./pages/usuarios/usuario-form/usuario-form').then(m => m.UsuarioFormComponent) },
+      { path: 'usuarios/:id', loadComponent: () => import('./pages/usuarios/usuario-form/usuario-form').then(m => m.UsuarioFormComponent) },
     ],
   },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },

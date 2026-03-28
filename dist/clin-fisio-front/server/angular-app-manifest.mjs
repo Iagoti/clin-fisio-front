@@ -6,48 +6,58 @@ export default {
   locale: undefined,
   routes: [
   {
-    "renderMode": 2,
+    "renderMode": 0,
     "redirectTo": "/dashboard",
     "route": "/"
   },
   {
-    "renderMode": 2,
+    "renderMode": 0,
     "route": "/login"
   },
   {
-    "renderMode": 2,
+    "renderMode": 0,
     "preload": [
-      "chunk-IJHVVOB3.js"
+      "chunk-CVTQO3VL.js"
     ],
     "route": "/dashboard"
   },
   {
-    "renderMode": 2,
+    "renderMode": 0,
     "preload": [
-      "chunk-IJHVVOB3.js"
+      "chunk-CVTQO3VL.js"
     ],
     "route": "/dashboard/perfil"
   },
   {
-    "renderMode": 2,
+    "renderMode": 0,
     "preload": [
-      "chunk-IJHVVOB3.js"
+      "chunk-CVTQO3VL.js"
     ],
     "route": "/dashboard/usuarios"
   },
   {
-    "renderMode": 2,
+    "renderMode": 0,
+    "preload": [
+      "chunk-CVTQO3VL.js"
+    ],
+    "route": "/dashboard/usuarios/novo"
+  },
+  {
+    "renderMode": 0,
+    "preload": [
+      "chunk-CVTQO3VL.js"
+    ],
+    "route": "/dashboard/usuarios/*"
+  },
+  {
+    "renderMode": 0,
     "redirectTo": "/dashboard",
     "route": "/**"
   }
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 989, hash: '84d757026ac745efc7a6bc9960c9aac9bba9f6113907f33a6af17d422562ad13', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1529, hash: 'd25b86f46be64a24f1dbdd859cf59c6958bc56069a9e84159b9410d43f2498d7', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'dashboard/usuarios/index.html': {size: 240, hash: 'db096474d521163c4f5fb7d700305222bcea1012b38583442ad232da75e59192', text: () => import('./assets-chunks/dashboard_usuarios_index_html.mjs').then(m => m.default)},
-    'dashboard/index.html': {size: 240, hash: 'db096474d521163c4f5fb7d700305222bcea1012b38583442ad232da75e59192', text: () => import('./assets-chunks/dashboard_index_html.mjs').then(m => m.default)},
-    'dashboard/perfil/index.html': {size: 240, hash: 'db096474d521163c4f5fb7d700305222bcea1012b38583442ad232da75e59192', text: () => import('./assets-chunks/dashboard_perfil_index_html.mjs').then(m => m.default)},
-    'login/index.html': {size: 74424, hash: 'ae5164ca8ec4328e2ba83b1a087b0ecd546729b0eb6964967ba1e9131dff4daa', text: () => import('./assets-chunks/login_index_html.mjs').then(m => m.default)}
+    'index.csr.html': {size: 1142, hash: '999c32eb0b618551136b692790b7938749d2d137354610032759bc459909b7f2', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1682, hash: '4e5951c711db193822b16e34cefc070fe5b88d02507fc440d2e246614cc96a7d', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)}
   },
 };

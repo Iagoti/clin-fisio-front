@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 import { environment } from '../../../environment';
 import { UsuarioResponse } from '../../models/usuario/UsuarioResponse';
+import { UsuarioRequest } from '../../models/usuario/UsuarioRequest';
+
+const HTTP_TIMEOUT_MS = 30_000;
 
 export interface UsuarioFiltro {
   nmUsuario?: string;
@@ -27,5 +31,27 @@ export class UsuarioService {
       if (query) url += '?' + query;
     }
     return this.http.get<UsuarioResponse[]>(url);
+  }
+
+  obterPorId(id: number): Observable<UsuarioResponse> {
+    return this.http.get<UsuarioResponse>(`${environment.apiUrl}/usuario/${id}`).pipe(
+      timeout(HTTP_TIMEOUT_MS)
+    );
+  }
+
+  salvar(body: UsuarioRequest): Observable<UsuarioResponse> {
+    return this.http.post<UsuarioResponse>(`${environment.apiUrl}/usuario`, body).pipe(
+      timeout(HTTP_TIMEOUT_MS)
+    );
+  }
+
+  atualizar(body: UsuarioRequest): Observable<UsuarioResponse> {
+    return this.http.post<UsuarioResponse>(`${environment.apiUrl}/usuario/update`, body).pipe(
+      timeout(HTTP_TIMEOUT_MS)
+    );
+  }
+
+  excluir(id: number): Observable<void> {
+    return this.http.delete<void>(`${environment.apiUrl}/usuario/${id}`);
   }
 }

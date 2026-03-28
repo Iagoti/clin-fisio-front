@@ -1,3 +1,11 @@
+:host ::ng-deep tr.row-clickable {
+  cursor: pointer;
+
+  .mat-mdc-cell {
+    cursor: pointer;
+  }
+}
+
 .table-usuario {
   --table-radius: 12px;
   --table-header-bg: #f8fafc;
@@ -65,6 +73,10 @@
 
     .mat-mdc-row {
       transition: background-color 0.15s ease;
+
+      &.table-row.row-clickable {
+        cursor: pointer;
+      }
 
       &.table-row:hover .mat-mdc-cell {
         background: var(--table-row-hover);

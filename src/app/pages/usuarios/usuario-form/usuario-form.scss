@@ -1,0 +1,109 @@
+.usuario-form-page {
+  width: 100%;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+
+  mat-icon {
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.page-description {
+  margin: 0.5rem 0 0;
+  font-size: 0.9375rem;
+}
+
+.loading-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-row {
+  &.two-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.hint {
+  margin: -0.25rem 0 0;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--mat-divider-color, #e2e8f0);
+}
+
+.right-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.right-actions button mat-spinner,
+.right-actions button mat-icon {
+  margin-right: 0.25rem;
+  vertical-align: middle;
+}
+
+.right-actions button mat-icon {
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-content mat-spinner {
+  margin-right: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  .form-row.two-cols {
+    grid-template-columns: 1fr;
+  }
+}

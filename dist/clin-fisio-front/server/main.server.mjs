@@ -1,22 +1,20 @@
 import './polyfills.server.mjs';
 import {
-  ActivatedRoute,
-  MatButton,
-  MatButtonModule,
-  MatIconButton,
   MatTooltip,
   MatTooltipModule,
-  Router,
-  RouterLink,
-  RouterModule,
-  RouterOutlet,
-  ThemeService,
-  loadChildren,
-  provideRouter
-} from "./chunk-KAWBNZGT.mjs";
+  ThemeService
+} from "./chunk-DSQD7FQF.mjs";
 import {
   AuthService
-} from "./chunk-MI4X56YU.mjs";
+} from "./chunk-IVNIGKHX.mjs";
+import {
+  SHARED_INPUT_IMPORTS
+} from "./chunk-A3VWI4XA.mjs";
+import {
+  MatProgressSpinner,
+  MatProgressSpinnerModule
+} from "./chunk-2CKWUSHN.mjs";
+import "./chunk-LTNDX77H.mjs";
 import {
   DefaultValueAccessor,
   FormBuilder,
@@ -34,23 +32,29 @@ import {
   NgControlStatus,
   NgControlStatusGroup,
   ReactiveFormsModule,
-  SHARED_INPUT_IMPORTS,
   Validators,
   ɵNgNoValidate
-} from "./chunk-BO6BPWEC.mjs";
+} from "./chunk-62C5WJ4O.mjs";
 import {
-  _getAnimationsState
-} from "./chunk-2FLJ2AEN.mjs";
+  ActivatedRoute,
+  MatButton,
+  MatButtonModule,
+  MatIconButton,
+  Router,
+  RouterLink,
+  RouterModule,
+  RouterOutlet,
+  loadChildren,
+  provideRouter
+} from "./chunk-662BIMSJ.mjs";
 import {
   ANIMATION_MODULE_TYPE,
   APP_BASE_HREF,
   APP_ID,
   ApplicationRef,
-  BidiModule,
   BrowserDomAdapter,
   BrowserModule,
   CSP_NONCE,
-  ChangeDetectionStrategy,
   CommonModule,
   Compiler,
   Component,
@@ -59,7 +63,6 @@ import {
   DomRendererFactory2,
   ENABLE_ROOT_COMPONENT_BOOTSTRAP,
   EVENT_MANAGER_PLUGINS,
-  ElementRef,
   EnvironmentInjector,
   EventManagerPlugin,
   HTTP_ROOT_INTERCEPTOR_FNS,
@@ -75,7 +78,6 @@ import {
   MatIconModule,
   NgIf,
   NgModule,
-  NgTemplateOutlet,
   NgZone,
   NullViewportScroller,
   PLATFORM_ID,
@@ -93,19 +95,18 @@ import {
   TESTABILITY,
   Testability,
   TransferState,
-  ViewChild,
-  ViewEncapsulation,
   ViewportScroller,
   XhrFactory,
   annotateForHydration,
   bootstrapApplication,
+  catchError,
   createEnvironmentInjector,
   createPlatformFactory,
   getDOM,
   inject,
+  isPlatformBrowser,
   makeEnvironmentProviders,
   mergeApplicationConfig,
-  numberAttribute,
   performanceMarkFeature,
   platformCore,
   provideBrowserGlobalErrorListeners,
@@ -119,12 +120,11 @@ import {
   signal,
   startMeasuring,
   stopMeasuring,
+  throwError,
   withFetch,
   withInterceptors,
   ɵsetClassDebugInfo,
   ɵɵadvance,
-  ɵɵattribute,
-  ɵɵclassMap,
   ɵɵclassProp,
   ɵɵconditional,
   ɵɵconditionalCreate,
@@ -134,26 +134,16 @@ import {
   ɵɵdefineNgModule,
   ɵɵdirectiveInject,
   ɵɵelement,
-  ɵɵelementContainer,
   ɵɵelementEnd,
   ɵɵelementStart,
   ɵɵinject,
   ɵɵlistener,
-  ɵɵloadQuery,
-  ɵɵnamespaceHTML,
-  ɵɵnamespaceSVG,
-  ɵɵnextContext,
   ɵɵproperty,
-  ɵɵqueryRefresh,
-  ɵɵreference,
-  ɵɵstyleProp,
   ɵɵtemplate,
-  ɵɵtemplateRefExtractor,
   ɵɵtext,
   ɵɵtextInterpolate,
-  ɵɵtextInterpolate1,
-  ɵɵviewQuery
-} from "./chunk-JDYS6FLR.mjs";
+  ɵɵtextInterpolate1
+} from "./chunk-RXIW7MXB.mjs";
 import {
   __objRest,
   __spreadProps,
@@ -28360,264 +28350,6 @@ var App = class _App {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(App, { className: "App", filePath: "src/app/app.ts", lineNumber: 11 });
 })();
 
-// node_modules/@angular/material/fesm2022/progress-spinner.mjs
-var _c0 = ["determinateSpinner"];
-function MatProgressSpinner_ng_template_0_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275namespaceSVG();
-    \u0275\u0275elementStart(0, "svg", 11);
-    \u0275\u0275element(1, "circle", 12);
-    \u0275\u0275elementEnd();
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275attribute("viewBox", ctx_r0._viewBox());
-    \u0275\u0275advance();
-    \u0275\u0275styleProp("stroke-dasharray", ctx_r0._strokeCircumference(), "px")("stroke-dashoffset", ctx_r0._strokeCircumference() / 2, "px")("stroke-width", ctx_r0._circleStrokeWidth(), "%");
-    \u0275\u0275attribute("r", ctx_r0._circleRadius());
-  }
-}
-var MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS = new InjectionToken("mat-progress-spinner-default-options", {
-  providedIn: "root",
-  factory: () => ({
-    diameter: BASE_SIZE
-  })
-});
-var BASE_SIZE = 100;
-var BASE_STROKE_WIDTH = 10;
-var MatProgressSpinner = class _MatProgressSpinner {
-  _elementRef = inject(ElementRef);
-  _noopAnimations;
-  get color() {
-    return this._color || this._defaultColor;
-  }
-  set color(value) {
-    this._color = value;
-  }
-  _color;
-  _defaultColor = "primary";
-  _determinateCircle;
-  constructor() {
-    const defaults = inject(MAT_PROGRESS_SPINNER_DEFAULT_OPTIONS);
-    const animationsState = _getAnimationsState();
-    const element = this._elementRef.nativeElement;
-    this._noopAnimations = animationsState === "di-disabled" && !!defaults && !defaults._forceAnimations;
-    this.mode = element.nodeName.toLowerCase() === "mat-spinner" ? "indeterminate" : "determinate";
-    if (!this._noopAnimations && animationsState === "reduced-motion") {
-      element.classList.add("mat-progress-spinner-reduced-motion");
-    }
-    if (defaults) {
-      if (defaults.color) {
-        this.color = this._defaultColor = defaults.color;
-      }
-      if (defaults.diameter) {
-        this.diameter = defaults.diameter;
-      }
-      if (defaults.strokeWidth) {
-        this.strokeWidth = defaults.strokeWidth;
-      }
-    }
-  }
-  mode;
-  get value() {
-    return this.mode === "determinate" ? this._value : 0;
-  }
-  set value(v) {
-    this._value = Math.max(0, Math.min(100, v || 0));
-  }
-  _value = 0;
-  get diameter() {
-    return this._diameter;
-  }
-  set diameter(size) {
-    this._diameter = size || 0;
-  }
-  _diameter = BASE_SIZE;
-  get strokeWidth() {
-    return this._strokeWidth ?? this.diameter / 10;
-  }
-  set strokeWidth(value) {
-    this._strokeWidth = value || 0;
-  }
-  _strokeWidth;
-  _circleRadius() {
-    return (this.diameter - BASE_STROKE_WIDTH) / 2;
-  }
-  _viewBox() {
-    const viewBox = this._circleRadius() * 2 + this.strokeWidth;
-    return `0 0 ${viewBox} ${viewBox}`;
-  }
-  _strokeCircumference() {
-    return 2 * Math.PI * this._circleRadius();
-  }
-  _strokeDashOffset() {
-    if (this.mode === "determinate") {
-      return this._strokeCircumference() * (100 - this._value) / 100;
-    }
-    return null;
-  }
-  _circleStrokeWidth() {
-    return this.strokeWidth / this.diameter * 100;
-  }
-  static \u0275fac = function MatProgressSpinner_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _MatProgressSpinner)();
-  };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
-    type: _MatProgressSpinner,
-    selectors: [["mat-progress-spinner"], ["mat-spinner"]],
-    viewQuery: function MatProgressSpinner_Query(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275viewQuery(_c0, 5);
-      }
-      if (rf & 2) {
-        let _t;
-        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx._determinateCircle = _t.first);
-      }
-    },
-    hostAttrs: ["role", "progressbar", "tabindex", "-1", 1, "mat-mdc-progress-spinner", "mdc-circular-progress"],
-    hostVars: 18,
-    hostBindings: function MatProgressSpinner_HostBindings(rf, ctx) {
-      if (rf & 2) {
-        \u0275\u0275attribute("aria-valuemin", 0)("aria-valuemax", 100)("aria-valuenow", ctx.mode === "determinate" ? ctx.value : null)("mode", ctx.mode);
-        \u0275\u0275classMap("mat-" + ctx.color);
-        \u0275\u0275styleProp("width", ctx.diameter, "px")("height", ctx.diameter, "px")("--mat-progress-spinner-size", ctx.diameter + "px")("--mat-progress-spinner-active-indicator-width", ctx.diameter + "px");
-        \u0275\u0275classProp("_mat-animation-noopable", ctx._noopAnimations)("mdc-circular-progress--indeterminate", ctx.mode === "indeterminate");
-      }
-    },
-    inputs: {
-      color: "color",
-      mode: "mode",
-      value: [2, "value", "value", numberAttribute],
-      diameter: [2, "diameter", "diameter", numberAttribute],
-      strokeWidth: [2, "strokeWidth", "strokeWidth", numberAttribute]
-    },
-    exportAs: ["matProgressSpinner"],
-    decls: 14,
-    vars: 11,
-    consts: [["circle", ""], ["determinateSpinner", ""], ["aria-hidden", "true", 1, "mdc-circular-progress__determinate-container"], ["xmlns", "http://www.w3.org/2000/svg", "focusable", "false", 1, "mdc-circular-progress__determinate-circle-graphic"], ["cx", "50%", "cy", "50%", 1, "mdc-circular-progress__determinate-circle"], ["aria-hidden", "true", 1, "mdc-circular-progress__indeterminate-container"], [1, "mdc-circular-progress__spinner-layer"], [1, "mdc-circular-progress__circle-clipper", "mdc-circular-progress__circle-left"], [3, "ngTemplateOutlet"], [1, "mdc-circular-progress__gap-patch"], [1, "mdc-circular-progress__circle-clipper", "mdc-circular-progress__circle-right"], ["xmlns", "http://www.w3.org/2000/svg", "focusable", "false", 1, "mdc-circular-progress__indeterminate-circle-graphic"], ["cx", "50%", "cy", "50%"]],
-    template: function MatProgressSpinner_Template(rf, ctx) {
-      if (rf & 1) {
-        \u0275\u0275template(0, MatProgressSpinner_ng_template_0_Template, 2, 8, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
-        \u0275\u0275elementStart(2, "div", 2, 1);
-        \u0275\u0275namespaceSVG();
-        \u0275\u0275elementStart(4, "svg", 3);
-        \u0275\u0275element(5, "circle", 4);
-        \u0275\u0275elementEnd()();
-        \u0275\u0275namespaceHTML();
-        \u0275\u0275elementStart(6, "div", 5)(7, "div", 6)(8, "div", 7);
-        \u0275\u0275elementContainer(9, 8);
-        \u0275\u0275elementEnd();
-        \u0275\u0275elementStart(10, "div", 9);
-        \u0275\u0275elementContainer(11, 8);
-        \u0275\u0275elementEnd();
-        \u0275\u0275elementStart(12, "div", 10);
-        \u0275\u0275elementContainer(13, 8);
-        \u0275\u0275elementEnd()()();
-      }
-      if (rf & 2) {
-        const circle_r2 = \u0275\u0275reference(1);
-        \u0275\u0275advance(4);
-        \u0275\u0275attribute("viewBox", ctx._viewBox());
-        \u0275\u0275advance();
-        \u0275\u0275styleProp("stroke-dasharray", ctx._strokeCircumference(), "px")("stroke-dashoffset", ctx._strokeDashOffset(), "px")("stroke-width", ctx._circleStrokeWidth(), "%");
-        \u0275\u0275attribute("r", ctx._circleRadius());
-        \u0275\u0275advance(4);
-        \u0275\u0275property("ngTemplateOutlet", circle_r2);
-        \u0275\u0275advance(2);
-        \u0275\u0275property("ngTemplateOutlet", circle_r2);
-        \u0275\u0275advance(2);
-        \u0275\u0275property("ngTemplateOutlet", circle_r2);
-      }
-    },
-    dependencies: [NgTemplateOutlet],
-    styles: [".mat-mdc-progress-spinner{--mat-progress-spinner-animation-multiplier: 1;display:block;overflow:hidden;line-height:0;position:relative;direction:ltr;transition:opacity 250ms cubic-bezier(0.4, 0, 0.6, 1)}.mat-mdc-progress-spinner circle{stroke-width:var(--mat-progress-spinner-active-indicator-width, 4px)}.mat-mdc-progress-spinner._mat-animation-noopable,.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__determinate-circle{transition:none !important}.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__indeterminate-circle-graphic,.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__spinner-layer,.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__indeterminate-container{animation:none !important}.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__indeterminate-container circle{stroke-dasharray:0 !important}@media(forced-colors: active){.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic,.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle{stroke:currentColor;stroke:CanvasText}}.mat-progress-spinner-reduced-motion{--mat-progress-spinner-animation-multiplier: 1.25}.mdc-circular-progress__determinate-container,.mdc-circular-progress__indeterminate-circle-graphic,.mdc-circular-progress__indeterminate-container,.mdc-circular-progress__spinner-layer{position:absolute;width:100%;height:100%}.mdc-circular-progress__determinate-container{transform:rotate(-90deg)}.mdc-circular-progress--indeterminate .mdc-circular-progress__determinate-container{opacity:0}.mdc-circular-progress__indeterminate-container{font-size:0;letter-spacing:0;white-space:nowrap;opacity:0}.mdc-circular-progress--indeterminate .mdc-circular-progress__indeterminate-container{opacity:1;animation:mdc-circular-progress-container-rotate calc(1568.2352941176ms*var(--mat-progress-spinner-animation-multiplier)) linear infinite}.mdc-circular-progress__determinate-circle-graphic,.mdc-circular-progress__indeterminate-circle-graphic{fill:rgba(0,0,0,0)}.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{stroke:var(--mat-progress-spinner-active-indicator-color, var(--mat-sys-primary))}@media(forced-colors: active){.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{stroke:CanvasText}}.mdc-circular-progress__determinate-circle{transition:stroke-dashoffset 500ms cubic-bezier(0, 0, 0.2, 1)}.mdc-circular-progress__gap-patch{position:absolute;top:0;left:47.5%;box-sizing:border-box;width:5%;height:100%;overflow:hidden}.mdc-circular-progress__gap-patch .mdc-circular-progress__indeterminate-circle-graphic{left:-900%;width:2000%;transform:rotate(180deg)}.mdc-circular-progress__circle-clipper .mdc-circular-progress__indeterminate-circle-graphic{width:200%}.mdc-circular-progress__circle-right .mdc-circular-progress__indeterminate-circle-graphic{left:-100%}.mdc-circular-progress--indeterminate .mdc-circular-progress__circle-left .mdc-circular-progress__indeterminate-circle-graphic{animation:mdc-circular-progress-left-spin calc(1333ms*var(--mat-progress-spinner-animation-multiplier)) cubic-bezier(0.4, 0, 0.2, 1) infinite both}.mdc-circular-progress--indeterminate .mdc-circular-progress__circle-right .mdc-circular-progress__indeterminate-circle-graphic{animation:mdc-circular-progress-right-spin calc(1333ms*var(--mat-progress-spinner-animation-multiplier)) cubic-bezier(0.4, 0, 0.2, 1) infinite both}.mdc-circular-progress__circle-clipper{display:inline-flex;position:relative;width:50%;height:100%;overflow:hidden}.mdc-circular-progress--indeterminate .mdc-circular-progress__spinner-layer{animation:mdc-circular-progress-spinner-layer-rotate calc(5332ms*var(--mat-progress-spinner-animation-multiplier)) cubic-bezier(0.4, 0, 0.2, 1) infinite both}@keyframes mdc-circular-progress-container-rotate{to{transform:rotate(360deg)}}@keyframes mdc-circular-progress-spinner-layer-rotate{12.5%{transform:rotate(135deg)}25%{transform:rotate(270deg)}37.5%{transform:rotate(405deg)}50%{transform:rotate(540deg)}62.5%{transform:rotate(675deg)}75%{transform:rotate(810deg)}87.5%{transform:rotate(945deg)}100%{transform:rotate(1080deg)}}@keyframes mdc-circular-progress-left-spin{from{transform:rotate(265deg)}50%{transform:rotate(130deg)}to{transform:rotate(265deg)}}@keyframes mdc-circular-progress-right-spin{from{transform:rotate(-265deg)}50%{transform:rotate(-130deg)}to{transform:rotate(-265deg)}}\n"],
-    encapsulation: 2,
-    changeDetection: 0
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatProgressSpinner, [{
-    type: Component,
-    args: [{
-      selector: "mat-progress-spinner, mat-spinner",
-      exportAs: "matProgressSpinner",
-      host: {
-        "role": "progressbar",
-        "class": "mat-mdc-progress-spinner mdc-circular-progress",
-        "tabindex": "-1",
-        "[class]": '"mat-" + color',
-        "[class._mat-animation-noopable]": `_noopAnimations`,
-        "[class.mdc-circular-progress--indeterminate]": 'mode === "indeterminate"',
-        "[style.width.px]": "diameter",
-        "[style.height.px]": "diameter",
-        "[style.--mat-progress-spinner-size]": 'diameter + "px"',
-        "[style.--mat-progress-spinner-active-indicator-width]": 'diameter + "px"',
-        "[attr.aria-valuemin]": "0",
-        "[attr.aria-valuemax]": "100",
-        "[attr.aria-valuenow]": 'mode === "determinate" ? value : null',
-        "[attr.mode]": "mode"
-      },
-      changeDetection: ChangeDetectionStrategy.OnPush,
-      encapsulation: ViewEncapsulation.None,
-      imports: [NgTemplateOutlet],
-      template: '<ng-template #circle>\n  <svg [attr.viewBox]="_viewBox()" class="mdc-circular-progress__indeterminate-circle-graphic"\n       xmlns="http://www.w3.org/2000/svg" focusable="false">\n    <circle [attr.r]="_circleRadius()"\n            [style.stroke-dasharray.px]="_strokeCircumference()"\n            [style.stroke-dashoffset.px]="_strokeCircumference() / 2"\n            [style.stroke-width.%]="_circleStrokeWidth()"\n            cx="50%" cy="50%"/>\n  </svg>\n</ng-template>\n\n<!--\n  All children need to be hidden for screen readers in order to support ChromeVox.\n  More context in the issue: https://github.com/angular/components/issues/22165.\n-->\n<div class="mdc-circular-progress__determinate-container" aria-hidden="true" #determinateSpinner>\n  <svg [attr.viewBox]="_viewBox()" class="mdc-circular-progress__determinate-circle-graphic"\n       xmlns="http://www.w3.org/2000/svg" focusable="false">\n    <circle [attr.r]="_circleRadius()"\n            [style.stroke-dasharray.px]="_strokeCircumference()"\n            [style.stroke-dashoffset.px]="_strokeDashOffset()"\n            [style.stroke-width.%]="_circleStrokeWidth()"\n            class="mdc-circular-progress__determinate-circle"\n            cx="50%" cy="50%"/>\n  </svg>\n</div>\n<!--TODO: figure out why there are 3 separate svgs-->\n<div class="mdc-circular-progress__indeterminate-container" aria-hidden="true">\n  <div class="mdc-circular-progress__spinner-layer">\n    <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-left">\n      <ng-container [ngTemplateOutlet]="circle"></ng-container>\n    </div>\n    <div class="mdc-circular-progress__gap-patch">\n      <ng-container [ngTemplateOutlet]="circle"></ng-container>\n    </div>\n    <div class="mdc-circular-progress__circle-clipper mdc-circular-progress__circle-right">\n      <ng-container [ngTemplateOutlet]="circle"></ng-container>\n    </div>\n  </div>\n</div>\n',
-      styles: [".mat-mdc-progress-spinner{--mat-progress-spinner-animation-multiplier: 1;display:block;overflow:hidden;line-height:0;position:relative;direction:ltr;transition:opacity 250ms cubic-bezier(0.4, 0, 0.6, 1)}.mat-mdc-progress-spinner circle{stroke-width:var(--mat-progress-spinner-active-indicator-width, 4px)}.mat-mdc-progress-spinner._mat-animation-noopable,.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__determinate-circle{transition:none !important}.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__indeterminate-circle-graphic,.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__spinner-layer,.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__indeterminate-container{animation:none !important}.mat-mdc-progress-spinner._mat-animation-noopable .mdc-circular-progress__indeterminate-container circle{stroke-dasharray:0 !important}@media(forced-colors: active){.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic,.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle{stroke:currentColor;stroke:CanvasText}}.mat-progress-spinner-reduced-motion{--mat-progress-spinner-animation-multiplier: 1.25}.mdc-circular-progress__determinate-container,.mdc-circular-progress__indeterminate-circle-graphic,.mdc-circular-progress__indeterminate-container,.mdc-circular-progress__spinner-layer{position:absolute;width:100%;height:100%}.mdc-circular-progress__determinate-container{transform:rotate(-90deg)}.mdc-circular-progress--indeterminate .mdc-circular-progress__determinate-container{opacity:0}.mdc-circular-progress__indeterminate-container{font-size:0;letter-spacing:0;white-space:nowrap;opacity:0}.mdc-circular-progress--indeterminate .mdc-circular-progress__indeterminate-container{opacity:1;animation:mdc-circular-progress-container-rotate calc(1568.2352941176ms*var(--mat-progress-spinner-animation-multiplier)) linear infinite}.mdc-circular-progress__determinate-circle-graphic,.mdc-circular-progress__indeterminate-circle-graphic{fill:rgba(0,0,0,0)}.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{stroke:var(--mat-progress-spinner-active-indicator-color, var(--mat-sys-primary))}@media(forced-colors: active){.mat-mdc-progress-spinner .mdc-circular-progress__determinate-circle,.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{stroke:CanvasText}}.mdc-circular-progress__determinate-circle{transition:stroke-dashoffset 500ms cubic-bezier(0, 0, 0.2, 1)}.mdc-circular-progress__gap-patch{position:absolute;top:0;left:47.5%;box-sizing:border-box;width:5%;height:100%;overflow:hidden}.mdc-circular-progress__gap-patch .mdc-circular-progress__indeterminate-circle-graphic{left:-900%;width:2000%;transform:rotate(180deg)}.mdc-circular-progress__circle-clipper .mdc-circular-progress__indeterminate-circle-graphic{width:200%}.mdc-circular-progress__circle-right .mdc-circular-progress__indeterminate-circle-graphic{left:-100%}.mdc-circular-progress--indeterminate .mdc-circular-progress__circle-left .mdc-circular-progress__indeterminate-circle-graphic{animation:mdc-circular-progress-left-spin calc(1333ms*var(--mat-progress-spinner-animation-multiplier)) cubic-bezier(0.4, 0, 0.2, 1) infinite both}.mdc-circular-progress--indeterminate .mdc-circular-progress__circle-right .mdc-circular-progress__indeterminate-circle-graphic{animation:mdc-circular-progress-right-spin calc(1333ms*var(--mat-progress-spinner-animation-multiplier)) cubic-bezier(0.4, 0, 0.2, 1) infinite both}.mdc-circular-progress__circle-clipper{display:inline-flex;position:relative;width:50%;height:100%;overflow:hidden}.mdc-circular-progress--indeterminate .mdc-circular-progress__spinner-layer{animation:mdc-circular-progress-spinner-layer-rotate calc(5332ms*var(--mat-progress-spinner-animation-multiplier)) cubic-bezier(0.4, 0, 0.2, 1) infinite both}@keyframes mdc-circular-progress-container-rotate{to{transform:rotate(360deg)}}@keyframes mdc-circular-progress-spinner-layer-rotate{12.5%{transform:rotate(135deg)}25%{transform:rotate(270deg)}37.5%{transform:rotate(405deg)}50%{transform:rotate(540deg)}62.5%{transform:rotate(675deg)}75%{transform:rotate(810deg)}87.5%{transform:rotate(945deg)}100%{transform:rotate(1080deg)}}@keyframes mdc-circular-progress-left-spin{from{transform:rotate(265deg)}50%{transform:rotate(130deg)}to{transform:rotate(265deg)}}@keyframes mdc-circular-progress-right-spin{from{transform:rotate(-265deg)}50%{transform:rotate(-130deg)}to{transform:rotate(-265deg)}}\n"]
-    }]
-  }], () => [], {
-    color: [{
-      type: Input
-    }],
-    _determinateCircle: [{
-      type: ViewChild,
-      args: ["determinateSpinner"]
-    }],
-    mode: [{
-      type: Input
-    }],
-    value: [{
-      type: Input,
-      args: [{
-        transform: numberAttribute
-      }]
-    }],
-    diameter: [{
-      type: Input,
-      args: [{
-        transform: numberAttribute
-      }]
-    }],
-    strokeWidth: [{
-      type: Input,
-      args: [{
-        transform: numberAttribute
-      }]
-    }]
-  });
-})();
-var MatSpinner = MatProgressSpinner;
-var MatProgressSpinnerModule = class _MatProgressSpinnerModule {
-  static \u0275fac = function MatProgressSpinnerModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _MatProgressSpinnerModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-    type: _MatProgressSpinnerModule,
-    imports: [MatProgressSpinner, MatSpinner],
-    exports: [MatProgressSpinner, MatSpinner, BidiModule]
-  });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
-    imports: [BidiModule]
-  });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatProgressSpinnerModule, [{
-    type: NgModule,
-    args: [{
-      imports: [MatProgressSpinner, MatSpinner],
-      exports: [MatProgressSpinner, MatSpinner, BidiModule]
-    }]
-  }], null, null);
-})();
-
 // src/app/pages/login/components/input-email/input-email.ts
 function InputEmail_mat_error_7_Template(rf, ctx) {
   if (rf & 1) {
@@ -29031,8 +28763,11 @@ var LoginComponent = class _LoginComponent {
 
 // src/app/core/auth/auth.guard.ts
 var authGuard = () => {
+  const platformId = inject(PLATFORM_ID);
   const auth = inject(AuthService);
   const router = inject(Router);
+  if (!isPlatformBrowser(platformId))
+    return true;
   if (auth.isAuthenticated())
     return true;
   router.navigateByUrl("/login");
@@ -29045,11 +28780,13 @@ var routes = [
   __spreadValues({
     path: "dashboard",
     canActivate: [authGuard],
-    loadComponent: () => import("./chunk-SRQJ7S27.mjs").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-N2R5QQQM.mjs").then((m) => m.DashboardComponent),
     children: [
-      { path: "", loadComponent: () => import("./chunk-5RI25GGP.mjs").then((m) => m.DashboardHomeComponent) },
-      { path: "perfil", loadComponent: () => import("./chunk-SHZ667PY.mjs").then((m) => m.PerfilComponent) },
-      { path: "usuarios", loadComponent: () => import("./chunk-JC23HTSA.mjs").then((m) => m.UsuariosComponent) }
+      { path: "", loadComponent: () => import("./chunk-R7JRKLTH.mjs").then((m) => m.DashboardHomeComponent) },
+      { path: "perfil", loadComponent: () => import("./chunk-VDHS6EBZ.mjs").then((m) => m.PerfilComponent) },
+      { path: "usuarios", loadComponent: () => import("./chunk-AJWRV4U6.mjs").then((m) => m.UsuariosComponent) },
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },
@@ -33054,13 +32791,20 @@ var NoopAnimationsModule = class _NoopAnimationsModule {
 // src/app/core/auth/jwt.interceptor.ts
 var authInterceptor = (req, next) => {
   const auth = inject(AuthService);
+  const router = inject(Router);
   const token = auth.getToken();
   if (!token)
     return next(req);
   const authReq = req.clone({
     setHeaders: { Authorization: `Bearer ${token}` }
   });
-  return next(authReq);
+  return next(authReq).pipe(catchError((err) => {
+    if (err.status === 401) {
+      auth.logout();
+      router.navigate(["/login"]);
+    }
+    return throwError(() => err);
+  }));
 };
 
 // src/app/app.config.ts
@@ -33078,7 +32822,7 @@ var appConfig = {
 var serverRoutes = [
   {
     path: "**",
-    renderMode: RenderMode.Prerender
+    renderMode: RenderMode.Server
   }
 ];
 

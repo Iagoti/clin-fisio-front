@@ -1,0 +1,15 @@
+<button
+  type="submit"
+  mat-raised-button
+  color="primary"
+  [disabled]="salvando"
+>
+  <span class="btn-content">
+    @if (salvando) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      <mat-icon>save</mat-icon>
+      <span>{{ isEdicao ? 'Salvar' : 'Cadastrar' }}</span>
+    }
+  </span>
+</button>
