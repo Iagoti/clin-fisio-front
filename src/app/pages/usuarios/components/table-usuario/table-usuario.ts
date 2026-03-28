@@ -27,7 +27,9 @@ export class TableUsuario {
   onRowClick(row: UsuarioResponse): void {
     const id = row.cdUsuario ?? row.id;
     if (id != null) {
-      this.router.navigate(['/dashboard/usuarios', id]);
+      this.router.navigate(['/dashboard/usuarios', id], {
+        state: { usuario: row },
+      });
     } else {
       this.rowClick.emit(row);
     }

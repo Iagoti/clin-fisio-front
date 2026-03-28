@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,6 +44,7 @@ export class UsuarioFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
   private usuarioService = inject(UsuarioService);
 
   form!: FormGroup;
@@ -60,7 +61,9 @@ export class UsuarioFormComponent implements OnInit {
     this.id = idParam && idParam !== 'novo' ? +idParam : null;
     this.buildForm();
     if (this.id != null) {
-      this.carregarUsuario();
+      const prefilled = this.prefillFromNavigationState();
+      this.loading = !prefilled;
+      this.carregarUsuario(prefilled);
     } else {
       this.form.get('senha')?.setValidators([Validators.required, Validators.minLength(6)]);
     }
@@ -77,26 +80,48 @@ export class UsuarioFormComponent implements OnInit {
     });
   }
 
-  private carregarUsuario(): void {
+  private prefillFromNavigationState(): boolean {
+    const st = this.location.getState() as { usuario?: UsuarioResponse; navigationId?: number };
+    const u = st?.usuario;
+    if (!u || this.id == null) return false;
+    const rowId = u.cdUsuario ?? u.id;
+    if (rowId !== this.id) return false;
+    this.aplicarUsuarioNaForm(u);
+    return true;
+  }
+
+  private aplicarUsuarioNaForm(u: UsuarioResponse): void {
+    try {
+      this.form.patchValue({
+        nome: u.nmUsuario ?? '',
+        email: u.email ?? '',
+        login: u.login ?? '',
+        senha: '',
+        stUsuario: u.stUsuario?.codigo ?? 1,
+        tipoCodigo: u.tpUsuario?.codigo ?? 1,
+      });
+    } catch (e) {
+      console.error('Erro ao preencher formulário de usuário', e);
+    }
+  }
+
+  private carregarUsuario(prefilled: boolean): void {
     if (this.id == null) return;
-    this.loading = true;
-    this.usuarioService.obterPorId(this.id).subscribe({
-      next: (u: UsuarioResponse) => {
-        this.form.patchValue({
-          nome: u.nmUsuario,
-          email: u.email,
-          login: u.login,
-          senha: '',
-          stUsuario: u.stUsuario?.codigo ?? 1,
-          tipoCodigo: u.tpUsuario?.codigo ?? 1,
-        });
-        this.loading = false;
-      },
-      error: () => {
-        this.loading = false;
-        this.voltar();
-      },
-    });
+    this.usuarioService
+      .obterPorId(this.id)
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe({
+        next: (u: UsuarioResponse) => this.aplicarUsuarioNaForm(u),
+        error: () => {
+          if (!prefilled) {
+            this.voltar();
+          }
+        },
+      });
   }
 
   get isEdicao(): boolean {

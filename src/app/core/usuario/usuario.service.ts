@@ -34,7 +34,9 @@ export class UsuarioService {
   }
 
   obterPorId(id: number): Observable<UsuarioResponse> {
-    return this.http.get<UsuarioResponse>(`${environment.apiUrl}/usuario/${id}`);
+    return this.http.get<UsuarioResponse>(`${environment.apiUrl}/usuario/${id}`).pipe(
+      timeout(HTTP_TIMEOUT_MS)
+    );
   }
 
   salvar(body: UsuarioRequest): Observable<UsuarioResponse> {
