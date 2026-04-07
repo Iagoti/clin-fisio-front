@@ -2,7 +2,9 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -10,7 +12,6 @@ import { InputEmail } from './components/input-email/input-email';
 import { InputSenha } from './components/input-senha/input-senha';
 import { AuthService } from '../../core/auth/auth.service';
 import { ThemeService } from '../../core/theme/theme.service';
-
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,7 @@ import { ThemeService } from '../../core/theme/theme.service';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatSnackBarModule,
     InputEmail,
     InputSenha,
   ],
@@ -38,6 +40,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
+    private snackBar: MatSnackBar,
     public theme: ThemeService
   ) {
     this.form = this.fb.group({
@@ -68,11 +71,11 @@ export class LoginComponent {
     this.auth.login({ email, senha }).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigateByUrl('/dashboard'); // ajuste
+        this.router.navigateByUrl('/dashboard');
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
         this.loading.set(false);
-        // TODO: mostrar snackbar/toast com erro do backend
+        this.snackBar.open(err.error.message, 'Fechar', { duration: 6000 });
       },
     });
   }
