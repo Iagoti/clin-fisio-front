@@ -17,35 +17,35 @@ export default {
   {
     "renderMode": 0,
     "preload": [
-      "chunk-CVTQO3VL.js"
+      "chunk-YZWE3SXD.js"
     ],
     "route": "/dashboard"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-CVTQO3VL.js"
+      "chunk-YZWE3SXD.js"
     ],
     "route": "/dashboard/perfil"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-CVTQO3VL.js"
+      "chunk-YZWE3SXD.js"
     ],
     "route": "/dashboard/usuarios"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-CVTQO3VL.js"
+      "chunk-YZWE3SXD.js"
     ],
     "route": "/dashboard/usuarios/novo"
   },
   {
     "renderMode": 0,
     "preload": [
-      "chunk-CVTQO3VL.js"
+      "chunk-YZWE3SXD.js"
     ],
     "route": "/dashboard/usuarios/*"
   },
@@ -57,7 +57,7 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 1142, hash: '999c32eb0b618551136b692790b7938749d2d137354610032759bc459909b7f2', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 1682, hash: '4e5951c711db193822b16e34cefc070fe5b88d02507fc440d2e246614cc96a7d', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)}
+    'index.csr.html': {size: 1142, hash: 'fcd57599ffee42cfbdd457ab2e2e7882e25a525245b512b3d048305c12418499', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 1682, hash: '735ff7a2706ffbedd169d34b562ee25e12b89c9996e0a261324bd8d2da921e0d', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)}
   },
 };

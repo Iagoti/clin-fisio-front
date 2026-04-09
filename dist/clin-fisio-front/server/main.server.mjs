@@ -3,18 +3,28 @@ import {
   MatTooltip,
   MatTooltipModule,
   ThemeService
-} from "./chunk-DSQD7FQF.mjs";
+} from "./chunk-KTMFE2FW.mjs";
 import {
   AuthService
 } from "./chunk-IVNIGKHX.mjs";
 import {
   SHARED_INPUT_IMPORTS
-} from "./chunk-A3VWI4XA.mjs";
+} from "./chunk-5JXJRUZK.mjs";
 import {
   MatProgressSpinner,
   MatProgressSpinnerModule
-} from "./chunk-2CKWUSHN.mjs";
-import "./chunk-LTNDX77H.mjs";
+} from "./chunk-YDKCOY4N.mjs";
+import {
+  BasePortalOutlet,
+  CdkPortalOutlet,
+  ComponentPortal,
+  OverlayConfig,
+  OverlayModule,
+  PortalModule,
+  TemplatePortal,
+  createGlobalPositionStrategy,
+  createOverlayRef
+} from "./chunk-OHNLOS5F.mjs";
 import {
   DefaultValueAccessor,
   FormBuilder,
@@ -34,35 +44,46 @@ import {
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-62C5WJ4O.mjs";
+} from "./chunk-KYGWFMHW.mjs";
 import {
   ActivatedRoute,
+  BreakpointObserver,
+  Breakpoints,
+  LiveAnnouncer,
   MatButton,
   MatButtonModule,
   MatIconButton,
+  Platform,
   Router,
   RouterLink,
   RouterModule,
   RouterOutlet,
+  _IdGenerator,
+  _animationsDisabled,
   loadChildren,
   provideRouter
-} from "./chunk-662BIMSJ.mjs";
+} from "./chunk-RE7YJSRY.mjs";
 import {
   ANIMATION_MODULE_TYPE,
   APP_BASE_HREF,
   APP_ID,
   ApplicationRef,
+  BidiModule,
   BrowserDomAdapter,
   BrowserModule,
   CSP_NONCE,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   CommonModule,
   Compiler,
   Component,
   Console,
   DOCUMENT,
+  Directive,
   DomRendererFactory2,
   ENABLE_ROOT_COMPONENT_BOOTSTRAP,
   EVENT_MANAGER_PLUGINS,
+  ElementRef,
   EnvironmentInjector,
   EventManagerPlugin,
   HTTP_ROOT_INTERCEPTOR_FNS,
@@ -93,10 +114,14 @@ import {
   SSR_CONTENT_INTEGRITY_MARKER,
   Subject,
   TESTABILITY,
+  TemplateRef,
   Testability,
   TransferState,
+  ViewChild,
+  ViewEncapsulation,
   ViewportScroller,
   XhrFactory,
+  afterNextRender,
   annotateForHydration,
   bootstrapApplication,
   catchError,
@@ -107,6 +132,7 @@ import {
   isPlatformBrowser,
   makeEnvironmentProviders,
   mergeApplicationConfig,
+  of,
   performanceMarkFeature,
   platformCore,
   provideBrowserGlobalErrorListeners,
@@ -120,15 +146,19 @@ import {
   signal,
   startMeasuring,
   stopMeasuring,
+  takeUntil,
   throwError,
   withFetch,
   withInterceptors,
   ɵsetClassDebugInfo,
+  ɵɵInheritDefinitionFeature,
   ɵɵadvance,
+  ɵɵattribute,
   ɵɵclassProp,
   ɵɵconditional,
   ɵɵconditionalCreate,
   ɵɵdefineComponent,
+  ɵɵdefineDirective,
   ɵɵdefineInjectable,
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
@@ -136,13 +166,20 @@ import {
   ɵɵelement,
   ɵɵelementEnd,
   ɵɵelementStart,
+  ɵɵgetCurrentView,
   ɵɵinject,
   ɵɵlistener,
+  ɵɵloadQuery,
+  ɵɵnextContext,
   ɵɵproperty,
+  ɵɵqueryRefresh,
+  ɵɵresetView,
+  ɵɵrestoreView,
   ɵɵtemplate,
   ɵɵtext,
   ɵɵtextInterpolate,
-  ɵɵtextInterpolate1
+  ɵɵtextInterpolate1,
+  ɵɵviewQuery
 } from "./chunk-RXIW7MXB.mjs";
 import {
   __objRest,
@@ -5594,7 +5631,7 @@ function requireHtmlelts() {
     return new impl2(doc, localName, prefix);
   };
   function define(spec) {
-    return defineElement2(spec, HTMLElement, htmlElements, htmlNameToImpl);
+    return defineElement2(spec, HTMLElement2, htmlElements, htmlNameToImpl);
   }
   function URL2(attr) {
     return {
@@ -5646,13 +5683,13 @@ function requireHtmlelts() {
     "COMMAND": true
   };
   var HTMLFormElement = function(doc, localName, prefix) {
-    HTMLElement.call(this, doc, localName, prefix);
+    HTMLElement2.call(this, doc, localName, prefix);
     this._form = null;
   };
-  var HTMLElement = htmlelts.HTMLElement = define({
+  var HTMLElement2 = htmlelts.HTMLElement = define({
     superclass: Element2,
     name: "HTMLElement",
-    ctor: function HTMLElement2(doc, localName, prefix) {
+    ctor: function HTMLElement3(doc, localName, prefix) {
       Element2.call(this, doc, localName, utils2.NAMESPACE.HTML, prefix);
     },
     props: {
@@ -5764,7 +5801,7 @@ function requireHtmlelts() {
   var HTMLUnknownElement = define({
     name: "HTMLUnknownElement",
     ctor: function HTMLUnknownElement2(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     }
   });
   var formAssociatedProps = {
@@ -5778,7 +5815,7 @@ function requireHtmlelts() {
     tag: "a",
     name: "HTMLAnchorElement",
     ctor: function HTMLAnchorElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       _post_click_activation_steps: {
@@ -5811,7 +5848,7 @@ function requireHtmlelts() {
     tag: "area",
     name: "HTMLAreaElement",
     ctor: function HTMLAreaElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       alt: String,
@@ -5834,7 +5871,7 @@ function requireHtmlelts() {
     tag: "br",
     name: "HTMLBRElement",
     ctor: function HTMLBRElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       clear: String
@@ -5844,7 +5881,7 @@ function requireHtmlelts() {
     tag: "base",
     name: "HTMLBaseElement",
     ctor: function HTMLBaseElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       "target": String
@@ -5854,7 +5891,7 @@ function requireHtmlelts() {
     tag: "body",
     name: "HTMLBodyElement",
     ctor: function HTMLBodyElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     events: ["afterprint", "beforeprint", "beforeunload", "blur", "error", "focus", "hashchange", "load", "message", "offline", "online", "pagehide", "pageshow", "popstate", "resize", "scroll", "storage", "unload"],
     attributes: {
@@ -5916,7 +5953,7 @@ function requireHtmlelts() {
     tag: "dl",
     name: "HTMLDListElement",
     ctor: function HTMLDListElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       compact: Boolean
@@ -5926,7 +5963,7 @@ function requireHtmlelts() {
     tag: "data",
     name: "HTMLDataElement",
     ctor: function HTMLDataElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       value: String
@@ -5936,14 +5973,14 @@ function requireHtmlelts() {
     tag: "datalist",
     name: "HTMLDataListElement",
     ctor: function HTMLDataListElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     }
   });
   define({
     tag: "details",
     name: "HTMLDetailsElement",
     ctor: function HTMLDetailsElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       "open": Boolean
@@ -5953,7 +5990,7 @@ function requireHtmlelts() {
     tag: "div",
     name: "HTMLDivElement",
     ctor: function HTMLDivElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       align: String
@@ -5963,7 +6000,7 @@ function requireHtmlelts() {
     tag: "embed",
     name: "HTMLEmbedElement",
     ctor: function HTMLEmbedElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       src: URL2,
@@ -5990,7 +6027,7 @@ function requireHtmlelts() {
     tag: "form",
     name: "HTMLFormElement",
     ctor: function HTMLFormElement2(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       action: String,
@@ -6026,7 +6063,7 @@ function requireHtmlelts() {
     tag: "hr",
     name: "HTMLHRElement",
     ctor: function HTMLHRElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       align: String,
@@ -6040,14 +6077,14 @@ function requireHtmlelts() {
     tag: "head",
     name: "HTMLHeadElement",
     ctor: function HTMLHeadElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     }
   });
   define({
     tags: ["h1", "h2", "h3", "h4", "h5", "h6"],
     name: "HTMLHeadingElement",
     ctor: function HTMLHeadingElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       align: String
@@ -6057,7 +6094,7 @@ function requireHtmlelts() {
     tag: "html",
     name: "HTMLHtmlElement",
     ctor: function HTMLHtmlElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       xmlns: URL2,
@@ -6068,7 +6105,7 @@ function requireHtmlelts() {
     tag: "iframe",
     name: "HTMLIFrameElement",
     ctor: function HTMLIFrameElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       src: URL2,
@@ -6104,7 +6141,7 @@ function requireHtmlelts() {
     tag: "img",
     name: "HTMLImageElement",
     ctor: function HTMLImageElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       alt: String,
@@ -6269,7 +6306,7 @@ function requireHtmlelts() {
     tag: "li",
     name: "HTMLLIElement",
     ctor: function HTMLLIElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       value: {
@@ -6297,7 +6334,7 @@ function requireHtmlelts() {
     tag: "legend",
     name: "HTMLLegendElement",
     ctor: function HTMLLegendElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       align: String
@@ -6307,7 +6344,7 @@ function requireHtmlelts() {
     tag: "link",
     name: "HTMLLinkElement",
     ctor: function HTMLLinkElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       href: URL2,
@@ -6330,7 +6367,7 @@ function requireHtmlelts() {
     tag: "map",
     name: "HTMLMapElement",
     ctor: function HTMLMapElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       name: String
@@ -6340,7 +6377,7 @@ function requireHtmlelts() {
     tag: "menu",
     name: "HTMLMenuElement",
     ctor: function HTMLMenuElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       type: {
@@ -6355,7 +6392,7 @@ function requireHtmlelts() {
     tag: "meta",
     name: "HTMLMetaElement",
     ctor: function HTMLMetaElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       name: String,
@@ -6379,7 +6416,7 @@ function requireHtmlelts() {
     tags: ["ins", "del"],
     name: "HTMLModElement",
     ctor: function HTMLModElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       cite: URL2,
@@ -6390,7 +6427,7 @@ function requireHtmlelts() {
     tag: "ol",
     name: "HTMLOListElement",
     ctor: function HTMLOListElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       _numitems: {
@@ -6456,7 +6493,7 @@ function requireHtmlelts() {
     tag: "optgroup",
     name: "HTMLOptGroupElement",
     ctor: function HTMLOptGroupElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       disabled: Boolean,
@@ -6467,7 +6504,7 @@ function requireHtmlelts() {
     tag: "option",
     name: "HTMLOptionElement",
     ctor: function HTMLOptionElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       form: {
@@ -6520,7 +6557,7 @@ function requireHtmlelts() {
     tag: "p",
     name: "HTMLParagraphElement",
     ctor: function HTMLParagraphElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       align: String
@@ -6530,7 +6567,7 @@ function requireHtmlelts() {
     tag: "param",
     name: "HTMLParamElement",
     ctor: function HTMLParamElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       name: String,
@@ -6543,7 +6580,7 @@ function requireHtmlelts() {
     tags: ["pre", "listing", "xmp"],
     name: "HTMLPreElement",
     ctor: function HTMLPreElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       width: {
@@ -6572,7 +6609,7 @@ function requireHtmlelts() {
     tags: ["q", "blockquote"],
     name: "HTMLQuoteElement",
     ctor: function HTMLQuoteElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       cite: URL2
@@ -6582,7 +6619,7 @@ function requireHtmlelts() {
     tag: "script",
     name: "HTMLScriptElement",
     ctor: function HTMLScriptElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       text: {
@@ -6646,14 +6683,14 @@ function requireHtmlelts() {
     tag: "span",
     name: "HTMLSpanElement",
     ctor: function HTMLSpanElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     }
   });
   define({
     tag: "style",
     name: "HTMLStyleElement",
     ctor: function HTMLStyleElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       media: String,
@@ -6665,7 +6702,7 @@ function requireHtmlelts() {
     tag: "caption",
     name: "HTMLTableCaptionElement",
     ctor: function HTMLTableCaptionElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       align: String
@@ -6674,7 +6711,7 @@ function requireHtmlelts() {
   define({
     name: "HTMLTableCellElement",
     ctor: function HTMLTableCellElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       colSpan: {
@@ -6714,7 +6751,7 @@ function requireHtmlelts() {
     tags: ["col", "colgroup"],
     name: "HTMLTableColElement",
     ctor: function HTMLTableColElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       span: {
@@ -6739,7 +6776,7 @@ function requireHtmlelts() {
     tag: "table",
     name: "HTMLTableElement",
     ctor: function HTMLTableElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       rows: {
@@ -6773,7 +6810,7 @@ function requireHtmlelts() {
     tag: "template",
     name: "HTMLTemplateElement",
     ctor: function HTMLTemplateElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
       this._contentFragment = doc._templateDoc.createDocumentFragment();
     },
     props: {
@@ -6793,7 +6830,7 @@ function requireHtmlelts() {
     tag: "tr",
     name: "HTMLTableRowElement",
     ctor: function HTMLTableRowElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       cells: {
@@ -6823,7 +6860,7 @@ function requireHtmlelts() {
     tags: ["thead", "tfoot", "tbody"],
     name: "HTMLTableSectionElement",
     ctor: function HTMLTableSectionElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       rows: {
@@ -6920,7 +6957,7 @@ function requireHtmlelts() {
     tag: "time",
     name: "HTMLTimeElement",
     ctor: function HTMLTimeElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       dateTime: String,
@@ -6931,7 +6968,7 @@ function requireHtmlelts() {
     tag: "title",
     name: "HTMLTitleElement",
     ctor: function HTMLTitleElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       text: {
@@ -6945,7 +6982,7 @@ function requireHtmlelts() {
     tag: "ul",
     name: "HTMLUListElement",
     ctor: function HTMLUListElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       type: String,
@@ -6955,7 +6992,7 @@ function requireHtmlelts() {
   define({
     name: "HTMLMediaElement",
     ctor: function HTMLMediaElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       src: URL2,
@@ -7026,21 +7063,21 @@ function requireHtmlelts() {
     tag: "frameset",
     name: "HTMLFrameSetElement",
     ctor: function HTMLFrameSetElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     }
   });
   define({
     tag: "frame",
     name: "HTMLFrameElement",
     ctor: function HTMLFrameElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     }
   });
   define({
     tag: "canvas",
     name: "HTMLCanvasElement",
     ctor: function HTMLCanvasElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       getContext: {
@@ -7077,7 +7114,7 @@ function requireHtmlelts() {
     tag: "dialog",
     name: "HTMLDialogElement",
     ctor: function HTMLDialogElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       show: {
@@ -7099,7 +7136,7 @@ function requireHtmlelts() {
     tag: "menuitem",
     name: "HTMLMenuItemElement",
     ctor: function HTMLMenuItemElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     props: {
       _label: {
@@ -7141,7 +7178,7 @@ function requireHtmlelts() {
     tag: "source",
     name: "HTMLSourceElement",
     ctor: function HTMLSourceElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       srcset: String,
@@ -7157,7 +7194,7 @@ function requireHtmlelts() {
     tag: "track",
     name: "HTMLTrackElement",
     ctor: function HTMLTrackElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       src: URL2,
@@ -7203,7 +7240,7 @@ function requireHtmlelts() {
     tag: "font",
     name: "HTMLFontElement",
     ctor: function HTMLFontElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       color: {
@@ -7222,7 +7259,7 @@ function requireHtmlelts() {
     tag: "dir",
     name: "HTMLDirectoryElement",
     ctor: function HTMLDirectoryElement(doc, localName, prefix) {
-      HTMLElement.call(this, doc, localName, prefix);
+      HTMLElement2.call(this, doc, localName, prefix);
     },
     attributes: {
       compact: Boolean
@@ -22007,7 +22044,7 @@ function isTag$1(elem) {
 }
 var Root = ElementType.Root;
 var Text$1 = ElementType.Text;
-var Directive = ElementType.Directive;
+var Directive2 = ElementType.Directive;
 var Comment$1 = ElementType.Comment;
 var Script = ElementType.Script;
 var Style = ElementType.Style;
@@ -22631,7 +22668,7 @@ function renderNode(node2, options) {
       return render(node2.children, options);
     // @ts-expect-error We don't use `Doctype` yet
     case Doctype:
-    case Directive:
+    case Directive2:
       return renderDirective(node2);
     case Comment$1:
       return renderComment(node2);
@@ -28350,6 +28387,715 @@ var App = class _App {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(App, { className: "App", filePath: "src/app/app.ts", lineNumber: 11 });
 })();
 
+// node_modules/@angular/material/fesm2022/snack-bar.mjs
+function SimpleSnackBar_Conditional_2_Template(rf, ctx) {
+  if (rf & 1) {
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "div", 1)(1, "button", 2);
+    \u0275\u0275listener("click", function SimpleSnackBar_Conditional_2_Template_button_click_1_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.action());
+    });
+    \u0275\u0275text(2);
+    \u0275\u0275elementEnd()();
+  }
+  if (rf & 2) {
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275advance(2);
+    \u0275\u0275textInterpolate1(" ", ctx_r1.data.action, " ");
+  }
+}
+var _c0 = ["label"];
+function MatSnackBarContainer_ng_template_4_Template(rf, ctx) {
+}
+var MAX_TIMEOUT = Math.pow(2, 31) - 1;
+var MatSnackBarRef = class {
+  _overlayRef;
+  instance;
+  containerInstance;
+  _afterDismissed = new Subject();
+  _afterOpened = new Subject();
+  _onAction = new Subject();
+  _durationTimeoutId;
+  _dismissedByAction = false;
+  constructor(containerInstance, _overlayRef) {
+    this._overlayRef = _overlayRef;
+    this.containerInstance = containerInstance;
+    containerInstance._onExit.subscribe(() => this._finishDismiss());
+  }
+  dismiss() {
+    if (!this._afterDismissed.closed) {
+      this.containerInstance.exit();
+    }
+    clearTimeout(this._durationTimeoutId);
+  }
+  dismissWithAction() {
+    if (!this._onAction.closed) {
+      this._dismissedByAction = true;
+      this._onAction.next();
+      this._onAction.complete();
+      this.dismiss();
+    }
+    clearTimeout(this._durationTimeoutId);
+  }
+  closeWithAction() {
+    this.dismissWithAction();
+  }
+  _dismissAfter(duration) {
+    this._durationTimeoutId = setTimeout(() => this.dismiss(), Math.min(duration, MAX_TIMEOUT));
+  }
+  _open() {
+    if (!this._afterOpened.closed) {
+      this._afterOpened.next();
+      this._afterOpened.complete();
+    }
+  }
+  _finishDismiss() {
+    this._overlayRef.dispose();
+    if (!this._onAction.closed) {
+      this._onAction.complete();
+    }
+    this._afterDismissed.next({
+      dismissedByAction: this._dismissedByAction
+    });
+    this._afterDismissed.complete();
+    this._dismissedByAction = false;
+  }
+  afterDismissed() {
+    return this._afterDismissed;
+  }
+  afterOpened() {
+    return this.containerInstance._onEnter;
+  }
+  onAction() {
+    return this._onAction;
+  }
+};
+var MAT_SNACK_BAR_DATA = new InjectionToken("MatSnackBarData");
+var MatSnackBarConfig = class {
+  politeness = "polite";
+  announcementMessage = "";
+  viewContainerRef;
+  duration = 0;
+  panelClass;
+  direction;
+  data = null;
+  horizontalPosition = "center";
+  verticalPosition = "bottom";
+};
+var MatSnackBarLabel = class _MatSnackBarLabel {
+  static \u0275fac = function MatSnackBarLabel_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MatSnackBarLabel)();
+  };
+  static \u0275dir = /* @__PURE__ */ \u0275\u0275defineDirective({
+    type: _MatSnackBarLabel,
+    selectors: [["", "matSnackBarLabel", ""]],
+    hostAttrs: [1, "mat-mdc-snack-bar-label", "mdc-snackbar__label"]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatSnackBarLabel, [{
+    type: Directive,
+    args: [{
+      selector: `[matSnackBarLabel]`,
+      host: {
+        "class": "mat-mdc-snack-bar-label mdc-snackbar__label"
+      }
+    }]
+  }], null, null);
+})();
+var MatSnackBarActions = class _MatSnackBarActions {
+  static \u0275fac = function MatSnackBarActions_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MatSnackBarActions)();
+  };
+  static \u0275dir = /* @__PURE__ */ \u0275\u0275defineDirective({
+    type: _MatSnackBarActions,
+    selectors: [["", "matSnackBarActions", ""]],
+    hostAttrs: [1, "mat-mdc-snack-bar-actions", "mdc-snackbar__actions"]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatSnackBarActions, [{
+    type: Directive,
+    args: [{
+      selector: `[matSnackBarActions]`,
+      host: {
+        "class": "mat-mdc-snack-bar-actions mdc-snackbar__actions"
+      }
+    }]
+  }], null, null);
+})();
+var MatSnackBarAction = class _MatSnackBarAction {
+  static \u0275fac = function MatSnackBarAction_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MatSnackBarAction)();
+  };
+  static \u0275dir = /* @__PURE__ */ \u0275\u0275defineDirective({
+    type: _MatSnackBarAction,
+    selectors: [["", "matSnackBarAction", ""]],
+    hostAttrs: [1, "mat-mdc-snack-bar-action", "mdc-snackbar__action"]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatSnackBarAction, [{
+    type: Directive,
+    args: [{
+      selector: `[matSnackBarAction]`,
+      host: {
+        "class": "mat-mdc-snack-bar-action mdc-snackbar__action"
+      }
+    }]
+  }], null, null);
+})();
+var SimpleSnackBar = class _SimpleSnackBar {
+  snackBarRef = inject(MatSnackBarRef);
+  data = inject(MAT_SNACK_BAR_DATA);
+  constructor() {
+  }
+  action() {
+    this.snackBarRef.dismissWithAction();
+  }
+  get hasAction() {
+    return !!this.data.action;
+  }
+  static \u0275fac = function SimpleSnackBar_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _SimpleSnackBar)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
+    type: _SimpleSnackBar,
+    selectors: [["simple-snack-bar"]],
+    hostAttrs: [1, "mat-mdc-simple-snack-bar"],
+    exportAs: ["matSnackBar"],
+    decls: 3,
+    vars: 2,
+    consts: [["matSnackBarLabel", ""], ["matSnackBarActions", ""], ["matButton", "", "matSnackBarAction", "", 3, "click"]],
+    template: function SimpleSnackBar_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "div", 0);
+        \u0275\u0275text(1);
+        \u0275\u0275elementEnd();
+        \u0275\u0275conditionalCreate(2, SimpleSnackBar_Conditional_2_Template, 3, 1, "div", 1);
+      }
+      if (rf & 2) {
+        \u0275\u0275advance();
+        \u0275\u0275textInterpolate1(" ", ctx.data.message, "\n");
+        \u0275\u0275advance();
+        \u0275\u0275conditional(ctx.hasAction ? 2 : -1);
+      }
+    },
+    dependencies: [MatButton, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
+    styles: [".mat-mdc-simple-snack-bar{display:flex}.mat-mdc-simple-snack-bar .mat-mdc-snack-bar-label{max-height:50vh;overflow:auto}\n"],
+    encapsulation: 2,
+    changeDetection: 0
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SimpleSnackBar, [{
+    type: Component,
+    args: [{
+      selector: "simple-snack-bar",
+      exportAs: "matSnackBar",
+      encapsulation: ViewEncapsulation.None,
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      imports: [MatButton, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
+      host: {
+        "class": "mat-mdc-simple-snack-bar"
+      },
+      template: '<div matSnackBarLabel>\n  {{data.message}}\n</div>\n\n@if (hasAction) {\n  <div matSnackBarActions>\n    <button matButton matSnackBarAction (click)="action()">\n      {{data.action}}\n    </button>\n  </div>\n}\n',
+      styles: [".mat-mdc-simple-snack-bar{display:flex}.mat-mdc-simple-snack-bar .mat-mdc-snack-bar-label{max-height:50vh;overflow:auto}\n"]
+    }]
+  }], () => [], null);
+})();
+var ENTER_ANIMATION = "_mat-snack-bar-enter";
+var EXIT_ANIMATION = "_mat-snack-bar-exit";
+var MatSnackBarContainer = class _MatSnackBarContainer extends BasePortalOutlet {
+  _ngZone = inject(NgZone);
+  _elementRef = inject(ElementRef);
+  _changeDetectorRef = inject(ChangeDetectorRef);
+  _platform = inject(Platform);
+  _animationsDisabled = _animationsDisabled();
+  snackBarConfig = inject(MatSnackBarConfig);
+  _document = inject(DOCUMENT);
+  _trackedModals = /* @__PURE__ */ new Set();
+  _enterFallback;
+  _exitFallback;
+  _injector = inject(Injector);
+  _announceDelay = 150;
+  _announceTimeoutId;
+  _destroyed = false;
+  _portalOutlet;
+  _onAnnounce = new Subject();
+  _onExit = new Subject();
+  _onEnter = new Subject();
+  _animationState = "void";
+  _live;
+  _label;
+  _role;
+  _liveElementId = inject(_IdGenerator).getId("mat-snack-bar-container-live-");
+  constructor() {
+    super();
+    const config3 = this.snackBarConfig;
+    if (config3.politeness === "assertive" && !config3.announcementMessage) {
+      this._live = "assertive";
+    } else if (config3.politeness === "off") {
+      this._live = "off";
+    } else {
+      this._live = "polite";
+    }
+    if (this._platform.FIREFOX) {
+      if (this._live === "polite") {
+        this._role = "status";
+      }
+      if (this._live === "assertive") {
+        this._role = "alert";
+      }
+    }
+  }
+  attachComponentPortal(portal) {
+    this._assertNotAttached();
+    const result2 = this._portalOutlet.attachComponentPortal(portal);
+    this._afterPortalAttached();
+    return result2;
+  }
+  attachTemplatePortal(portal) {
+    this._assertNotAttached();
+    const result2 = this._portalOutlet.attachTemplatePortal(portal);
+    this._afterPortalAttached();
+    return result2;
+  }
+  attachDomPortal = (portal) => {
+    this._assertNotAttached();
+    const result2 = this._portalOutlet.attachDomPortal(portal);
+    this._afterPortalAttached();
+    return result2;
+  };
+  onAnimationEnd(animationName) {
+    if (animationName === EXIT_ANIMATION) {
+      this._completeExit();
+    } else if (animationName === ENTER_ANIMATION) {
+      clearTimeout(this._enterFallback);
+      this._ngZone.run(() => {
+        this._onEnter.next();
+        this._onEnter.complete();
+      });
+    }
+  }
+  enter() {
+    if (!this._destroyed) {
+      this._animationState = "visible";
+      this._changeDetectorRef.markForCheck();
+      this._changeDetectorRef.detectChanges();
+      this._screenReaderAnnounce();
+      if (this._animationsDisabled) {
+        afterNextRender(() => {
+          this._ngZone.run(() => queueMicrotask(() => this.onAnimationEnd(ENTER_ANIMATION)));
+        }, {
+          injector: this._injector
+        });
+      } else {
+        clearTimeout(this._enterFallback);
+        this._enterFallback = setTimeout(() => {
+          this._elementRef.nativeElement.classList.add("mat-snack-bar-fallback-visible");
+          this.onAnimationEnd(ENTER_ANIMATION);
+        }, 200);
+      }
+    }
+  }
+  exit() {
+    if (this._destroyed) {
+      return of(void 0);
+    }
+    this._ngZone.run(() => {
+      this._animationState = "hidden";
+      this._changeDetectorRef.markForCheck();
+      this._elementRef.nativeElement.setAttribute("mat-exit", "");
+      clearTimeout(this._announceTimeoutId);
+      if (this._animationsDisabled) {
+        afterNextRender(() => {
+          this._ngZone.run(() => queueMicrotask(() => this.onAnimationEnd(EXIT_ANIMATION)));
+        }, {
+          injector: this._injector
+        });
+      } else {
+        clearTimeout(this._exitFallback);
+        this._exitFallback = setTimeout(() => this.onAnimationEnd(EXIT_ANIMATION), 200);
+      }
+    });
+    return this._onExit;
+  }
+  ngOnDestroy() {
+    this._destroyed = true;
+    this._clearFromModals();
+    this._completeExit();
+  }
+  _completeExit() {
+    clearTimeout(this._exitFallback);
+    queueMicrotask(() => {
+      this._onExit.next();
+      this._onExit.complete();
+    });
+  }
+  _afterPortalAttached() {
+    const element = this._elementRef.nativeElement;
+    const panelClasses = this.snackBarConfig.panelClass;
+    if (panelClasses) {
+      if (Array.isArray(panelClasses)) {
+        panelClasses.forEach((cssClass) => element.classList.add(cssClass));
+      } else {
+        element.classList.add(panelClasses);
+      }
+    }
+    this._exposeToModals();
+    const label = this._label.nativeElement;
+    const labelClass = "mdc-snackbar__label";
+    label.classList.toggle(labelClass, !label.querySelector(`.${labelClass}`));
+  }
+  _exposeToModals() {
+    const id = this._liveElementId;
+    const modals = this._document.querySelectorAll('body > .cdk-overlay-container [aria-modal="true"]');
+    for (let i = 0; i < modals.length; i++) {
+      const modal = modals[i];
+      const ariaOwns = modal.getAttribute("aria-owns");
+      this._trackedModals.add(modal);
+      if (!ariaOwns) {
+        modal.setAttribute("aria-owns", id);
+      } else if (ariaOwns.indexOf(id) === -1) {
+        modal.setAttribute("aria-owns", ariaOwns + " " + id);
+      }
+    }
+  }
+  _clearFromModals() {
+    this._trackedModals.forEach((modal) => {
+      const ariaOwns = modal.getAttribute("aria-owns");
+      if (ariaOwns) {
+        const newValue = ariaOwns.replace(this._liveElementId, "").trim();
+        if (newValue.length > 0) {
+          modal.setAttribute("aria-owns", newValue);
+        } else {
+          modal.removeAttribute("aria-owns");
+        }
+      }
+    });
+    this._trackedModals.clear();
+  }
+  _assertNotAttached() {
+    if (this._portalOutlet.hasAttached() && (typeof ngDevMode === "undefined" || ngDevMode)) {
+      throw Error("Attempting to attach snack bar content after content is already attached");
+    }
+  }
+  _screenReaderAnnounce() {
+    if (this._announceTimeoutId) {
+      return;
+    }
+    this._ngZone.runOutsideAngular(() => {
+      this._announceTimeoutId = setTimeout(() => {
+        if (this._destroyed) {
+          return;
+        }
+        const element = this._elementRef.nativeElement;
+        const inertElement = element.querySelector("[aria-hidden]");
+        const liveElement = element.querySelector("[aria-live]");
+        if (inertElement && liveElement) {
+          let focusedElement = null;
+          if (this._platform.isBrowser && document.activeElement instanceof HTMLElement && inertElement.contains(document.activeElement)) {
+            focusedElement = document.activeElement;
+          }
+          inertElement.removeAttribute("aria-hidden");
+          liveElement.appendChild(inertElement);
+          focusedElement?.focus();
+          this._onAnnounce.next();
+          this._onAnnounce.complete();
+        }
+      }, this._announceDelay);
+    });
+  }
+  static \u0275fac = function MatSnackBarContainer_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MatSnackBarContainer)();
+  };
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({
+    type: _MatSnackBarContainer,
+    selectors: [["mat-snack-bar-container"]],
+    viewQuery: function MatSnackBarContainer_Query(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275viewQuery(CdkPortalOutlet, 7)(_c0, 7);
+      }
+      if (rf & 2) {
+        let _t;
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx._portalOutlet = _t.first);
+        \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx._label = _t.first);
+      }
+    },
+    hostAttrs: [1, "mdc-snackbar", "mat-mdc-snack-bar-container"],
+    hostVars: 6,
+    hostBindings: function MatSnackBarContainer_HostBindings(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275listener("animationend", function MatSnackBarContainer_animationend_HostBindingHandler($event) {
+          return ctx.onAnimationEnd($event.animationName);
+        })("animationcancel", function MatSnackBarContainer_animationcancel_HostBindingHandler($event) {
+          return ctx.onAnimationEnd($event.animationName);
+        });
+      }
+      if (rf & 2) {
+        \u0275\u0275classProp("mat-snack-bar-container-enter", ctx._animationState === "visible")("mat-snack-bar-container-exit", ctx._animationState === "hidden")("mat-snack-bar-container-animations-enabled", !ctx._animationsDisabled);
+      }
+    },
+    features: [\u0275\u0275InheritDefinitionFeature],
+    decls: 6,
+    vars: 3,
+    consts: [["label", ""], [1, "mdc-snackbar__surface", "mat-mdc-snackbar-surface"], [1, "mat-mdc-snack-bar-label"], ["aria-hidden", "true"], ["cdkPortalOutlet", ""]],
+    template: function MatSnackBarContainer_Template(rf, ctx) {
+      if (rf & 1) {
+        \u0275\u0275elementStart(0, "div", 1)(1, "div", 2, 0)(3, "div", 3);
+        \u0275\u0275template(4, MatSnackBarContainer_ng_template_4_Template, 0, 0, "ng-template", 4);
+        \u0275\u0275elementEnd();
+        \u0275\u0275element(5, "div");
+        \u0275\u0275elementEnd()();
+      }
+      if (rf & 2) {
+        \u0275\u0275advance(5);
+        \u0275\u0275attribute("aria-live", ctx._live)("role", ctx._role)("id", ctx._liveElementId);
+      }
+    },
+    dependencies: [CdkPortalOutlet],
+    styles: ["@keyframes _mat-snack-bar-enter{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}@keyframes _mat-snack-bar-exit{from{opacity:1}to{opacity:0}}.mat-mdc-snack-bar-container{display:flex;align-items:center;justify-content:center;box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0);margin:8px}.mat-mdc-snack-bar-handset .mat-mdc-snack-bar-container{width:100vw}.mat-snack-bar-container-animations-enabled{opacity:0}.mat-snack-bar-container-animations-enabled.mat-snack-bar-fallback-visible{opacity:1}.mat-snack-bar-container-animations-enabled.mat-snack-bar-container-enter{animation:_mat-snack-bar-enter 150ms cubic-bezier(0, 0, 0.2, 1) forwards}.mat-snack-bar-container-animations-enabled.mat-snack-bar-container-exit{animation:_mat-snack-bar-exit 75ms cubic-bezier(0.4, 0, 1, 1) forwards}.mat-mdc-snackbar-surface{box-shadow:0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box;padding-left:0;padding-right:8px}[dir=rtl] .mat-mdc-snackbar-surface{padding-right:0;padding-left:8px}.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface{min-width:344px;max-width:672px}.mat-mdc-snack-bar-handset .mat-mdc-snackbar-surface{width:100%;min-width:0}@media(forced-colors: active){.mat-mdc-snackbar-surface{outline:solid 1px}}.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface{color:var(--mat-snack-bar-supporting-text-color, var(--mat-sys-inverse-on-surface));border-radius:var(--mat-snack-bar-container-shape, var(--mat-sys-corner-extra-small));background-color:var(--mat-snack-bar-container-color, var(--mat-sys-inverse-surface))}.mdc-snackbar__label{width:100%;flex-grow:1;box-sizing:border-box;margin:0;padding:14px 8px 14px 16px}[dir=rtl] .mdc-snackbar__label{padding-left:8px;padding-right:16px}.mat-mdc-snack-bar-container .mdc-snackbar__label{font-family:var(--mat-snack-bar-supporting-text-font, var(--mat-sys-body-medium-font));font-size:var(--mat-snack-bar-supporting-text-size, var(--mat-sys-body-medium-size));font-weight:var(--mat-snack-bar-supporting-text-weight, var(--mat-sys-body-medium-weight));line-height:var(--mat-snack-bar-supporting-text-line-height, var(--mat-sys-body-medium-line-height))}.mat-mdc-snack-bar-actions{display:flex;flex-shrink:0;align-items:center;box-sizing:border-box}.mat-mdc-snack-bar-handset,.mat-mdc-snack-bar-container,.mat-mdc-snack-bar-label{flex:1 1 auto}.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled){--mat-button-text-state-layer-color: currentColor;--mat-button-text-ripple-color: currentColor}.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled).mat-unthemed{color:var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary))}.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) .mat-ripple-element{opacity:.1}\n"],
+    encapsulation: 2
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatSnackBarContainer, [{
+    type: Component,
+    args: [{
+      selector: "mat-snack-bar-container",
+      changeDetection: ChangeDetectionStrategy.Default,
+      encapsulation: ViewEncapsulation.None,
+      imports: [CdkPortalOutlet],
+      host: {
+        "class": "mdc-snackbar mat-mdc-snack-bar-container",
+        "[class.mat-snack-bar-container-enter]": '_animationState === "visible"',
+        "[class.mat-snack-bar-container-exit]": '_animationState === "hidden"',
+        "[class.mat-snack-bar-container-animations-enabled]": "!_animationsDisabled",
+        "(animationend)": "onAnimationEnd($event.animationName)",
+        "(animationcancel)": "onAnimationEnd($event.animationName)"
+      },
+      template: '<div class="mdc-snackbar__surface mat-mdc-snackbar-surface">\n  <!--\n    This outer label wrapper will have the class `mdc-snackbar__label` applied if\n    the attached template/component does not contain it.\n  -->\n  <div class="mat-mdc-snack-bar-label" #label>\n    <!-- Initialy holds the snack bar content, will be empty after announcing to screen readers. -->\n    <div aria-hidden="true">\n      <ng-template cdkPortalOutlet />\n    </div>\n\n    <!-- Will receive the snack bar content from the non-live div, move will happen a short delay after opening -->\n    <div [attr.aria-live]="_live" [attr.role]="_role" [attr.id]="_liveElementId"></div>\n  </div>\n</div>\n',
+      styles: ["@keyframes _mat-snack-bar-enter{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}@keyframes _mat-snack-bar-exit{from{opacity:1}to{opacity:0}}.mat-mdc-snack-bar-container{display:flex;align-items:center;justify-content:center;box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0);margin:8px}.mat-mdc-snack-bar-handset .mat-mdc-snack-bar-container{width:100vw}.mat-snack-bar-container-animations-enabled{opacity:0}.mat-snack-bar-container-animations-enabled.mat-snack-bar-fallback-visible{opacity:1}.mat-snack-bar-container-animations-enabled.mat-snack-bar-container-enter{animation:_mat-snack-bar-enter 150ms cubic-bezier(0, 0, 0.2, 1) forwards}.mat-snack-bar-container-animations-enabled.mat-snack-bar-container-exit{animation:_mat-snack-bar-exit 75ms cubic-bezier(0.4, 0, 1, 1) forwards}.mat-mdc-snackbar-surface{box-shadow:0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);display:flex;align-items:center;justify-content:flex-start;box-sizing:border-box;padding-left:0;padding-right:8px}[dir=rtl] .mat-mdc-snackbar-surface{padding-right:0;padding-left:8px}.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface{min-width:344px;max-width:672px}.mat-mdc-snack-bar-handset .mat-mdc-snackbar-surface{width:100%;min-width:0}@media(forced-colors: active){.mat-mdc-snackbar-surface{outline:solid 1px}}.mat-mdc-snack-bar-container .mat-mdc-snackbar-surface{color:var(--mat-snack-bar-supporting-text-color, var(--mat-sys-inverse-on-surface));border-radius:var(--mat-snack-bar-container-shape, var(--mat-sys-corner-extra-small));background-color:var(--mat-snack-bar-container-color, var(--mat-sys-inverse-surface))}.mdc-snackbar__label{width:100%;flex-grow:1;box-sizing:border-box;margin:0;padding:14px 8px 14px 16px}[dir=rtl] .mdc-snackbar__label{padding-left:8px;padding-right:16px}.mat-mdc-snack-bar-container .mdc-snackbar__label{font-family:var(--mat-snack-bar-supporting-text-font, var(--mat-sys-body-medium-font));font-size:var(--mat-snack-bar-supporting-text-size, var(--mat-sys-body-medium-size));font-weight:var(--mat-snack-bar-supporting-text-weight, var(--mat-sys-body-medium-weight));line-height:var(--mat-snack-bar-supporting-text-line-height, var(--mat-sys-body-medium-line-height))}.mat-mdc-snack-bar-actions{display:flex;flex-shrink:0;align-items:center;box-sizing:border-box}.mat-mdc-snack-bar-handset,.mat-mdc-snack-bar-container,.mat-mdc-snack-bar-label{flex:1 1 auto}.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled){--mat-button-text-state-layer-color: currentColor;--mat-button-text-ripple-color: currentColor}.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled).mat-unthemed{color:var(--mat-snack-bar-button-color, var(--mat-sys-inverse-primary))}.mat-mdc-snack-bar-container .mat-mdc-button.mat-mdc-snack-bar-action:not(:disabled) .mat-ripple-element{opacity:.1}\n"]
+    }]
+  }], () => [], {
+    _portalOutlet: [{
+      type: ViewChild,
+      args: [CdkPortalOutlet, {
+        static: true
+      }]
+    }],
+    _label: [{
+      type: ViewChild,
+      args: ["label", {
+        static: true
+      }]
+    }]
+  });
+})();
+var MAT_SNACK_BAR_DEFAULT_OPTIONS = new InjectionToken("mat-snack-bar-default-options", {
+  providedIn: "root",
+  factory: () => new MatSnackBarConfig()
+});
+var MatSnackBar = class _MatSnackBar {
+  _live = inject(LiveAnnouncer);
+  _injector = inject(Injector);
+  _breakpointObserver = inject(BreakpointObserver);
+  _parentSnackBar = inject(_MatSnackBar, {
+    optional: true,
+    skipSelf: true
+  });
+  _defaultConfig = inject(MAT_SNACK_BAR_DEFAULT_OPTIONS);
+  _animationsDisabled = _animationsDisabled();
+  _snackBarRefAtThisLevel = null;
+  simpleSnackBarComponent = SimpleSnackBar;
+  snackBarContainerComponent = MatSnackBarContainer;
+  handsetCssClass = "mat-mdc-snack-bar-handset";
+  get _openedSnackBarRef() {
+    const parent = this._parentSnackBar;
+    return parent ? parent._openedSnackBarRef : this._snackBarRefAtThisLevel;
+  }
+  set _openedSnackBarRef(value) {
+    if (this._parentSnackBar) {
+      this._parentSnackBar._openedSnackBarRef = value;
+    } else {
+      this._snackBarRefAtThisLevel = value;
+    }
+  }
+  constructor() {
+  }
+  openFromComponent(component, config3) {
+    return this._attach(component, config3);
+  }
+  openFromTemplate(template, config3) {
+    return this._attach(template, config3);
+  }
+  open(message, action = "", config3) {
+    const _config = __spreadValues(__spreadValues({}, this._defaultConfig), config3);
+    _config.data = {
+      message,
+      action
+    };
+    if (_config.announcementMessage === message) {
+      _config.announcementMessage = void 0;
+    }
+    return this.openFromComponent(this.simpleSnackBarComponent, _config);
+  }
+  dismiss() {
+    if (this._openedSnackBarRef) {
+      this._openedSnackBarRef.dismiss();
+    }
+  }
+  ngOnDestroy() {
+    if (this._snackBarRefAtThisLevel) {
+      this._snackBarRefAtThisLevel.dismiss();
+    }
+  }
+  _attachSnackBarContainer(overlayRef, config3) {
+    const userInjector = config3 && config3.viewContainerRef && config3.viewContainerRef.injector;
+    const injector = Injector.create({
+      parent: userInjector || this._injector,
+      providers: [{
+        provide: MatSnackBarConfig,
+        useValue: config3
+      }]
+    });
+    const containerPortal = new ComponentPortal(this.snackBarContainerComponent, config3.viewContainerRef, injector);
+    const containerRef = overlayRef.attach(containerPortal);
+    containerRef.instance.snackBarConfig = config3;
+    return containerRef.instance;
+  }
+  _attach(content, userConfig) {
+    const config3 = __spreadValues(__spreadValues(__spreadValues({}, new MatSnackBarConfig()), this._defaultConfig), userConfig);
+    const overlayRef = this._createOverlay(config3);
+    const container2 = this._attachSnackBarContainer(overlayRef, config3);
+    const snackBarRef = new MatSnackBarRef(container2, overlayRef);
+    if (content instanceof TemplateRef) {
+      const portal = new TemplatePortal(content, null, {
+        $implicit: config3.data,
+        snackBarRef
+      });
+      snackBarRef.instance = container2.attachTemplatePortal(portal);
+    } else {
+      const injector = this._createInjector(config3, snackBarRef);
+      const portal = new ComponentPortal(content, void 0, injector);
+      const contentRef = container2.attachComponentPortal(portal);
+      snackBarRef.instance = contentRef.instance;
+    }
+    this._breakpointObserver.observe(Breakpoints.HandsetPortrait).pipe(takeUntil(overlayRef.detachments())).subscribe((state) => {
+      overlayRef.overlayElement.classList.toggle(this.handsetCssClass, state.matches);
+    });
+    if (config3.announcementMessage) {
+      container2._onAnnounce.subscribe(() => {
+        this._live.announce(config3.announcementMessage, config3.politeness);
+      });
+    }
+    this._animateSnackBar(snackBarRef, config3);
+    this._openedSnackBarRef = snackBarRef;
+    return this._openedSnackBarRef;
+  }
+  _animateSnackBar(snackBarRef, config3) {
+    snackBarRef.afterDismissed().subscribe(() => {
+      if (this._openedSnackBarRef == snackBarRef) {
+        this._openedSnackBarRef = null;
+      }
+      if (config3.announcementMessage) {
+        this._live.clear();
+      }
+    });
+    if (config3.duration && config3.duration > 0) {
+      snackBarRef.afterOpened().subscribe(() => snackBarRef._dismissAfter(config3.duration));
+    }
+    if (this._openedSnackBarRef) {
+      this._openedSnackBarRef.afterDismissed().subscribe(() => {
+        snackBarRef.containerInstance.enter();
+      });
+      this._openedSnackBarRef.dismiss();
+    } else {
+      snackBarRef.containerInstance.enter();
+    }
+  }
+  _createOverlay(config3) {
+    const overlayConfig = new OverlayConfig();
+    overlayConfig.direction = config3.direction;
+    const positionStrategy = createGlobalPositionStrategy(this._injector);
+    const isRtl = config3.direction === "rtl";
+    const isLeft = config3.horizontalPosition === "left" || config3.horizontalPosition === "start" && !isRtl || config3.horizontalPosition === "end" && isRtl;
+    const isRight = !isLeft && config3.horizontalPosition !== "center";
+    if (isLeft) {
+      positionStrategy.left("0");
+    } else if (isRight) {
+      positionStrategy.right("0");
+    } else {
+      positionStrategy.centerHorizontally();
+    }
+    if (config3.verticalPosition === "top") {
+      positionStrategy.top("0");
+    } else {
+      positionStrategy.bottom("0");
+    }
+    overlayConfig.positionStrategy = positionStrategy;
+    overlayConfig.disableAnimations = this._animationsDisabled;
+    return createOverlayRef(this._injector, overlayConfig);
+  }
+  _createInjector(config3, snackBarRef) {
+    const userInjector = config3 && config3.viewContainerRef && config3.viewContainerRef.injector;
+    return Injector.create({
+      parent: userInjector || this._injector,
+      providers: [{
+        provide: MatSnackBarRef,
+        useValue: snackBarRef
+      }, {
+        provide: MAT_SNACK_BAR_DATA,
+        useValue: config3.data
+      }]
+    });
+  }
+  static \u0275fac = function MatSnackBar_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MatSnackBar)();
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+    token: _MatSnackBar,
+    factory: _MatSnackBar.\u0275fac,
+    providedIn: "root"
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatSnackBar, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [], null);
+})();
+var DIRECTIVES = [MatSnackBarContainer, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction];
+var MatSnackBarModule = class _MatSnackBarModule {
+  static \u0275fac = function MatSnackBarModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _MatSnackBarModule)();
+  };
+  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
+    type: _MatSnackBarModule,
+    imports: [OverlayModule, PortalModule, MatButtonModule, SimpleSnackBar, MatSnackBarContainer, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction],
+    exports: [BidiModule, MatSnackBarContainer, MatSnackBarLabel, MatSnackBarActions, MatSnackBarAction]
+  });
+  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({
+    providers: [MatSnackBar],
+    imports: [OverlayModule, PortalModule, MatButtonModule, SimpleSnackBar, BidiModule]
+  });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(MatSnackBarModule, [{
+    type: NgModule,
+    args: [{
+      imports: [OverlayModule, PortalModule, MatButtonModule, SimpleSnackBar, ...DIRECTIVES],
+      exports: [BidiModule, ...DIRECTIVES],
+      providers: [MatSnackBar]
+    }]
+  }], null, null);
+})();
+
 // src/app/pages/login/components/input-email/input-email.ts
 function InputEmail_mat_error_7_Template(rf, ctx) {
   if (rf & 1) {
@@ -28543,14 +29289,16 @@ var LoginComponent = class _LoginComponent {
   fb;
   auth;
   router;
+  snackBar;
   theme;
   loading = signal(false, ...ngDevMode ? [{ debugName: "loading" }] : []);
   form;
   currentYear = (/* @__PURE__ */ new Date()).getFullYear();
-  constructor(fb, auth, router, theme) {
+  constructor(fb, auth, router, snackBar, theme) {
     this.fb = fb;
     this.auth = auth;
     this.router = router;
+    this.snackBar = snackBar;
     this.theme = theme;
     this.form = this.fb.group({
       credentials: this.fb.group({
@@ -28565,6 +29313,39 @@ var LoginComponent = class _LoginComponent {
   toggleTheme() {
     this.theme.toggle();
   }
+  loginErrorMessage(err) {
+    const fromApi = this.extractApiErrorMessage(err.error);
+    if (fromApi) {
+      return fromApi;
+    }
+    if (err.status === 401 || err.status === 403) {
+      return "E-mail ou senha incorretos.";
+    }
+    if (err.status === 0) {
+      return "Sem conex\xE3o com o servidor. Verifique sua rede.";
+    }
+    return "N\xE3o foi poss\xEDvel entrar. Tente novamente.";
+  }
+  /** Corpo típico Spring: `{ "message": "..." }` ou Problem Details `{ "detail": "..." }`. */
+  extractApiErrorMessage(body) {
+    if (body == null) {
+      return null;
+    }
+    if (typeof body === "string") {
+      const t = body.trim();
+      return t.length > 0 ? t : null;
+    }
+    if (typeof body === "object") {
+      const o = body;
+      for (const key of ["message", "detail", "mensagem"]) {
+        const v = o[key];
+        if (typeof v === "string" && v.trim()) {
+          return v.trim();
+        }
+      }
+    }
+    return null;
+  }
   submit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -28577,13 +29358,15 @@ var LoginComponent = class _LoginComponent {
         this.loading.set(false);
         this.router.navigateByUrl("/dashboard");
       },
-      error: () => {
+      error: (err) => {
         this.loading.set(false);
+        const message = this.loginErrorMessage(err);
+        this.snackBar.open(message, "Fechar", { duration: 6e3 });
       }
     });
   }
   static \u0275fac = function LoginComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _LoginComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(ThemeService));
+    return new (__ngFactoryType__ || _LoginComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(MatSnackBar), \u0275\u0275directiveInject(ThemeService));
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _LoginComponent, selectors: [["app-login"]], decls: 40, vars: 7, consts: [[1, "min-h-screen", "bg-slate-50", "dark:bg-slate-950"], [1, "mx-auto", "grid", "min-h-screen", "max-w-6xl", "grid-cols-1", "lg:grid-cols-2"], [1, "relative", "hidden", "lg:block"], ["src", "assets/pilates.jpg", "alt", "Pilates", 1, "h-full", "w-full", "object-cover"], ["aria-hidden", "true", 1, "absolute", "inset-0", "bg-gradient-to-tr", "from-black/40", "via-black/10", "to-transparent", "pointer-events-none"], [1, "absolute", "bottom-10", "left-10", "right-10", "text-white"], [1, "text-3xl", "font-semibold", "leading-tight"], [1, "mt-2", "text-sm", "text-white/90"], [1, "flex", "items-center", "justify-center", "px-4", "py-10", "sm:px-8"], [1, "w-full", "max-w-md"], [1, "rounded-2xl", "bg-white", "p-8", "shadow-[0_10px_30px_rgba(2,6,23,0.10)]", "dark:bg-slate-900", "dark:shadow-[0_10px_30px_rgba(0,0,0,0.35)]"], [1, "flex", "items-center", "justify-between"], [1, "flex", "items-center", "gap-3"], [1, "flex", "h-11", "w-11", "items-center", "justify-center", "rounded-full", "bg-emerald-50", "ring-1", "ring-emerald-100", "dark:bg-emerald-500/10", "dark:ring-emerald-500/20"], [1, "text-emerald-600", "dark:text-emerald-400"], [1, "text-lg", "font-semibold", "text-slate-800", "dark:text-slate-100"], [1, "text-sm", "text-slate-500", "dark:text-slate-400"], ["mat-icon-button", "", "type", "button", "matTooltip", "Alterar tema", 1, "lg:hidden", 3, "click"], [1, "dark:text-slate-100"], [1, "mt-8", "space-y-4", 3, "ngSubmit", "formGroup"], ["formGroupName", "credentials", 1, "space-y-4"], ["controlName", "email", 3, "parentFormGroup"], ["controlName", "senha", 3, "parentFormGroup"], ["mat-flat-button", "", "type", "submit", 1, "!h-12", "w-full", "!rounded-xl", "!bg-emerald-600", "!text-white", "hover:!bg-emerald-700", 3, "disabled"], [1, "flex", "items-center", "justify-center", "gap-2"], ["diameter", "18", "mode", "indeterminate"], [1, "pt-2", "text-center", "text-sm"], ["routerLink", "/forgot-password", 1, "text-slate-600", "hover:text-emerald-700", "dark:text-slate-300", "dark:hover:text-emerald-400"], [1, "mt-6", "text-center", "text-xs", "text-slate-400", "dark:text-slate-500"]], template: function LoginComponent_Template(rf, ctx) {
     if (rf & 1) {
@@ -28664,6 +29447,7 @@ var LoginComponent = class _LoginComponent {
     MatProgressSpinner,
     MatTooltipModule,
     MatTooltip,
+    MatSnackBarModule,
     InputEmail,
     InputSenha
   ], encapsulation: 2 });
@@ -28679,6 +29463,7 @@ var LoginComponent = class _LoginComponent {
       MatButtonModule,
       MatProgressSpinnerModule,
       MatTooltipModule,
+      MatSnackBarModule,
       InputEmail,
       InputSenha
     ], template: `<div class="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -28755,10 +29540,10 @@ var LoginComponent = class _LoginComponent {
     </div>
   </div>
 ` }]
-  }], () => [{ type: FormBuilder }, { type: AuthService }, { type: Router }, { type: ThemeService }], null);
+  }], () => [{ type: FormBuilder }, { type: AuthService }, { type: Router }, { type: MatSnackBar }, { type: ThemeService }], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(LoginComponent, { className: "LoginComponent", filePath: "src/app/pages/login/login.ts", lineNumber: 32 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(LoginComponent, { className: "LoginComponent", filePath: "src/app/pages/login/login.ts", lineNumber: 35 });
 })();
 
 // src/app/core/auth/auth.guard.ts
@@ -28780,13 +29565,13 @@ var routes = [
   __spreadValues({
     path: "dashboard",
     canActivate: [authGuard],
-    loadComponent: () => import("./chunk-N2R5QQQM.mjs").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-JEITDZPU.mjs").then((m) => m.DashboardComponent),
     children: [
       { path: "", loadComponent: () => import("./chunk-R7JRKLTH.mjs").then((m) => m.DashboardHomeComponent) },
       { path: "perfil", loadComponent: () => import("./chunk-VDHS6EBZ.mjs").then((m) => m.PerfilComponent) },
-      { path: "usuarios", loadComponent: () => import("./chunk-AJWRV4U6.mjs").then((m) => m.UsuariosComponent) },
-      { path: "usuarios/novo", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) },
-      { path: "usuarios/:id", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) }
+      { path: "usuarios", loadComponent: () => import("./chunk-EJCWLJLZ.mjs").then((m) => m.UsuariosComponent) },
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-ALZTPWNJ.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-ALZTPWNJ.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },
