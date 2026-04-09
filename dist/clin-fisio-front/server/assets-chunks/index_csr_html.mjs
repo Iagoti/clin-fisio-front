@@ -13,6 +13,6 @@ export default `<!doctype html>
 <link rel="stylesheet" href="styles.css"></head>
 <body ngcm="">
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-DFQJQN3P.js"><link rel="modulepreload" href="chunk-I5CDD5XV.js"><link rel="modulepreload" href="chunk-PCKKDMTM.js"><link rel="modulepreload" href="chunk-KOOD5CZQ.js"><link rel="modulepreload" href="chunk-X542ZAYT.js"><link rel="modulepreload" href="chunk-RHLIW6YF.js"><link rel="modulepreload" href="chunk-G3DYLULS.js"><link rel="modulepreload" href="chunk-AXTQVTRC.js"><script src="main.js" type="module"></script></body>
+<link rel="modulepreload" href="chunk-DFQJQN3P.js"><link rel="modulepreload" href="chunk-I5CDD5XV.js"><link rel="modulepreload" href="chunk-PCKKDMTM.js"><link rel="modulepreload" href="chunk-VMBLM6R2.js"><link rel="modulepreload" href="chunk-X542ZAYT.js"><link rel="modulepreload" href="chunk-RHLIW6YF.js"><link rel="modulepreload" href="chunk-G3DYLULS.js"><link rel="modulepreload" href="chunk-AXTQVTRC.js"><script src="main.js" type="module"></script></body>
 </html>
 `;

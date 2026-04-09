@@ -1,13 +1,15 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BtnSalvarUsuario } from '../components/btn-salvar-usuario/btn-salvar-usuario';
 import { UsuarioService } from '../../../core/usuario/usuario.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
@@ -38,6 +40,7 @@ const TIPO_OPCOES = [
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     BtnSalvarUsuario,
   ],
   templateUrl: './usuario-form.html',
@@ -49,6 +52,8 @@ export class UsuarioFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   private usuarioService = inject(UsuarioService);
+  private snackBar = inject(MatSnackBar);
+  private cdr = inject(ChangeDetectorRef);
 
   form!: FormGroup;
   loading = false;
@@ -163,14 +168,32 @@ export class UsuarioFormComponent implements OnInit {
       ? this.usuarioService.atualizar(body)
       : this.usuarioService.salvar(body);
     req.pipe(
-      finalize(() => (this.salvando = false))
+      finalize(() => {
+        this.salvando = false;
+        this.cdr.detectChanges();
+      })
     ).subscribe({
       next: () => this.voltar(),
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         console.error('Erro ao salvar usuário', err);
-        // TODO: exibir mensagem para o usuário (snackbar/toast)
+        const msg = this.mensagemErroSalvar(err);
+        this.snackBar.open(msg, 'Fechar', {
+          duration: 6000,
+          panelClass: ['snackbar-erro'],
+        });
       },
     });
+  }
+
+  private mensagemErroSalvar(err: HttpErrorResponse): string {
+    const body = err.error;
+    if (body && typeof body === 'object' && 'message' in body) {
+      return String((body as { message: string }).message);
+    }
+    if (typeof body === 'string' && body.trim()) {
+      return body;
+    }
+    return err.message || 'Não foi possível salvar o usuário.';
   }
 
   excluir(): void {
