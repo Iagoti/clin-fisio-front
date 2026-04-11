@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { ChangeDetectorRef, Component, Injector, OnInit, PLATFORM_ID, inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -67,6 +67,8 @@ export class UsuarioFormComponent implements OnInit {
   private location = inject(Location);
   private usuarioService = inject(UsuarioService);
   private snackBar = inject(MatSnackBar);
+  private injector = inject(Injector);
+  private platformId = inject(PLATFORM_ID);
   private cdr = inject(ChangeDetectorRef);
 
   form!: FormGroup;
@@ -261,7 +263,41 @@ export class UsuarioFormComponent implements OnInit {
 
   excluir(): void {
     if (this.id == null || this.somenteLeitura) return;
-    if (!confirm('Deseja realmente excluir este usuário?')) return;
+    if (!isPlatformBrowser(this.platformId)) return;
+    void this.abrirConfirmacaoExclusao();
+  }
+
+  /** `import()` no browser evita falha de módulo no SSR/hidratação com MatDialog/CDK Overlay. */
+  private async abrirConfirmacaoExclusao(): Promise<void> {
+    try {
+      const [{ MatDialog }, { ConfirmarExclusaoUsuarioDialog }] = await Promise.all([
+        import('@angular/material/dialog'),
+        import('../components/confirmar-exclusao-usuario-dialog/confirmar-exclusao-usuario-dialog'),
+      ]);
+      const dialog = this.injector.get(MatDialog);
+      dialog
+        .open(ConfirmarExclusaoUsuarioDialog, {
+          width: 'min(420px, calc(100vw - 32px))',
+          autoFocus: 'first-tabbable',
+          closeOnNavigation: true,
+        })
+        .afterClosed()
+        .subscribe((confirmado) => {
+          if (confirmado === true) {
+            this.executarExclusao();
+          }
+        });
+    } catch (e) {
+      console.error('Erro ao abrir confirmação de exclusão', e);
+      this.snackBar.open('Não foi possível abrir a confirmação. Tente novamente.', 'Fechar', {
+        duration: 5000,
+        panelClass: ['snackbar-erro'],
+      });
+    }
+  }
+
+  private executarExclusao(): void {
+    if (this.id == null) return;
     this.excluindo = true;
     this.usuarioService.excluir(this.id).subscribe({
       next: () => {

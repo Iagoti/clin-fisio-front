@@ -1,22 +1,21 @@
 import './polyfills.server.mjs';
 import {
-  MatTooltip,
-  MatTooltipModule,
-  ThemeService
-} from "./chunk-KTMFE2FW.mjs";
-import {
-  AuthService
-} from "./chunk-IVNIGKHX.mjs";
-import {
-  SHARED_INPUT_IMPORTS
-} from "./chunk-5JXJRUZK.mjs";
-import {
   MatProgressSpinner,
   MatProgressSpinnerModule,
   MatSnackBar,
   MatSnackBarModule
-} from "./chunk-BMXJAY3J.mjs";
-import "./chunk-OHNLOS5F.mjs";
+} from "./chunk-Y6M2WJZG.mjs";
+import {
+  MatTooltip,
+  MatTooltipModule,
+  ThemeService
+} from "./chunk-U6ZUX2GW.mjs";
+import {
+  AuthService
+} from "./chunk-KGTFGXZG.mjs";
+import {
+  SHARED_INPUT_IMPORTS
+} from "./chunk-RHFI3FK6.mjs";
 import {
   DefaultValueAccessor,
   FormBuilder,
@@ -36,19 +35,28 @@ import {
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-KYGWFMHW.mjs";
+} from "./chunk-ZFOPBSKK.mjs";
 import {
   ActivatedRoute,
-  MatButton,
-  MatButtonModule,
-  MatIconButton,
   Router,
   RouterLink,
   RouterModule,
   RouterOutlet,
   loadChildren,
   provideRouter
-} from "./chunk-RE7YJSRY.mjs";
+} from "./chunk-U7XDS4AD.mjs";
+import "./chunk-G2IDAR4Y.mjs";
+import {
+  MatButton,
+  MatButtonModule,
+  MatIconButton
+} from "./chunk-NDVXITZX.mjs";
+import {
+  MatIcon,
+  MatIconModule
+} from "./chunk-2IEYTQ7B.mjs";
+import "./chunk-7VVIRXEE.mjs";
+import "./chunk-X5HVBTWO.mjs";
 import {
   ANIMATION_MODULE_TYPE,
   APP_BASE_HREF,
@@ -76,8 +84,6 @@ import {
   Injector,
   Input,
   LOCALE_ID,
-  MatIcon,
-  MatIconModule,
   NgIf,
   NgModule,
   NgZone,
@@ -145,7 +151,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1
-} from "./chunk-RXIW7MXB.mjs";
+} from "./chunk-Y5FPACBC.mjs";
 import {
   __objRest,
   __spreadProps,
@@ -28787,13 +28793,13 @@ var routes = [
   __spreadValues({
     path: "dashboard",
     canActivate: [authGuard],
-    loadComponent: () => import("./chunk-JEITDZPU.mjs").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-VIUCGEWS.mjs").then((m) => m.DashboardComponent),
     children: [
-      { path: "", loadComponent: () => import("./chunk-R7JRKLTH.mjs").then((m) => m.DashboardHomeComponent) },
-      { path: "perfil", loadComponent: () => import("./chunk-VDHS6EBZ.mjs").then((m) => m.PerfilComponent) },
-      { path: "usuarios", loadComponent: () => import("./chunk-EJCWLJLZ.mjs").then((m) => m.UsuariosComponent) },
-      { path: "usuarios/novo", loadComponent: () => import("./chunk-ZEE4XDFH.mjs").then((m) => m.UsuarioFormComponent) },
-      { path: "usuarios/:id", loadComponent: () => import("./chunk-ZEE4XDFH.mjs").then((m) => m.UsuarioFormComponent) }
+      { path: "", loadComponent: () => import("./chunk-EMMGYEHK.mjs").then((m) => m.DashboardHomeComponent) },
+      { path: "perfil", loadComponent: () => import("./chunk-BRMRIYQN.mjs").then((m) => m.PerfilComponent) },
+      { path: "usuarios", loadComponent: () => import("./chunk-CL5YCLWC.mjs").then((m) => m.UsuariosComponent) },
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-QYFVF25O.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-QYFVF25O.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },
@@ -32827,6 +32833,11 @@ var appConfig = {
 
 // src/app/app.routes.server.ts
 var serverRoutes = [
+  /** Área logada: CSR evita falhas de módulo/hidratação com CDK Overlay (Material Dialog, etc.). */
+  {
+    path: "dashboard/**",
+    renderMode: RenderMode.Client
+  },
   {
     path: "**",
     renderMode: RenderMode.Server
