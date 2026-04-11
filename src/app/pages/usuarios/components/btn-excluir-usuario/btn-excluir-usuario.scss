@@ -2,26 +2,33 @@
   display: inline-block;
 }
 
-button[mat-icon-button] {
-  color: #dc2626;
-
-  &:hover {
-    color: #b91c1c;
-    background: rgba(220, 38, 38, 0.1);
-  }
-
-  mat-icon {
-    font-size: 1.25rem;
-    width: 1.25rem;
-    height: 1.25rem;
-  }
+/* Vermelho explícito: tema M3 nem sempre aplica `warn` como vermelho no texto. */
+.btn-excluir-usuario.mat-mdc-button:not(:disabled) {
+  --mat-button-text-label-text-color: #c62828;
+  --mat-button-text-state-layer-color: #c62828;
+  color: #c62828;
 }
 
-:host-context(.dark) button[mat-icon-button] {
-  color: #f87171;
+.btn-excluir-usuario.mat-mdc-button:not(:disabled) mat-icon {
+  color: #c62828;
+}
 
-  &:hover {
-    color: #fca5a5;
-    background: rgba(248, 113, 113, 0.15);
-  }
+.btn-excluir-usuario__spinner {
+  --mat-progress-spinner-active-indicator-color: #c62828;
+}
+
+.btn-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.btn-content mat-spinner {
+  margin-right: 0.25rem;
+}
+
+.btn-content mat-icon {
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
 }

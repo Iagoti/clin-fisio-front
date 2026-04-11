@@ -11,10 +11,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BtnSalvarUsuario } from '../components/btn-salvar-usuario/btn-salvar-usuario';
+import { BtnVoltar } from '../components/btn-voltar/btn-voltar';
+import { BtnExcluirUsuario } from '../components/btn-excluir-usuario/btn-excluir-usuario';
 import { UsuarioService } from '../../../core/usuario/usuario.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
 import { finalize } from 'rxjs/operators';
+
+/** Snapshot dos campos ao estar em modo somente leitura (cancelar edição restaura isto). */
+type UsuarioFormSnapshot = {
+  nome: string;
+  email: string;
+  login: string;
+  senha: string;
+  stUsuario: number;
+  tipoCodigo: number;
+};
 
 /** Valores iguais a `AtivoInativoEnum` no backend (1 = ATIVO, 2 = INATIVO). */
 const STATUS_OPCOES = [
@@ -42,6 +54,8 @@ const TIPO_OPCOES = [
     MatInputModule,
     MatSnackBarModule,
     BtnSalvarUsuario,
+    BtnVoltar,
+    BtnExcluirUsuario,
   ],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.scss',
@@ -60,6 +74,9 @@ export class UsuarioFormComponent implements OnInit {
   salvando = false;
   excluindo = false;
   mostrarSenha = false;
+  /** Na edição, começa em visualização; "Editar" libera os campos. */
+  somenteLeitura = false;
+  private snapshotLeitura: UsuarioFormSnapshot | null = null;
   id: number | null = null;
   statusOpcoes = STATUS_OPCOES;
   tipoOpcoes = TIPO_OPCOES;
@@ -71,6 +88,9 @@ export class UsuarioFormComponent implements OnInit {
     if (this.id != null) {
       const prefilled = this.prefillFromNavigationState();
       this.loading = !prefilled;
+      if (prefilled) {
+        this.entrarModoVisualizacao();
+      }
       this.carregarUsuario(prefilled);
     } else {
       this.form.get('senha')?.setValidators([Validators.required, Validators.minLength(6)]);
@@ -123,7 +143,10 @@ export class UsuarioFormComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (u: UsuarioResponse) => this.aplicarUsuarioNaForm(u),
+        next: (u: UsuarioResponse) => {
+          this.aplicarUsuarioNaForm(u);
+          this.entrarModoVisualizacao();
+        },
         error: () => {
           if (!prefilled) {
             this.voltar();
@@ -134,6 +157,34 @@ export class UsuarioFormComponent implements OnInit {
 
   get isEdicao(): boolean {
     return this.id != null;
+  }
+
+  private entrarModoVisualizacao(): void {
+    if (!this.isEdicao) return;
+    this.somenteLeitura = true;
+    this.form.disable({ emitEvent: false });
+    this.snapshotLeitura = this.form.getRawValue() as UsuarioFormSnapshot;
+  }
+
+  iniciarEdicao(): void {
+    if (!this.isEdicao || !this.somenteLeitura) return;
+    this.somenteLeitura = false;
+    this.form.enable({ emitEvent: false });
+  }
+
+  private cancelarParaVisualizacao(): void {
+    if (!this.snapshotLeitura) return;
+    this.form.patchValue(this.snapshotLeitura, { emitEvent: false });
+    this.entrarModoVisualizacao();
+  }
+
+  /** Cancelar na lista = sair; em edição ativa = voltar ao modo visualização. */
+  cancelarOuVoltar(): void {
+    if (this.isEdicao && !this.somenteLeitura) {
+      this.cancelarParaVisualizacao();
+    } else {
+      this.voltar();
+    }
   }
 
   private toRequest(senha: string): UsuarioRequest {
@@ -152,6 +203,9 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   salvar(): void {
+    if (this.isEdicao && this.somenteLeitura) {
+      return;
+    }
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -173,7 +227,16 @@ export class UsuarioFormComponent implements OnInit {
         this.cdr.detectChanges();
       })
     ).subscribe({
-      next: () => this.voltar(),
+      next: () => {
+        const msg = this.isEdicao
+          ? 'Usuário atualizado com sucesso.'
+          : 'Usuário cadastrado com sucesso.';
+        this.snackBar.open(msg, 'Fechar', {
+          duration: 5000,
+          panelClass: ['snackbar-sucesso'],
+        });
+        this.voltar();
+      },
       error: (err: HttpErrorResponse) => {
         console.error('Erro ao salvar usuário', err);
         const msg = this.mensagemErroSalvar(err);
@@ -197,7 +260,7 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   excluir(): void {
-    if (this.id == null) return;
+    if (this.id == null || this.somenteLeitura) return;
     if (!confirm('Deseja realmente excluir este usuário?')) return;
     this.excluindo = true;
     this.usuarioService.excluir(this.id).subscribe({
