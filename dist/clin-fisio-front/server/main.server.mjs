@@ -28798,8 +28798,8 @@ var routes = [
       { path: "", loadComponent: () => import("./chunk-EMMGYEHK.mjs").then((m) => m.DashboardHomeComponent) },
       { path: "perfil", loadComponent: () => import("./chunk-BRMRIYQN.mjs").then((m) => m.PerfilComponent) },
       { path: "usuarios", loadComponent: () => import("./chunk-CL5YCLWC.mjs").then((m) => m.UsuariosComponent) },
-      { path: "usuarios/novo", loadComponent: () => import("./chunk-QYFVF25O.mjs").then((m) => m.UsuarioFormComponent) },
-      { path: "usuarios/:id", loadComponent: () => import("./chunk-QYFVF25O.mjs").then((m) => m.UsuarioFormComponent) }
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-X3F7DN5J.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-X3F7DN5J.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },

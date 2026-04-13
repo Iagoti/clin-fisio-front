@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, Injector, OnInit, PLATFORM_ID, inject } from '@angular/core';
-import { CommonModule, isPlatformBrowser, Location } from '@angular/common';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BtnSalvarUsuario } from '../components/btn-salvar-usuario/btn-salvar-usuario';
 import { BtnVoltar } from '../components/btn-voltar/btn-voltar';
-import { BtnExcluirUsuario } from '../components/btn-excluir-usuario/btn-excluir-usuario';
+import { ExcluirUsuarioComConfirmacao } from '../components/excluir-usuario-com-confirmacao/excluir-usuario-com-confirmacao';
 import { UsuarioService } from '../../../core/usuario/usuario.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
@@ -55,7 +55,7 @@ const TIPO_OPCOES = [
     MatSnackBarModule,
     BtnSalvarUsuario,
     BtnVoltar,
-    BtnExcluirUsuario,
+    ExcluirUsuarioComConfirmacao,
   ],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.scss',
@@ -67,8 +67,6 @@ export class UsuarioFormComponent implements OnInit {
   private location = inject(Location);
   private usuarioService = inject(UsuarioService);
   private snackBar = inject(MatSnackBar);
-  private injector = inject(Injector);
-  private platformId = inject(PLATFORM_ID);
   private cdr = inject(ChangeDetectorRef);
 
   form!: FormGroup;
@@ -250,7 +248,7 @@ export class UsuarioFormComponent implements OnInit {
     });
   }
 
-  private mensagemErroSalvar(err: HttpErrorResponse): string {
+  private mensagemErroHttp(err: HttpErrorResponse, fallback: string): string {
     const body = err.error;
     if (body && typeof body === 'object' && 'message' in body) {
       return String((body as { message: string }).message);
@@ -258,56 +256,45 @@ export class UsuarioFormComponent implements OnInit {
     if (typeof body === 'string' && body.trim()) {
       return body;
     }
-    return err.message || 'Não foi possível salvar o usuário.';
+    return err.message || fallback;
   }
 
-  excluir(): void {
-    if (this.id == null || this.somenteLeitura) return;
-    if (!isPlatformBrowser(this.platformId)) return;
-    void this.abrirConfirmacaoExclusao();
+  private mensagemErroSalvar(err: HttpErrorResponse): string {
+    return this.mensagemErroHttp(err, 'Não foi possível salvar o usuário.');
   }
 
-  /** `import()` no browser evita falha de módulo no SSR/hidratação com MatDialog/CDK Overlay. */
-  private async abrirConfirmacaoExclusao(): Promise<void> {
-    try {
-      const [{ MatDialog }, { ConfirmarExclusaoUsuarioDialog }] = await Promise.all([
-        import('@angular/material/dialog'),
-        import('../components/confirmar-exclusao-usuario-dialog/confirmar-exclusao-usuario-dialog'),
-      ]);
-      const dialog = this.injector.get(MatDialog);
-      dialog
-        .open(ConfirmarExclusaoUsuarioDialog, {
-          width: 'min(420px, calc(100vw - 32px))',
-          autoFocus: 'first-tabbable',
-          closeOnNavigation: true,
-        })
-        .afterClosed()
-        .subscribe((confirmado) => {
-          if (confirmado === true) {
-            this.executarExclusao();
-          }
-        });
-    } catch (e) {
-      console.error('Erro ao abrir confirmação de exclusão', e);
-      this.snackBar.open('Não foi possível abrir a confirmação. Tente novamente.', 'Fechar', {
-        duration: 5000,
-        panelClass: ['snackbar-erro'],
-      });
-    }
+  onConfirmarExclusao(): void {
+    this.executarExclusao();
   }
 
   private executarExclusao(): void {
     if (this.id == null) return;
     this.excluindo = true;
-    this.usuarioService.excluir(this.id).subscribe({
-      next: () => {
-        this.excluindo = false;
-        this.voltar();
-      },
-      error: () => {
-        this.excluindo = false;
-      },
-    });
+    this.usuarioService
+      .excluir(this.id)
+      .pipe(
+        finalize(() => {
+          this.excluindo = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Usuário excluído com sucesso.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-sucesso'],
+          });
+          this.voltar();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error('Erro ao excluir usuário', err);
+          const msg = this.mensagemErroHttp(err, 'Não foi possível excluir o usuário.');
+          this.snackBar.open(msg, 'Fechar', {
+            duration: 6000,
+            panelClass: ['snackbar-erro'],
+          });
+        },
+      });
   }
 
   voltar(): void {

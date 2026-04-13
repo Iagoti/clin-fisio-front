@@ -142,7 +142,10 @@
               </button>
             }
             @if (isEdicao && !somenteLeitura) {
-              <app-btn-excluir-usuario [excluindo]="excluindo" (excluir)="excluir()"></app-btn-excluir-usuario>
+              <app-excluir-usuario-com-confirmacao
+                [excluindo]="excluindo"
+                (confirmado)="onConfirmarExclusao()"
+              ></app-excluir-usuario-com-confirmacao>
             }
             @if (!isEdicao || !somenteLeitura) {
               <app-btn-salvar-usuario [salvando]="salvando" [isEdicao]="isEdicao"></app-btn-salvar-usuario>
