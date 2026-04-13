@@ -1,0 +1,39 @@
+.dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.dialog-title__icon {
+  color: #c62828;
+  font-size: 1.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.dialog-content {
+  padding-top: 0.25rem;
+}
+
+.dialog-content p {
+  margin: 0;
+  line-height: 1.5;
+  color: var(--mat-sys-on-surface-variant, #5f6368);
+}
+
+.dialog-actions {
+  padding-top: 0.5rem;
+  gap: 0.5rem;
+}
+
+.btn-confirmar-exclusao {
+  background-color: #c62828 !important;
+  color: #fff !important;
+}
+
+.btn-confirmar-exclusao:hover:not(:disabled) {
+  background-color: #b71c1c !important;
+}

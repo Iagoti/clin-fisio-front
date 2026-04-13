@@ -1,18 +1,32 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { BtnSalvarUsuario } from '../components/btn-salvar-usuario/btn-salvar-usuario';
+import { BtnVoltar } from '../components/btn-voltar/btn-voltar';
+import { ExcluirUsuarioComConfirmacao } from '../components/excluir-usuario-com-confirmacao/excluir-usuario-com-confirmacao';
 import { UsuarioService } from '../../../core/usuario/usuario.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
 import { finalize } from 'rxjs/operators';
+
+/** Snapshot dos campos ao estar em modo somente leitura (cancelar edição restaura isto). */
+type UsuarioFormSnapshot = {
+  nome: string;
+  email: string;
+  login: string;
+  senha: string;
+  stUsuario: number;
+  tipoCodigo: number;
+};
 
 /** Valores iguais a `AtivoInativoEnum` no backend (1 = ATIVO, 2 = INATIVO). */
 const STATUS_OPCOES = [
@@ -38,7 +52,10 @@ const TIPO_OPCOES = [
     MatProgressSpinnerModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSnackBarModule,
     BtnSalvarUsuario,
+    BtnVoltar,
+    ExcluirUsuarioComConfirmacao,
   ],
   templateUrl: './usuario-form.html',
   styleUrl: './usuario-form.scss',
@@ -49,12 +66,17 @@ export class UsuarioFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   private usuarioService = inject(UsuarioService);
+  private snackBar = inject(MatSnackBar);
+  private cdr = inject(ChangeDetectorRef);
 
   form!: FormGroup;
   loading = false;
   salvando = false;
   excluindo = false;
   mostrarSenha = false;
+  /** Na edição, começa em visualização; "Editar" libera os campos. */
+  somenteLeitura = false;
+  private snapshotLeitura: UsuarioFormSnapshot | null = null;
   id: number | null = null;
   statusOpcoes = STATUS_OPCOES;
   tipoOpcoes = TIPO_OPCOES;
@@ -66,6 +88,9 @@ export class UsuarioFormComponent implements OnInit {
     if (this.id != null) {
       const prefilled = this.prefillFromNavigationState();
       this.loading = !prefilled;
+      if (prefilled) {
+        this.entrarModoVisualizacao();
+      }
       this.carregarUsuario(prefilled);
     } else {
       this.form.get('senha')?.setValidators([Validators.required, Validators.minLength(6)]);
@@ -118,7 +143,10 @@ export class UsuarioFormComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (u: UsuarioResponse) => this.aplicarUsuarioNaForm(u),
+        next: (u: UsuarioResponse) => {
+          this.aplicarUsuarioNaForm(u);
+          this.entrarModoVisualizacao();
+        },
         error: () => {
           if (!prefilled) {
             this.voltar();
@@ -129,6 +157,34 @@ export class UsuarioFormComponent implements OnInit {
 
   get isEdicao(): boolean {
     return this.id != null;
+  }
+
+  private entrarModoVisualizacao(): void {
+    if (!this.isEdicao) return;
+    this.somenteLeitura = true;
+    this.form.disable({ emitEvent: false });
+    this.snapshotLeitura = this.form.getRawValue() as UsuarioFormSnapshot;
+  }
+
+  iniciarEdicao(): void {
+    if (!this.isEdicao || !this.somenteLeitura) return;
+    this.somenteLeitura = false;
+    this.form.enable({ emitEvent: false });
+  }
+
+  private cancelarParaVisualizacao(): void {
+    if (!this.snapshotLeitura) return;
+    this.form.patchValue(this.snapshotLeitura, { emitEvent: false });
+    this.entrarModoVisualizacao();
+  }
+
+  /** Cancelar na lista = sair; em edição ativa = voltar ao modo visualização. */
+  cancelarOuVoltar(): void {
+    if (this.isEdicao && !this.somenteLeitura) {
+      this.cancelarParaVisualizacao();
+    } else {
+      this.voltar();
+    }
   }
 
   private toRequest(senha: string): UsuarioRequest {
@@ -147,6 +203,9 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   salvar(): void {
+    if (this.isEdicao && this.somenteLeitura) {
+      return;
+    }
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -163,29 +222,79 @@ export class UsuarioFormComponent implements OnInit {
       ? this.usuarioService.atualizar(body)
       : this.usuarioService.salvar(body);
     req.pipe(
-      finalize(() => (this.salvando = false))
+      finalize(() => {
+        this.salvando = false;
+        this.cdr.detectChanges();
+      })
     ).subscribe({
-      next: () => this.voltar(),
-      error: (err) => {
+      next: () => {
+        const msg = this.isEdicao
+          ? 'Usuário atualizado com sucesso.'
+          : 'Usuário cadastrado com sucesso.';
+        this.snackBar.open(msg, 'Fechar', {
+          duration: 5000,
+          panelClass: ['snackbar-sucesso'],
+        });
+        this.voltar();
+      },
+      error: (err: HttpErrorResponse) => {
         console.error('Erro ao salvar usuário', err);
-        // TODO: exibir mensagem para o usuário (snackbar/toast)
+        const msg = this.mensagemErroSalvar(err);
+        this.snackBar.open(msg, 'Fechar', {
+          duration: 6000,
+          panelClass: ['snackbar-erro'],
+        });
       },
     });
   }
 
-  excluir(): void {
+  private mensagemErroHttp(err: HttpErrorResponse, fallback: string): string {
+    const body = err.error;
+    if (body && typeof body === 'object' && 'message' in body) {
+      return String((body as { message: string }).message);
+    }
+    if (typeof body === 'string' && body.trim()) {
+      return body;
+    }
+    return err.message || fallback;
+  }
+
+  private mensagemErroSalvar(err: HttpErrorResponse): string {
+    return this.mensagemErroHttp(err, 'Não foi possível salvar o usuário.');
+  }
+
+  onConfirmarExclusao(): void {
+    this.executarExclusao();
+  }
+
+  private executarExclusao(): void {
     if (this.id == null) return;
-    if (!confirm('Deseja realmente excluir este usuário?')) return;
     this.excluindo = true;
-    this.usuarioService.excluir(this.id).subscribe({
-      next: () => {
-        this.excluindo = false;
-        this.voltar();
-      },
-      error: () => {
-        this.excluindo = false;
-      },
-    });
+    this.usuarioService
+      .excluir(this.id)
+      .pipe(
+        finalize(() => {
+          this.excluindo = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Usuário excluído com sucesso.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-sucesso'],
+          });
+          this.voltar();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error('Erro ao excluir usuário', err);
+          const msg = this.mensagemErroHttp(err, 'Não foi possível excluir o usuário.');
+          this.snackBar.open(msg, 'Fechar', {
+            duration: 6000,
+            panelClass: ['snackbar-erro'],
+          });
+        },
+      });
   }
 
   voltar(): void {

@@ -1,12 +1,6 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 @import 'tailwindcss';
 
-/* Tailwind v4: dark mode por classe (em vez de prefers-color-scheme) */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @tailwind base;
@@ -34,9 +28,20 @@ body {
   height: 100%;
 }
 
-/* Tema escuro: quando .dark está em html ou app-root */
 html.dark body,
 .dark body {
   color-scheme: dark;
 }
-/* You can add global styles to this file, and also import other style files */
+
+.mat-mdc-snack-bar-container.snackbar-erro {
+  --mat-snack-bar-container-color: #c62828;
+  --mat-snack-bar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #ffffff;
+}
+
+.mat-mdc-snack-bar-container.snackbar-sucesso {
+  --mat-snack-bar-container-color: #2e7d32;
+  --mat-snack-bar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #ffffff;
+}
+

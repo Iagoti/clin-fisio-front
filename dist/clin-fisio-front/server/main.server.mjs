@@ -1,20 +1,21 @@
 import './polyfills.server.mjs';
 import {
+  MatProgressSpinner,
+  MatProgressSpinnerModule,
+  MatSnackBar,
+  MatSnackBarModule
+} from "./chunk-Y6M2WJZG.mjs";
+import {
   MatTooltip,
   MatTooltipModule,
   ThemeService
-} from "./chunk-DSQD7FQF.mjs";
+} from "./chunk-U6ZUX2GW.mjs";
 import {
   AuthService
-} from "./chunk-IVNIGKHX.mjs";
+} from "./chunk-KGTFGXZG.mjs";
 import {
   SHARED_INPUT_IMPORTS
-} from "./chunk-A3VWI4XA.mjs";
-import {
-  MatProgressSpinner,
-  MatProgressSpinnerModule
-} from "./chunk-2CKWUSHN.mjs";
-import "./chunk-LTNDX77H.mjs";
+} from "./chunk-RHFI3FK6.mjs";
 import {
   DefaultValueAccessor,
   FormBuilder,
@@ -34,19 +35,28 @@ import {
   ReactiveFormsModule,
   Validators,
   ɵNgNoValidate
-} from "./chunk-62C5WJ4O.mjs";
+} from "./chunk-ZFOPBSKK.mjs";
 import {
   ActivatedRoute,
-  MatButton,
-  MatButtonModule,
-  MatIconButton,
   Router,
   RouterLink,
   RouterModule,
   RouterOutlet,
   loadChildren,
   provideRouter
-} from "./chunk-662BIMSJ.mjs";
+} from "./chunk-U7XDS4AD.mjs";
+import "./chunk-G2IDAR4Y.mjs";
+import {
+  MatButton,
+  MatButtonModule,
+  MatIconButton
+} from "./chunk-NDVXITZX.mjs";
+import {
+  MatIcon,
+  MatIconModule
+} from "./chunk-2IEYTQ7B.mjs";
+import "./chunk-7VVIRXEE.mjs";
+import "./chunk-X5HVBTWO.mjs";
 import {
   ANIMATION_MODULE_TYPE,
   APP_BASE_HREF,
@@ -74,8 +84,6 @@ import {
   Injector,
   Input,
   LOCALE_ID,
-  MatIcon,
-  MatIconModule,
   NgIf,
   NgModule,
   NgZone,
@@ -143,7 +151,7 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1
-} from "./chunk-RXIW7MXB.mjs";
+} from "./chunk-Y5FPACBC.mjs";
 import {
   __objRest,
   __spreadProps,
@@ -28543,14 +28551,16 @@ var LoginComponent = class _LoginComponent {
   fb;
   auth;
   router;
+  snackBar;
   theme;
   loading = signal(false, ...ngDevMode ? [{ debugName: "loading" }] : []);
   form;
   currentYear = (/* @__PURE__ */ new Date()).getFullYear();
-  constructor(fb, auth, router, theme) {
+  constructor(fb, auth, router, snackBar, theme) {
     this.fb = fb;
     this.auth = auth;
     this.router = router;
+    this.snackBar = snackBar;
     this.theme = theme;
     this.form = this.fb.group({
       credentials: this.fb.group({
@@ -28577,13 +28587,14 @@ var LoginComponent = class _LoginComponent {
         this.loading.set(false);
         this.router.navigateByUrl("/dashboard");
       },
-      error: () => {
+      error: (err) => {
         this.loading.set(false);
+        this.snackBar.open(err.error.message, "Fechar", { duration: 6e3 });
       }
     });
   }
   static \u0275fac = function LoginComponent_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _LoginComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(ThemeService));
+    return new (__ngFactoryType__ || _LoginComponent)(\u0275\u0275directiveInject(FormBuilder), \u0275\u0275directiveInject(AuthService), \u0275\u0275directiveInject(Router), \u0275\u0275directiveInject(MatSnackBar), \u0275\u0275directiveInject(ThemeService));
   };
   static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _LoginComponent, selectors: [["app-login"]], decls: 40, vars: 7, consts: [[1, "min-h-screen", "bg-slate-50", "dark:bg-slate-950"], [1, "mx-auto", "grid", "min-h-screen", "max-w-6xl", "grid-cols-1", "lg:grid-cols-2"], [1, "relative", "hidden", "lg:block"], ["src", "assets/pilates.jpg", "alt", "Pilates", 1, "h-full", "w-full", "object-cover"], ["aria-hidden", "true", 1, "absolute", "inset-0", "bg-gradient-to-tr", "from-black/40", "via-black/10", "to-transparent", "pointer-events-none"], [1, "absolute", "bottom-10", "left-10", "right-10", "text-white"], [1, "text-3xl", "font-semibold", "leading-tight"], [1, "mt-2", "text-sm", "text-white/90"], [1, "flex", "items-center", "justify-center", "px-4", "py-10", "sm:px-8"], [1, "w-full", "max-w-md"], [1, "rounded-2xl", "bg-white", "p-8", "shadow-[0_10px_30px_rgba(2,6,23,0.10)]", "dark:bg-slate-900", "dark:shadow-[0_10px_30px_rgba(0,0,0,0.35)]"], [1, "flex", "items-center", "justify-between"], [1, "flex", "items-center", "gap-3"], [1, "flex", "h-11", "w-11", "items-center", "justify-center", "rounded-full", "bg-emerald-50", "ring-1", "ring-emerald-100", "dark:bg-emerald-500/10", "dark:ring-emerald-500/20"], [1, "text-emerald-600", "dark:text-emerald-400"], [1, "text-lg", "font-semibold", "text-slate-800", "dark:text-slate-100"], [1, "text-sm", "text-slate-500", "dark:text-slate-400"], ["mat-icon-button", "", "type", "button", "matTooltip", "Alterar tema", 1, "lg:hidden", 3, "click"], [1, "dark:text-slate-100"], [1, "mt-8", "space-y-4", 3, "ngSubmit", "formGroup"], ["formGroupName", "credentials", 1, "space-y-4"], ["controlName", "email", 3, "parentFormGroup"], ["controlName", "senha", 3, "parentFormGroup"], ["mat-flat-button", "", "type", "submit", 1, "!h-12", "w-full", "!rounded-xl", "!bg-emerald-600", "!text-white", "hover:!bg-emerald-700", 3, "disabled"], [1, "flex", "items-center", "justify-center", "gap-2"], ["diameter", "18", "mode", "indeterminate"], [1, "pt-2", "text-center", "text-sm"], ["routerLink", "/forgot-password", 1, "text-slate-600", "hover:text-emerald-700", "dark:text-slate-300", "dark:hover:text-emerald-400"], [1, "mt-6", "text-center", "text-xs", "text-slate-400", "dark:text-slate-500"]], template: function LoginComponent_Template(rf, ctx) {
     if (rf & 1) {
@@ -28664,6 +28675,7 @@ var LoginComponent = class _LoginComponent {
     MatProgressSpinner,
     MatTooltipModule,
     MatTooltip,
+    MatSnackBarModule,
     InputEmail,
     InputSenha
   ], encapsulation: 2 });
@@ -28679,6 +28691,7 @@ var LoginComponent = class _LoginComponent {
       MatButtonModule,
       MatProgressSpinnerModule,
       MatTooltipModule,
+      MatSnackBarModule,
       InputEmail,
       InputSenha
     ], template: `<div class="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -28755,10 +28768,10 @@ var LoginComponent = class _LoginComponent {
     </div>
   </div>
 ` }]
-  }], () => [{ type: FormBuilder }, { type: AuthService }, { type: Router }, { type: ThemeService }], null);
+  }], () => [{ type: FormBuilder }, { type: AuthService }, { type: Router }, { type: MatSnackBar }, { type: ThemeService }], null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(LoginComponent, { className: "LoginComponent", filePath: "src/app/pages/login/login.ts", lineNumber: 32 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(LoginComponent, { className: "LoginComponent", filePath: "src/app/pages/login/login.ts", lineNumber: 34 });
 })();
 
 // src/app/core/auth/auth.guard.ts
@@ -28780,13 +28793,13 @@ var routes = [
   __spreadValues({
     path: "dashboard",
     canActivate: [authGuard],
-    loadComponent: () => import("./chunk-N2R5QQQM.mjs").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-VIUCGEWS.mjs").then((m) => m.DashboardComponent),
     children: [
-      { path: "", loadComponent: () => import("./chunk-R7JRKLTH.mjs").then((m) => m.DashboardHomeComponent) },
-      { path: "perfil", loadComponent: () => import("./chunk-VDHS6EBZ.mjs").then((m) => m.PerfilComponent) },
-      { path: "usuarios", loadComponent: () => import("./chunk-AJWRV4U6.mjs").then((m) => m.UsuariosComponent) },
-      { path: "usuarios/novo", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) },
-      { path: "usuarios/:id", loadComponent: () => import("./chunk-F2J6VIG2.mjs").then((m) => m.UsuarioFormComponent) }
+      { path: "", loadComponent: () => import("./chunk-EMMGYEHK.mjs").then((m) => m.DashboardHomeComponent) },
+      { path: "perfil", loadComponent: () => import("./chunk-BRMRIYQN.mjs").then((m) => m.PerfilComponent) },
+      { path: "usuarios", loadComponent: () => import("./chunk-CL5YCLWC.mjs").then((m) => m.UsuariosComponent) },
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-X3F7DN5J.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-X3F7DN5J.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },
@@ -32820,6 +32833,11 @@ var appConfig = {
 
 // src/app/app.routes.server.ts
 var serverRoutes = [
+  /** Área logada: CSR evita falhas de módulo/hidratação com CDK Overlay (Material Dialog, etc.). */
+  {
+    path: "dashboard/**",
+    renderMode: RenderMode.Client
+  },
   {
     path: "**",
     renderMode: RenderMode.Server

@@ -1,3 +1,16 @@
-<button mat-icon-button type="button" (click)="onClick()" aria-label="Excluir usuário" title="Excluir">
-  <mat-icon>delete</mat-icon>
+<button
+  type="button"
+  mat-button
+  class="btn-excluir-usuario"
+  [disabled]="excluindo"
+  (click)="onClick()"
+>
+  <span class="btn-content">
+    @if (excluindo) {
+      <mat-spinner class="btn-excluir-usuario__spinner" diameter="20"></mat-spinner>
+    } @else {
+      <mat-icon>delete</mat-icon>
+      <span>Excluir</span>
+    }
+  </span>
 </button>
