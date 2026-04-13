@@ -74,7 +74,8 @@
               "buildTarget": "clin-fisio-front:build:production"
             },
             "development": {
-              "buildTarget": "clin-fisio-front:build:development"
+              "buildTarget": "clin-fisio-front:build:development",
+              "prebundle": false
             }
           },
           "defaultConfiguration": "development"
