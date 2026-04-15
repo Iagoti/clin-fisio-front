@@ -45,12 +45,12 @@ import {
   loadChildren,
   provideRouter
 } from "./chunk-U7XDS4AD.mjs";
-import "./chunk-G2IDAR4Y.mjs";
 import {
   MatButton,
   MatButtonModule,
   MatIconButton
 } from "./chunk-NDVXITZX.mjs";
+import "./chunk-G2IDAR4Y.mjs";
 import {
   MatIcon,
   MatIconModule
@@ -28793,13 +28793,14 @@ var routes = [
   __spreadValues({
     path: "dashboard",
     canActivate: [authGuard],
-    loadComponent: () => import("./chunk-VIUCGEWS.mjs").then((m) => m.DashboardComponent),
+    loadComponent: () => import("./chunk-HHR3SWOG.mjs").then((m) => m.DashboardComponent),
     children: [
       { path: "", loadComponent: () => import("./chunk-EMMGYEHK.mjs").then((m) => m.DashboardHomeComponent) },
+      { path: "pacientes", loadComponent: () => import("./chunk-JHRABHJE.mjs").then((m) => m.PacientesComponent) },
       { path: "perfil", loadComponent: () => import("./chunk-BRMRIYQN.mjs").then((m) => m.PerfilComponent) },
-      { path: "usuarios", loadComponent: () => import("./chunk-CL5YCLWC.mjs").then((m) => m.UsuariosComponent) },
-      { path: "usuarios/novo", loadComponent: () => import("./chunk-X3F7DN5J.mjs").then((m) => m.UsuarioFormComponent) },
-      { path: "usuarios/:id", loadComponent: () => import("./chunk-X3F7DN5J.mjs").then((m) => m.UsuarioFormComponent) }
+      { path: "usuarios", loadComponent: () => import("./chunk-H3RPCZCH.mjs").then((m) => m.UsuariosComponent) },
+      { path: "usuarios/novo", loadComponent: () => import("./chunk-F5MPJS2M.mjs").then((m) => m.UsuarioFormComponent) },
+      { path: "usuarios/:id", loadComponent: () => import("./chunk-F5MPJS2M.mjs").then((m) => m.UsuarioFormComponent) }
     ]
   }, true ? { \u0275entryName: "src/app/pages/dashboard/dashboard.ts" } : {}),
   { path: "", redirectTo: "dashboard", pathMatch: "full" },

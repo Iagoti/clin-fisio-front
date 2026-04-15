@@ -12,6 +12,10 @@
         <mat-icon>dashboard</mat-icon>
         <span>Início</span>
       </a>
+      <a routerLink="/dashboard/pacientes" routerLinkActive="active" class="nav-item text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <mat-icon>groups</mat-icon>
+        <span>Pacientes</span>
+      </a>
       @if (isAdmin()) {
         <a routerLink="/dashboard/usuarios" routerLinkActive="active" class="nav-item text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
           <mat-icon>people</mat-icon>
