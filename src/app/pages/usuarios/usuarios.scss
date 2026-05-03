@@ -38,7 +38,7 @@
 .filtro-row {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -48,11 +48,11 @@
   min-width: 200px;
   max-width: 320px;
   display: block;
+  margin-bottom: -1.34375em;
 }
 
 .filtro-row app-filtro-usuario-ativo {
   flex-shrink: 0;
-  transform: translateY(-20px);
 }
 
 .filtro-actions {
@@ -60,6 +60,5 @@
   flex-shrink: 0;
   gap: 0.5rem;
   align-items: center;
-  transform: translateY(-20px);
 }
 
