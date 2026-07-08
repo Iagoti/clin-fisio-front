@@ -46,10 +46,6 @@ export interface PacienteRequest {
   pilatesAlinhamentoPostural?: string;
   observacoesPilates?: string;
   assinaturaPilates?: string;
-  aceitouTermo?: boolean;
-  localTermo?: string;
-  dataTermo?: string;
-  assinaturaTermo?: string;
   arquivoTermoBase64?: string;
   arquivoTermoNome?: string;
   arquivoTermoTipo?: string;

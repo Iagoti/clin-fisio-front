@@ -52,10 +52,6 @@ export interface PacienteResponse {
   pilatesAlinhamentoPostural?: string;
   observacoesPilates?: string;
   assinaturaPilates?: string;
-  aceitouTermo?: boolean;
-  localTermo?: string;
-  dataTermo?: string;
-  assinaturaTermo?: string;
   possuiArquivoTermo?: boolean;
   arquivoTermoNome?: string;
   arquivoTermoTipo?: string;

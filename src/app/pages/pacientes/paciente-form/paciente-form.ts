@@ -216,6 +216,75 @@ export class PacienteFormComponent implements OnInit {
     return this.form.get('termo') as FormGroup;
   }
 
+  get resumoDados(): { label: string; value: string }[] {
+    const d = this.dadosGroup.getRawValue();
+    return [
+      { label: 'Nome completo', value: d.nome || '-' },
+      { label: 'CPF', value: d.cpf || '-' },
+      { label: 'Celular', value: d.celular || '-' },
+      { label: 'E-mail', value: d.email || '-' },
+      { label: 'Endereço', value: d.endereco || '-' },
+      { label: 'Bairro', value: d.bairro || '-' },
+      { label: 'Cidade', value: d.cidade || '-' },
+      { label: 'Estado', value: d.estado || '-' },
+      { label: 'CEP', value: d.cep || '-' },
+      { label: 'Status', value: this.statusOpcoes.find(s => s.value === Number(d.stPaciente))?.label ?? '-' },
+      { label: 'Data de admissão', value: this.formatarData(d.dataAdmissao) },
+      { label: 'Data de pagamento', value: this.formatarData(d.dataPagamento) },
+      { label: 'Valor da mensalidade', value: this.formatarMoeda(d.valorMensalidade) },
+    ];
+  }
+
+  get resumoAnamnese(): { label: string; value: string }[] {
+    const a = this.anamneseGroup.getRawValue();
+    return [
+      { label: 'Data da avaliação', value: this.formatarData(a.dataAvaliacaoAnamnese) },
+      ...this.anamneseCamposDestaque.concat(this.anamneseCamposGrid).map(campo => ({
+        label: campo.label,
+        value: a[campo.control] || '-',
+      })),
+    ];
+  }
+
+  get resumoFisica(): { label: string; value: string }[] {
+    const f = this.fisicaGroup.getRawValue();
+    return [
+      { label: 'Data da avaliação', value: this.formatarData(f.dataAvaliacaoFisica) },
+      { label: 'Comentários adicionais', value: f.comentariosFisica || '-' },
+      { label: 'Assinatura do profissional', value: f.assinaturaFisica || '-' },
+    ];
+  }
+
+  get resumoTestesFisicos(): { teste: string; nota: string; observacao: string }[] {
+    return this.fisicaTestes
+      .getRawValue()
+      .filter((item: { nota?: string; observacao?: string }) => item.nota?.trim() || item.observacao?.trim());
+  }
+
+  get resumoPostural(): { label: string; value: string }[] {
+    const p = this.posturalGroup.getRawValue();
+    return [
+      { label: 'Data da avaliação', value: this.formatarData(p.dataAvaliacaoPostural) },
+      ...this.posturalCampos.map(campo => ({ label: campo.label, value: p[campo.control] || '-' })),
+    ];
+  }
+
+  get resumoPilates(): { label: string; value: string }[] {
+    const pi = this.pilatesGroup.getRawValue();
+    return [
+      { label: 'Data da avaliação', value: this.formatarData(pi.dataAvaliacaoPilates) },
+      ...this.pilatesCampos.map(campo => ({ label: campo.label, value: pi[campo.control] || '-' })),
+      { label: 'Observações', value: pi.observacoesPilates || '-' },
+      { label: 'Assinatura do profissional', value: pi.assinaturaPilates || '-' },
+    ];
+  }
+
+  get resumoArquivoTermo(): string {
+    if (this.arquivoTermoSelecionado) return this.arquivoTermoSelecionado.name;
+    if (this.arquivoTermoNomeExistente) return this.arquivoTermoNomeExistente;
+    return 'Nenhum arquivo anexado';
+  }
+
   salvar(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -523,6 +592,20 @@ export class PacienteFormComponent implements OnInit {
 
   private emptyToUndefined(value: string): string | undefined {
     return value?.trim() ? value : undefined;
+  }
+
+  private formatarData(value?: string): string {
+    if (!value) return '-';
+    const [ano, mes, dia] = value.split('-');
+    if (!ano || !mes || !dia) return value;
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  private formatarMoeda(value: number | string | null | undefined): string {
+    if (value == null || value === '') return '-';
+    const numero = Number(value);
+    if (Number.isNaN(numero)) return '-';
+    return numero.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
   private mensagemErroHttp(err: HttpErrorResponse, fallback: string): string {

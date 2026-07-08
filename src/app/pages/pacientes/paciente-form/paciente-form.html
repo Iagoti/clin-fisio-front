@@ -97,7 +97,7 @@
           <mat-step [stepControl]="anamneseGroup" formGroupName="anamnese">
             <ng-template matStepLabel>Anamnese</ng-template>
             <div class="anamnese-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 2 de 6</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 2 de 7</p>
               <h2 class="section-title anamnese-title">Anamnese</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">
                 Avaliação inicial do paciente.
@@ -165,7 +165,7 @@
           <mat-step [stepControl]="fisicaGroup" formGroupName="fisica">
             <ng-template matStepLabel>Avaliação física</ng-template>
             <div class="avaliacao-fisica-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 3 de 6</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 3 de 7</p>
               <h2 class="section-title avaliacao-fisica-title">Avaliação Física</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">Testes e medidas.</p>
 
@@ -225,7 +225,7 @@
           <mat-step [stepControl]="posturalGroup" formGroupName="postural">
             <ng-template matStepLabel>Avaliação postural</ng-template>
             <div class="postural-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 4 de 6</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 4 de 7</p>
               <h2 class="section-title postural-title">Avaliação Postural</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">Análise postural.</p>
 
@@ -370,6 +370,104 @@
               }
             </div>
 
+            <div class="step-actions">
+              <button mat-button type="button" matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
+            </div>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Resumo</ng-template>
+            <div class="resumo-step">
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 7 de 7</p>
+              <h2 class="section-title resumo-title">Resumo do cadastro</h2>
+              <p class="section-description text-slate-500 dark:text-slate-400">
+                Confira as informações antes de finalizar o cadastro.
+              </p>
+
+              <div class="resumo-card">
+                <h3>Dados cadastrais</h3>
+                <div class="resumo-grid">
+                  @for (item of resumoDados; track item.label) {
+                    <div class="resumo-item">
+                      <span class="resumo-label">{{ item.label }}</span>
+                      <span class="resumo-value">{{ item.value }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="resumo-card">
+                <h3>Anamnese</h3>
+                <div class="resumo-grid">
+                  @for (item of resumoAnamnese; track item.label) {
+                    <div class="resumo-item">
+                      <span class="resumo-label">{{ item.label }}</span>
+                      <span class="resumo-value">{{ item.value }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="resumo-card">
+                <h3>Avaliação física</h3>
+                <div class="resumo-grid">
+                  @for (item of resumoFisica; track item.label) {
+                    <div class="resumo-item">
+                      <span class="resumo-label">{{ item.label }}</span>
+                      <span class="resumo-value">{{ item.value }}</span>
+                    </div>
+                  }
+                </div>
+                @if (resumoTestesFisicos.length) {
+                  <div class="resumo-testes">
+                    @for (teste of resumoTestesFisicos; track teste.teste) {
+                      <div class="resumo-teste-item">
+                        <strong>{{ teste.teste }}</strong>
+                        @if (teste.nota) {
+                          <span>Nota: {{ teste.nota }}</span>
+                        }
+                        @if (teste.observacao) {
+                          <span>Obs.: {{ teste.observacao }}</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+
+              <div class="resumo-card">
+                <h3>Avaliação postural</h3>
+                <div class="resumo-grid">
+                  @for (item of resumoPostural; track item.label) {
+                    <div class="resumo-item">
+                      <span class="resumo-label">{{ item.label }}</span>
+                      <span class="resumo-value">{{ item.value }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="resumo-card">
+                <h3>Avaliação Pilates</h3>
+                <div class="resumo-grid">
+                  @for (item of resumoPilates; track item.label) {
+                    <div class="resumo-item">
+                      <span class="resumo-label">{{ item.label }}</span>
+                      <span class="resumo-value">{{ item.value }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="resumo-card">
+                <h3>Termo de responsabilidade</h3>
+                <div class="resumo-item">
+                  <span class="resumo-label">Arquivo anexado</span>
+                  <span class="resumo-value">{{ resumoArquivoTermo }}</span>
+                </div>
+              </div>
+            </div>
             <div class="step-actions">
               <button mat-button type="button" matStepperPrevious>Voltar</button>
               <button mat-raised-button color="primary" type="submit" [disabled]="salvando">
