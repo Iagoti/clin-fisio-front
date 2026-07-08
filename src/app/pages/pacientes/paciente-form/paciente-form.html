@@ -314,30 +314,62 @@
           <mat-step [stepControl]="termoGroup" formGroupName="termo">
             <ng-template matStepLabel>Termo</ng-template>
             <h2 class="section-title">Termo de responsabilidade</h2>
-            <div class="termo-box text-slate-600 dark:text-slate-300">
-              Declaro estar ciente das informações prestadas e autorizo a realização das avaliações
-              necessárias para acompanhamento fisioterapêutico e/ou Pilates.
+
+            <div class="termo-anexo">
+              <label class="termo-anexo-label">Anexar termo assinado (PDF ou imagem)</label>
+              <div class="termo-anexo-row">
+                <button mat-stroked-button type="button" (click)="arquivoTermoInput.click()">
+                  <mat-icon>attach_file</mat-icon>
+                  Selecionar arquivo
+                </button>
+                <input
+                  #arquivoTermoInput
+                  type="file"
+                  accept="application/pdf,image/png,image/jpeg,image/webp"
+                  hidden
+                  (change)="onArquivoTermoSelecionado($event)"
+                />
+                @if (arquivoTermoSelecionado) {
+                  <span class="termo-anexo-nome">
+                    <mat-icon>description</mat-icon>
+                    {{ arquivoTermoSelecionado.name }}
+                  </span>
+                  <button
+                    mat-icon-button
+                    type="button"
+                    (click)="removerArquivoTermoSelecionado()"
+                    aria-label="Remover arquivo selecionado"
+                  >
+                    <mat-icon>close</mat-icon>
+                  </button>
+                } @else if (arquivoTermoNomeExistente) {
+                  <span class="termo-anexo-nome">
+                    <mat-icon>description</mat-icon>
+                    {{ arquivoTermoNomeExistente }}
+                  </span>
+                  <button
+                    mat-button
+                    type="button"
+                    color="primary"
+                    (click)="visualizarArquivoTermo()"
+                    [disabled]="visualizandoArquivoTermo"
+                  >
+                    @if (visualizandoArquivoTermo) {
+                      <mat-spinner diameter="16"></mat-spinner>
+                    } @else {
+                      <mat-icon>visibility</mat-icon>
+                    }
+                    Visualizar
+                  </button>
+                } @else {
+                  <span class="termo-anexo-nome termo-anexo-vazio">Nenhum arquivo selecionado.</span>
+                }
+              </div>
+              @if (arquivoTermoErro) {
+                <p class="error-text">{{ arquivoTermoErro }}</p>
+              }
             </div>
-            <mat-checkbox formControlName="aceitouTermo">
-              Li e concordo com o termo descrito acima.
-            </mat-checkbox>
-            @if (termoGroup.get('aceitouTermo')?.touched && termoGroup.get('aceitouTermo')?.invalid) {
-              <p class="error-text">É necessário aceitar o termo para finalizar.</p>
-            }
-            <div class="form-grid two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Local</mat-label>
-                <input matInput formControlName="localTermo" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Data</mat-label>
-                <input matInput formControlName="dataTermo" type="date" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Assinatura do paciente ou responsável</mat-label>
-                <input matInput formControlName="assinaturaTermo" />
-              </mat-form-field>
-            </div>
+
             <div class="step-actions">
               <button mat-button type="button" matStepperPrevious>Voltar</button>
               <button mat-raised-button color="primary" type="submit" [disabled]="salvando">

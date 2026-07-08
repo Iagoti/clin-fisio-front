@@ -50,4 +50,7 @@ export interface PacienteRequest {
   localTermo?: string;
   dataTermo?: string;
   assinaturaTermo?: string;
+  arquivoTermoBase64?: string;
+  arquivoTermoNome?: string;
+  arquivoTermoTipo?: string;
 }

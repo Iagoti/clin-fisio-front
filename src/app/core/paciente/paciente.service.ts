@@ -52,4 +52,10 @@ export class PacienteService {
   excluir(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/paciente/${id}`).pipe(timeout(HTTP_TIMEOUT_MS));
   }
+
+  baixarArquivoTermo(id: number): Observable<Blob> {
+    return this.http
+      .get(`${environment.apiUrl}/paciente/${id}/termo/arquivo`, { responseType: 'blob' })
+      .pipe(timeout(HTTP_TIMEOUT_MS));
+  }
 }

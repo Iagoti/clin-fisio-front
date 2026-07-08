@@ -56,4 +56,7 @@ export interface PacienteResponse {
   localTermo?: string;
   dataTermo?: string;
   assinaturaTermo?: string;
+  possuiArquivoTermo?: boolean;
+  arquivoTermoNome?: string;
+  arquivoTermoTipo?: string;
 }

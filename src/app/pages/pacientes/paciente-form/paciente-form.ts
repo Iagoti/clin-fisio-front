@@ -4,7 +4,6 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -110,6 +109,9 @@ const PILATES_CAMPOS = [
   { control: 'pilatesFlexibilidadeMobilidade', label: 'Flexibilidade e mobilidade' },
   { control: 'pilatesAlinhamentoPostural', label: 'Alinhamento postural' },
 ];
+const TIPOS_ARQUIVO_TERMO_PERMITIDOS = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
+const TAMANHO_MAXIMO_ARQUIVO_TERMO = 8 * 1024 * 1024;
+
 const TESTES_AVALIACAO_FISICA = [
   'Flexão Lombar (Tocou nos pés)',
   'Extensão de Ombro (Atrás da cabeça)',
@@ -131,7 +133,6 @@ const TESTES_AVALIACAO_FISICA = [
     ReactiveFormsModule,
     RouterModule,
     MatButtonModule,
-    MatCheckboxModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -165,6 +166,12 @@ export class PacienteFormComponent implements OnInit {
   posturalCampos = POSTURAL_CAMPOS;
   pilatesCampos = PILATES_CAMPOS;
   testesAvaliacaoFisica = TESTES_AVALIACAO_FISICA;
+
+  arquivoTermoSelecionado: File | null = null;
+  arquivoTermoBase64: string | null = null;
+  arquivoTermoNomeExistente: string | null = null;
+  arquivoTermoErro: string | null = null;
+  visualizandoArquivoTermo = false;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -242,6 +249,67 @@ export class PacienteFormComponent implements OnInit {
     this.router.navigate(['/dashboard/pacientes']);
   }
 
+  onArquivoTermoSelecionado(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    this.arquivoTermoErro = null;
+    if (!file) return;
+
+    if (!TIPOS_ARQUIVO_TERMO_PERMITIDOS.includes(file.type)) {
+      this.arquivoTermoErro = 'Formato inválido. Envie um arquivo PDF ou imagem (PNG, JPG ou WEBP).';
+      input.value = '';
+      return;
+    }
+    if (file.size > TAMANHO_MAXIMO_ARQUIVO_TERMO) {
+      this.arquivoTermoErro = 'Arquivo muito grande. O tamanho máximo permitido é 8MB.';
+      input.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.arquivoTermoBase64 = reader.result as string;
+      this.arquivoTermoSelecionado = file;
+      this.cdr.detectChanges();
+    };
+    reader.onerror = () => {
+      this.arquivoTermoErro = 'Não foi possível ler o arquivo selecionado.';
+      this.cdr.detectChanges();
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removerArquivoTermoSelecionado(): void {
+    this.arquivoTermoSelecionado = null;
+    this.arquivoTermoBase64 = null;
+  }
+
+  visualizarArquivoTermo(): void {
+    if (this.id == null || this.visualizandoArquivoTermo) return;
+    this.visualizandoArquivoTermo = true;
+    this.pacienteService
+      .baixarArquivoTermo(this.id)
+      .pipe(
+        finalize(() => {
+          this.visualizandoArquivoTermo = false;
+          this.cdr.detectChanges();
+        })
+      )
+      .subscribe({
+        next: blob => {
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          setTimeout(() => window.URL.revokeObjectURL(url), 60_000);
+        },
+        error: () => {
+          this.snackBar.open('Não foi possível carregar o arquivo anexado.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-erro'],
+          });
+        },
+      });
+  }
+
   private buildForm(): void {
     this.form = this.fb.group({
       dados: this.fb.group({
@@ -300,12 +368,7 @@ export class PacienteFormComponent implements OnInit {
         observacoesPilates: [''],
         assinaturaPilates: [''],
       }),
-      termo: this.fb.group({
-        aceitouTermo: [false, [Validators.requiredTrue]],
-        localTermo: [''],
-        dataTermo: [''],
-        assinaturaTermo: [''],
-      }),
+      termo: this.fb.group({}),
     });
   }
 
@@ -359,6 +422,9 @@ export class PacienteFormComponent implements OnInit {
       pilates: p,
       termo: p,
     });
+    this.arquivoTermoNomeExistente = p.possuiArquivoTermo ? p.arquivoTermoNome ?? 'Arquivo anexado' : null;
+    this.arquivoTermoSelecionado = null;
+    this.arquivoTermoBase64 = null;
     this.aplicarTestesFisicos(p);
   }
 
@@ -389,6 +455,9 @@ export class PacienteFormComponent implements OnInit {
       ...this.cleanGroup(this.posturalGroup),
       ...this.cleanGroup(this.pilatesGroup),
       ...this.cleanGroup(this.termoGroup),
+      arquivoTermoBase64: this.arquivoTermoBase64 ?? undefined,
+      arquivoTermoNome: this.arquivoTermoSelecionado?.name,
+      arquivoTermoTipo: this.arquivoTermoSelecionado?.type,
     };
     return payload;
   }
