@@ -224,20 +224,49 @@
 
           <mat-step [stepControl]="posturalGroup" formGroupName="postural">
             <ng-template matStepLabel>Avaliação postural</ng-template>
-            <h2 class="section-title">Avaliação postural</h2>
-            <div class="form-grid two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Data da avaliação</mat-label>
-                <input matInput formControlName="dataAvaliacaoPostural" type="date" />
-              </mat-form-field>
-            </div>
-            <div class="option-grid">
-              @for (campo of posturalCampos; track campo.control) {
-                <mat-form-field appearance="outline">
-                  <mat-label>{{ campo.label }}</mat-label>
-                  <input matInput [formControlName]="campo.control" />
-                </mat-form-field>
-              }
+            <div class="postural-step">
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 4 de 6</p>
+              <h2 class="section-title postural-title">Avaliação Postural</h2>
+              <p class="section-description text-slate-500 dark:text-slate-400">Análise postural.</p>
+
+              <div class="postural-layout">
+                <div class="postural-left">
+                  <div class="postural-view-card">
+                    <div class="body-view-label">Vista Posterior</div>
+                    <div class="postural-image-frame">
+                      <img
+                        src="/assets/paciente-vista-posterior.png"
+                        alt="Silhueta posterior para avaliação postural"
+                        class="postural-view-image"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="postural-card postural-card-column">
+                    <p>{{ posturalCampos[2].label }}</p>
+                    <mat-radio-group [formControlName]="posturalCampos[2].control">
+                      @for (opcao of posturalCampos[2].options; track opcao) {
+                        <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
+                      }
+                    </mat-radio-group>
+                  </div>
+                </div>
+
+                <div class="postural-right">
+                  @for (campo of posturalCampos; track campo.control) {
+                    @if (campo.control !== 'posturaCurvaturasColuna') {
+                      <div class="postural-card">
+                        <p>{{ campo.label }}</p>
+                        <mat-radio-group [formControlName]="campo.control">
+                          @for (opcao of campo.options; track opcao) {
+                            <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
+                          }
+                        </mat-radio-group>
+                      </div>
+                    }
+                  }
+                </div>
+              </div>
             </div>
             <div class="step-actions">
               <button mat-button type="button" matStepperPrevious>Voltar</button>

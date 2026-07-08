@@ -58,13 +58,47 @@ const ANAMNESE_CAMPOS = [
   },
 ];
 const POSTURAL_CAMPOS = [
-  { control: 'posturaOmbros', label: 'Ombros' },
-  { control: 'posturaCinturaEscapular', label: 'Cintura escapular' },
-  { control: 'posturaCurvaturasColuna', label: 'Curvaturas da coluna' },
-  { control: 'posturaTrianguloTales', label: 'Triângulo de Tales' },
-  { control: 'posturaQuadril', label: 'Quadril' },
-  { control: 'posturaLinhaPoplitea', label: 'Linha poplítea' },
-  { control: 'posturaTornozelo', label: 'Tornozelo' },
+  {
+    control: 'posturaOmbros',
+    label: 'Alinhamento dos Ombros',
+    options: ['Normal', 'Elevação à Dir', 'Elevação à Esq', 'Elevado Dir', 'Muscular Esq'],
+  },
+  {
+    control: 'posturaCinturaEscapular',
+    label: 'Alinhamento da Cintura Escapular',
+    options: ['Normal', 'Abduzida', 'Aduzida', 'Elevadas', 'Deprimidas'],
+  },
+  {
+    control: 'posturaCurvaturasColuna',
+    label: 'Curvaturas da Coluna Vertebral',
+    options: [
+      'Escoliose Torácica Direita',
+      'Escoliose Torácica Esquerda',
+      'Escoliose em S Toraco Lombar',
+      'Escoliose Lombar Direita',
+      'Escoliose Lombar Esquerda',
+    ],
+  },
+  {
+    control: 'posturaTrianguloTales',
+    label: 'Alinhamento Triângulo de Tales',
+    options: ['Normal', 'Direita', 'Esquerda'],
+  },
+  {
+    control: 'posturaQuadril',
+    label: 'Alinhamento do Quadril',
+    options: ['Alinhado', 'Inclinação à Dir', 'Inclinação à Esq', 'Rotação à Dir', 'Rotação à Esq'],
+  },
+  {
+    control: 'posturaLinhaPoplitea',
+    label: 'Alinhamento da Linha Poplítea',
+    options: ['Alinhada', 'Direita Elevada', 'Esquerda Elevada'],
+  },
+  {
+    control: 'posturaTornozelo',
+    label: 'Alinhamento do Tornozelo - TC',
+    options: ['Normal', 'Varo', 'Valgo'],
+  },
 ];
 const PILATES_CAMPOS = [
   { control: 'pilatesCinturaEscapular', label: 'Cintura escapular' },
