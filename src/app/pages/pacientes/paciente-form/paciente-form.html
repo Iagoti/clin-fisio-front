@@ -96,24 +96,71 @@
 
           <mat-step [stepControl]="anamneseGroup" formGroupName="anamnese">
             <ng-template matStepLabel>Anamnese</ng-template>
-            <h2 class="section-title">Anamnese</h2>
-            <div class="form-grid two-cols">
-              <mat-form-field appearance="outline">
-                <mat-label>Data da avaliação</mat-label>
-                <input matInput formControlName="dataAvaliacaoAnamnese" type="date" />
-              </mat-form-field>
-            </div>
-            <div class="option-grid">
-              @for (campo of anamneseCampos; track campo.control) {
-                <div class="option-card">
-                  <p>{{ campo.label }}</p>
-                  <mat-radio-group [formControlName]="campo.control">
-                    @for (opcao of alinhamentoOpcoes; track opcao) {
-                      <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
-                    }
-                  </mat-radio-group>
+            <div class="anamnese-step">
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 2 de 6</p>
+              <h2 class="section-title anamnese-title">Anamnese</h2>
+              <p class="section-description text-slate-500 dark:text-slate-400">
+                Avaliação inicial do paciente.
+              </p>
+
+              <div class="form-grid two-cols anamnese-identificacao">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nome do Paciente</mat-label>
+                  <input
+                    matInput
+                    [value]="dadosGroup.get('nome')?.value || ''"
+                    placeholder="Digite o nome completo"
+                    readonly
+                  />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Data da Avaliação</mat-label>
+                  <input matInput formControlName="dataAvaliacaoAnamnese" type="date" />
+                </mat-form-field>
+              </div>
+
+              <div class="anamnese-body">
+                <div class="body-view-card">
+                  <div class="body-view-label">Vista Anterior</div>
+                  <svg viewBox="0 0 120 220" aria-label="Vista anterior do corpo humano">
+                    <circle cx="60" cy="24" r="14"></circle>
+                    <path d="M60 38 C50 48 48 62 48 78 L48 118"></path>
+                    <path d="M60 38 C70 48 72 62 72 78 L72 118"></path>
+                    <path d="M48 68 C34 84 28 106 22 132"></path>
+                    <path d="M72 68 C86 84 92 106 98 132"></path>
+                    <path d="M48 118 C43 145 39 174 36 210"></path>
+                    <path d="M72 118 C77 145 81 174 84 210"></path>
+                    <path d="M48 118 C55 124 65 124 72 118"></path>
+                    <path d="M52 78 C56 90 64 90 68 78"></path>
+                  </svg>
                 </div>
-              }
+
+                <div class="anamnese-highlight-grid">
+                  @for (campo of anamneseCamposDestaque; track campo.control) {
+                    <div class="anamnese-card">
+                      <p>{{ campo.label }}</p>
+                      <mat-radio-group [formControlName]="campo.control">
+                        @for (opcao of campo.options; track opcao) {
+                          <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
+                        }
+                      </mat-radio-group>
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="anamnese-grid">
+                @for (campo of anamneseCamposGrid; track campo.control) {
+                  <div class="anamnese-card">
+                    <p>{{ campo.label }}</p>
+                    <mat-radio-group [formControlName]="campo.control">
+                      @for (opcao of campo.options; track opcao) {
+                        <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
+                      }
+                    </mat-radio-group>
+                  </div>
+                }
+              </div>
             </div>
             <div class="step-actions">
               <button mat-button type="button" matStepperPrevious>Voltar</button>

@@ -24,16 +24,38 @@ const STATUS_OPCOES = [
   { value: 2, label: 'Inativo' },
 ];
 
-const ALINHAMENTO_OPCOES = ['Anterior', 'Posterior', 'Inclinação D', 'Inclinação E', 'Rotação D', 'Rotação E'];
 const AVALIACAO_OPCOES = ['Adequado', 'Parcialmente adequado', 'Inadequado'];
 const ANAMNESE_CAMPOS = [
-  { control: 'alinhamentoCabeca', label: 'Alinhamento da cabeça' },
-  { control: 'alinhamentoOmbros', label: 'Alinhamento dos ombros' },
-  { control: 'alinhamentoLinhaMamilar', label: 'Alinhamento da linha mamilar' },
-  { control: 'alinhamentoQuadril', label: 'Alinhamento do quadril' },
-  { control: 'alinhamentoJoelhos', label: 'Alinhamento dos joelhos' },
-  { control: 'alinhamentoPes', label: 'Alinhamento dos pés' },
-  { control: 'alinhamentoPelve', label: 'Alinhamento da pelve' },
+  {
+    control: 'alinhamentoCabeca',
+    label: 'Alinhamento da Cabeça',
+    options: ['Normal', 'Rotação à Dir', 'Rotação à Esq', 'Inclinação à Dir', 'Inclinação à Esq'],
+  },
+  {
+    control: 'alinhamentoOmbros',
+    label: 'Alinhamento dos Ombros',
+    options: ['Normal', 'Elevação à Dir', 'Elevação à Esq', 'Muscular Dir', 'Muscular Esq'],
+  },
+  {
+    control: 'alinhamentoLinhaMamilar',
+    label: 'Alinhamento da Linha Mamilar',
+    options: ['Mamilos Alinhados', 'Elevação Dir', 'Elevação Esq', 'Muscular Dir', 'Muscular Esq'],
+  },
+  {
+    control: 'alinhamentoQuadril',
+    label: 'Alinhamento do Quadril',
+    options: ['Alinhado', 'Inclinação à Dir', 'Inclinação à Esq', 'Rotação à Dir', 'Rotação à Esq'],
+  },
+  {
+    control: 'alinhamentoJoelhos',
+    label: 'Alinhamento dos Joelhos',
+    options: ['Normal', 'Varo', 'Valgo'],
+  },
+  {
+    control: 'alinhamentoPes',
+    label: 'Alinhamento dos pés',
+    options: ['Normal', 'Pé abduto', 'Pé aduto'],
+  },
 ];
 const POSTURAL_CAMPOS = [
   { control: 'posturaOmbros', label: 'Ombros' },
@@ -91,9 +113,9 @@ export class PacienteFormComponent implements OnInit {
   loading = false;
   salvando = false;
   statusOpcoes = STATUS_OPCOES;
-  alinhamentoOpcoes = ALINHAMENTO_OPCOES;
   avaliacaoOpcoes = AVALIACAO_OPCOES;
-  anamneseCampos = ANAMNESE_CAMPOS;
+  anamneseCamposDestaque = ANAMNESE_CAMPOS.slice(0, 2);
+  anamneseCamposGrid = ANAMNESE_CAMPOS.slice(2);
   posturalCampos = POSTURAL_CAMPOS;
   pilatesCampos = PILATES_CAMPOS;
 
