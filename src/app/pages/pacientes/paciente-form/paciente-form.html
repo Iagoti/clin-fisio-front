@@ -1,0 +1,256 @@
+<div class="paciente-form-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="header-actions">
+      <app-btn-voltar (voltar)="voltar()"></app-btn-voltar>
+      <h1 class="page-title text-slate-800 dark:text-slate-100">
+        <mat-icon class="!text-emerald-600 dark:!text-emerald-400">
+          {{ isEdicao ? 'assignment_ind' : 'person_add' }}
+        </mat-icon>
+        {{ isEdicao ? 'Editar paciente' : 'Novo cadastro de paciente' }}
+      </h1>
+    </div>
+    <p class="breadcrumb text-slate-500 dark:text-slate-400">Pacientes > Novo cadastro</p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    @if (loading) {
+      <div class="loading-wrap">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="text-slate-500 dark:text-slate-400">Carregando paciente...</p>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+        <mat-stepper linear>
+          <mat-step [stepControl]="dadosGroup" formGroupName="dados">
+            <ng-template matStepLabel>Dados cadastrais</ng-template>
+            <h2 class="section-title">Dados cadastrais</h2>
+            <div class="form-grid two-cols">
+              <mat-form-field appearance="outline">
+                <mat-label>Nome completo</mat-label>
+                <input matInput formControlName="nome" />
+                @if (dadosGroup.get('nome')?.touched && dadosGroup.get('nome')?.hasError('required')) {
+                  <mat-error>Nome é obrigatório.</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>CPF</mat-label>
+                <input matInput formControlName="cpf" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Celular</mat-label>
+                <input matInput formControlName="celular" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>E-mail</mat-label>
+                <input matInput formControlName="email" type="email" />
+                @if (dadosGroup.get('email')?.touched && dadosGroup.get('email')?.hasError('email')) {
+                  <mat-error>E-mail inválido.</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Endereço</mat-label>
+                <input matInput formControlName="endereco" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Bairro</mat-label>
+                <input matInput formControlName="bairro" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Cidade</mat-label>
+                <input matInput formControlName="cidade" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Estado</mat-label>
+                <input matInput formControlName="estado" maxlength="2" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>CEP</mat-label>
+                <input matInput formControlName="cep" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="stPaciente">
+                  @for (status of statusOpcoes; track status.value) {
+                    <mat-option [value]="status.value">{{ status.label }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Data de admissão</mat-label>
+                <input matInput formControlName="dataAdmissao" type="date" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Data de pagamento</mat-label>
+                <input matInput formControlName="dataPagamento" type="date" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Valor da mensalidade</mat-label>
+                <input matInput formControlName="valorMensalidade" type="number" min="0" step="0.01" />
+              </mat-form-field>
+            </div>
+            <div class="step-actions">
+              <button mat-button type="button" (click)="voltar()">Cancelar</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="anamneseGroup" formGroupName="anamnese">
+            <ng-template matStepLabel>Anamnese</ng-template>
+            <h2 class="section-title">Anamnese</h2>
+            <div class="form-grid two-cols">
+              <mat-form-field appearance="outline">
+                <mat-label>Data da avaliação</mat-label>
+                <input matInput formControlName="dataAvaliacaoAnamnese" type="date" />
+              </mat-form-field>
+            </div>
+            <div class="option-grid">
+              @for (campo of anamneseCampos; track campo.control) {
+                <div class="option-card">
+                  <p>{{ campo.label }}</p>
+                  <mat-radio-group [formControlName]="campo.control">
+                    @for (opcao of alinhamentoOpcoes; track opcao) {
+                      <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
+                    }
+                  </mat-radio-group>
+                </div>
+              }
+            </div>
+            <div class="step-actions">
+              <button mat-button type="button" matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="fisicaGroup" formGroupName="fisica">
+            <ng-template matStepLabel>Avaliação física</ng-template>
+            <h2 class="section-title">Avaliação física</h2>
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Data da avaliação</mat-label>
+                <input matInput formControlName="dataAvaliacaoFisica" type="date" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Notas dos testes de mobilidade e força</mat-label>
+                <textarea matInput formControlName="mobilidadeForcaNotas" rows="5"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Observações dos testes</mat-label>
+                <textarea matInput formControlName="mobilidadeForcaObservacoes" rows="5"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Comentários adicionais</mat-label>
+                <textarea matInput formControlName="comentariosFisica" rows="3"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Assinatura do profissional</mat-label>
+                <input matInput formControlName="assinaturaFisica" />
+              </mat-form-field>
+            </div>
+            <div class="step-actions">
+              <button mat-button type="button" matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="posturalGroup" formGroupName="postural">
+            <ng-template matStepLabel>Avaliação postural</ng-template>
+            <h2 class="section-title">Avaliação postural</h2>
+            <div class="form-grid two-cols">
+              <mat-form-field appearance="outline">
+                <mat-label>Data da avaliação</mat-label>
+                <input matInput formControlName="dataAvaliacaoPostural" type="date" />
+              </mat-form-field>
+            </div>
+            <div class="option-grid">
+              @for (campo of posturalCampos; track campo.control) {
+                <mat-form-field appearance="outline">
+                  <mat-label>{{ campo.label }}</mat-label>
+                  <input matInput [formControlName]="campo.control" />
+                </mat-form-field>
+              }
+            </div>
+            <div class="step-actions">
+              <button mat-button type="button" matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="pilatesGroup" formGroupName="pilates">
+            <ng-template matStepLabel>Avaliação Pilates</ng-template>
+            <h2 class="section-title">Avaliação Pilates</h2>
+            <div class="form-grid two-cols">
+              <mat-form-field appearance="outline">
+                <mat-label>Data da avaliação</mat-label>
+                <input matInput formControlName="dataAvaliacaoPilates" type="date" />
+              </mat-form-field>
+            </div>
+            <div class="option-grid">
+              @for (campo of pilatesCampos; track campo.control) {
+                <div class="option-card">
+                  <p>{{ campo.label }}</p>
+                  <mat-radio-group [formControlName]="campo.control">
+                    @for (opcao of avaliacaoOpcoes; track opcao) {
+                      <mat-radio-button [value]="opcao">{{ opcao }}</mat-radio-button>
+                    }
+                  </mat-radio-group>
+                </div>
+              }
+            </div>
+            <div class="form-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Observações</mat-label>
+                <textarea matInput formControlName="observacoesPilates" rows="3"></textarea>
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Assinatura do profissional</mat-label>
+                <input matInput formControlName="assinaturaPilates" />
+              </mat-form-field>
+            </div>
+            <div class="step-actions">
+              <button mat-button type="button" matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="termoGroup" formGroupName="termo">
+            <ng-template matStepLabel>Termo</ng-template>
+            <h2 class="section-title">Termo de responsabilidade</h2>
+            <div class="termo-box text-slate-600 dark:text-slate-300">
+              Declaro estar ciente das informações prestadas e autorizo a realização das avaliações
+              necessárias para acompanhamento fisioterapêutico e/ou Pilates.
+            </div>
+            <mat-checkbox formControlName="aceitouTermo">
+              Li e concordo com o termo descrito acima.
+            </mat-checkbox>
+            @if (termoGroup.get('aceitouTermo')?.touched && termoGroup.get('aceitouTermo')?.invalid) {
+              <p class="error-text">É necessário aceitar o termo para finalizar.</p>
+            }
+            <div class="form-grid two-cols">
+              <mat-form-field appearance="outline">
+                <mat-label>Local</mat-label>
+                <input matInput formControlName="localTermo" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Data</mat-label>
+                <input matInput formControlName="dataTermo" type="date" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Assinatura do paciente ou responsável</mat-label>
+                <input matInput formControlName="assinaturaTermo" />
+              </mat-form-field>
+            </div>
+            <div class="step-actions">
+              <button mat-button type="button" matStepperPrevious>Voltar</button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="salvando">
+                @if (salvando) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                }
+                Finalizar cadastro
+              </button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </form>
+    }
+  </div>
+</div>

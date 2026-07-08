@@ -11,6 +11,8 @@ export const routes: Routes = [
     children: [
       { path: '', loadComponent: () => import('./pages/dashboard/dashboard-home/dashboard-home').then(m => m.DashboardHomeComponent) },
       { path: 'pacientes', loadComponent: () => import('./pages/pacientes/pacientes').then(m => m.PacientesComponent) },
+      { path: 'pacientes/novo', loadComponent: () => import('./pages/pacientes/paciente-form/paciente-form').then(m => m.PacienteFormComponent) },
+      { path: 'pacientes/:id', loadComponent: () => import('./pages/pacientes/paciente-form/paciente-form').then(m => m.PacienteFormComponent) },
       { path: 'perfil', loadComponent: () => import('./pages/perfil/perfil').then(m => m.PerfilComponent) },
       { path: 'usuarios', loadComponent: () => import('./pages/usuarios/usuarios').then(m => m.UsuariosComponent) },
       { path: 'usuarios/novo', loadComponent: () => import('./pages/usuarios/usuario-form/usuario-form').then(m => m.UsuarioFormComponent) },

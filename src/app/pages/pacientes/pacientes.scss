@@ -1,10 +1,71 @@
 .pacientes-page {
-  .page-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 0 0.75rem;
+  width: 100%;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+
+  mat-icon {
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
   }
+}
+
+.page-description {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.list-header,
+.filtro-row,
+.filtro-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.list-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.list-header h2 {
+  margin: 0;
+}
+
+.filtro-row {
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.filtro-row mat-form-field {
+  min-width: 220px;
+  margin-bottom: -1.34375em;
+}
+
+.filtro-actions {
+  gap: 0.5rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background: rgba(16, 185, 129, 0.08);
 }

@@ -1,0 +1,59 @@
+export interface CodigoDescricao {
+  codigo: number;
+  descricao: string;
+}
+
+export interface PacienteResponse {
+  cdPaciente?: number;
+  id?: number;
+  nmPaciente: string;
+  cpf?: string;
+  celular?: string;
+  email?: string;
+  endereco?: string;
+  bairro?: string;
+  cidade?: string;
+  estado?: string;
+  cep?: string;
+  dataAdmissao?: string;
+  dataPagamento?: string;
+  valorMensalidade?: number;
+  stPaciente?: CodigoDescricao;
+  dtCadastro?: string;
+  dataAvaliacaoAnamnese?: string;
+  alinhamentoCabeca?: string;
+  alinhamentoOmbros?: string;
+  alinhamentoLinhaMamilar?: string;
+  alinhamentoQuadril?: string;
+  alinhamentoJoelhos?: string;
+  alinhamentoPes?: string;
+  alinhamentoPelve?: string;
+  dataAvaliacaoFisica?: string;
+  mobilidadeForcaNotas?: string;
+  mobilidadeForcaObservacoes?: string;
+  comentariosFisica?: string;
+  assinaturaFisica?: string;
+  dataAvaliacaoPostural?: string;
+  posturaOmbros?: string;
+  posturaCinturaEscapular?: string;
+  posturaCurvaturasColuna?: string;
+  posturaTrianguloTales?: string;
+  posturaQuadril?: string;
+  posturaLinhaPoplitea?: string;
+  posturaTornozelo?: string;
+  dataAvaliacaoPilates?: string;
+  pilatesCinturaEscapular?: string;
+  pilatesControleRespiratorio?: string;
+  pilatesConscienciaCorporal?: string;
+  pilatesEstabilidadeGlobal?: string;
+  pilatesForcaGlobal?: string;
+  pilatesEquilibrio?: string;
+  pilatesFlexibilidadeMobilidade?: string;
+  pilatesAlinhamentoPostural?: string;
+  observacoesPilates?: string;
+  assinaturaPilates?: string;
+  aceitouTermo?: boolean;
+  localTermo?: string;
+  dataTermo?: string;
+  assinaturaTermo?: string;
+}
