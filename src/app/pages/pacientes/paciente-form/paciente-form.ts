@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -76,6 +76,18 @@ const PILATES_CAMPOS = [
   { control: 'pilatesFlexibilidadeMobilidade', label: 'Flexibilidade e mobilidade' },
   { control: 'pilatesAlinhamentoPostural', label: 'Alinhamento postural' },
 ];
+const TESTES_AVALIACAO_FISICA = [
+  'Flexão Lombar (Tocou nos pés)',
+  'Extensão de Ombro (Atrás da cabeça)',
+  'Rotação de Tronco (Sentado)',
+  'Agachamento Profundo',
+  'Elevação de Calcanhares (Unilateral)',
+  'Prancha (Tempo de Sustentação)',
+  'Flexão de Braço (Número de Repetições)',
+  'Abdominal (Número de Repetições)',
+  'Mobilidade de Quadril (Rotação Externa)',
+  'Mobilidade de Tornozelo (Dorsiflexão)',
+];
 
 @Component({
   selector: 'app-paciente-form',
@@ -118,6 +130,7 @@ export class PacienteFormComponent implements OnInit {
   anamneseCamposGrid = ANAMNESE_CAMPOS.slice(2);
   posturalCampos = POSTURAL_CAMPOS;
   pilatesCampos = PILATES_CAMPOS;
+  testesAvaliacaoFisica = TESTES_AVALIACAO_FISICA;
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -144,6 +157,10 @@ export class PacienteFormComponent implements OnInit {
 
   get fisicaGroup(): FormGroup {
     return this.form.get('fisica') as FormGroup;
+  }
+
+  get fisicaTestes(): FormArray {
+    return this.fisicaGroup.get('testes') as FormArray;
   }
 
   get posturalGroup(): FormGroup {
@@ -220,6 +237,7 @@ export class PacienteFormComponent implements OnInit {
       }),
       fisica: this.fb.group({
         dataAvaliacaoFisica: [''],
+        testes: this.fb.array(TESTES_AVALIACAO_FISICA.map(teste => this.criarTesteFisico(teste))),
         mobilidadeForcaNotas: [''],
         mobilidadeForcaObservacoes: [''],
         comentariosFisica: [''],
@@ -298,15 +316,21 @@ export class PacienteFormComponent implements OnInit {
         stPaciente: p.stPaciente?.codigo ?? 1,
       },
       anamnese: p,
-      fisica: p,
+      fisica: {
+        dataAvaliacaoFisica: p.dataAvaliacaoFisica ?? '',
+        comentariosFisica: p.comentariosFisica ?? '',
+        assinaturaFisica: p.assinaturaFisica ?? '',
+      },
       postural: p,
       pilates: p,
       termo: p,
     });
+    this.aplicarTestesFisicos(p);
   }
 
   private toRequest(): PacienteRequest {
     const dados = this.dadosGroup.getRawValue();
+    const fisica = this.fisicaGroup.getRawValue();
     const payload: PacienteRequest = {
       cdPaciente: this.id ?? undefined,
       nome: this.trim(dados.nome) ?? '',
@@ -323,12 +347,63 @@ export class PacienteFormComponent implements OnInit {
       valorMensalidade: dados.valorMensalidade,
       stPaciente: Number(dados.stPaciente),
       ...this.cleanGroup(this.anamneseGroup),
-      ...this.cleanGroup(this.fisicaGroup),
+      dataAvaliacaoFisica: this.emptyToUndefined(fisica.dataAvaliacaoFisica),
+      mobilidadeForcaNotas: this.serializarNotasFisicas(),
+      mobilidadeForcaObservacoes: this.serializarObservacoesFisicas(),
+      comentariosFisica: this.emptyToUndefined(fisica.comentariosFisica),
+      assinaturaFisica: this.emptyToUndefined(fisica.assinaturaFisica),
       ...this.cleanGroup(this.posturalGroup),
       ...this.cleanGroup(this.pilatesGroup),
       ...this.cleanGroup(this.termoGroup),
     };
     return payload;
+  }
+
+  private criarTesteFisico(teste: string): FormGroup {
+    return this.fb.group({
+      teste: [teste],
+      nota: [''],
+      observacao: [''],
+    });
+  }
+
+  private serializarNotasFisicas(): string | undefined {
+    const linhas = this.fisicaTestes.getRawValue()
+      .filter((item: { nota?: string }) => item.nota?.trim())
+      .map((item: { teste: string; nota: string }) => `${item.teste}: ${item.nota.trim()}`);
+    return linhas.length ? linhas.join('\n') : undefined;
+  }
+
+  private serializarObservacoesFisicas(): string | undefined {
+    const linhas = this.fisicaTestes.getRawValue()
+      .filter((item: { observacao?: string }) => item.observacao?.trim())
+      .map((item: { teste: string; observacao: string }) => `${item.teste}: ${item.observacao.trim()}`);
+    return linhas.length ? linhas.join('\n') : undefined;
+  }
+
+  private aplicarTestesFisicos(p: PacienteResponse): void {
+    const notas = this.parseLinhasPorTeste(p.mobilidadeForcaNotas);
+    const observacoes = this.parseLinhasPorTeste(p.mobilidadeForcaObservacoes);
+    this.fisicaTestes.controls.forEach(control => {
+      const grupo = control as FormGroup;
+      const teste = grupo.get('teste')?.value as string;
+      grupo.patchValue({
+        nota: notas.get(teste) ?? '',
+        observacao: observacoes.get(teste) ?? '',
+      });
+    });
+  }
+
+  private parseLinhasPorTeste(valor?: string): Map<string, string> {
+    const map = new Map<string, string>();
+    if (!valor) return map;
+    valor.split('\n').forEach(linha => {
+      const [teste, ...restante] = linha.split(':');
+      if (teste && restante.length) {
+        map.set(teste.trim(), restante.join(':').trim());
+      }
+    });
+    return map;
   }
 
   private cleanGroup(group: FormGroup): Record<string, string | boolean | undefined> {

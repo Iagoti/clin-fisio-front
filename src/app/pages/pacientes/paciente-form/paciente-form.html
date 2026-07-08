@@ -164,28 +164,57 @@
 
           <mat-step [stepControl]="fisicaGroup" formGroupName="fisica">
             <ng-template matStepLabel>Avaliação física</ng-template>
-            <h2 class="section-title">Avaliação física</h2>
-            <div class="form-grid">
-              <mat-form-field appearance="outline">
-                <mat-label>Data da avaliação</mat-label>
-                <input matInput formControlName="dataAvaliacaoFisica" type="date" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Notas dos testes de mobilidade e força</mat-label>
-                <textarea matInput formControlName="mobilidadeForcaNotas" rows="5"></textarea>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Observações dos testes</mat-label>
-                <textarea matInput formControlName="mobilidadeForcaObservacoes" rows="5"></textarea>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Comentários adicionais</mat-label>
-                <textarea matInput formControlName="comentariosFisica" rows="3"></textarea>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Assinatura do profissional</mat-label>
-                <input matInput formControlName="assinaturaFisica" />
-              </mat-form-field>
+            <div class="avaliacao-fisica-step">
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 3 de 6</p>
+              <h2 class="section-title avaliacao-fisica-title">Avaliação Física</h2>
+              <p class="section-description text-slate-500 dark:text-slate-400">Testes e medidas.</p>
+
+              <div class="physical-card">
+                <h3>Testes de Mobilidade e Força</h3>
+                <div class="physical-table-wrap">
+                  <table class="physical-table" formArrayName="testes">
+                    <thead>
+                      <tr>
+                        <th>Teste</th>
+                        <th>Nota</th>
+                        <th>Observações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (testeGroup of fisicaTestes.controls; track $index) {
+                        <tr [formGroupName]="$index">
+                          <td>{{ testeGroup.get('teste')?.value }}</td>
+                          <td>
+                            <input formControlName="nota" aria-label="Nota do teste" />
+                          </td>
+                          <td>
+                            <input formControlName="observacao" aria-label="Observações do teste" />
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="physical-field">
+                <label for="comentariosFisica">Comentários adicionais</label>
+                <textarea
+                  id="comentariosFisica"
+                  formControlName="comentariosFisica"
+                  placeholder="Observações complementares sobre os testes e medidas."
+                  rows="4"
+                ></textarea>
+              </div>
+
+              <div class="physical-field">
+                <label for="assinaturaFisica">Assinatura do Profissional</label>
+                <input
+                  id="assinaturaFisica"
+                  formControlName="assinaturaFisica"
+                  placeholder="Nome do profissional"
+                />
+              </div>
             </div>
             <div class="step-actions">
               <button mat-button type="button" matStepperPrevious>Voltar</button>
