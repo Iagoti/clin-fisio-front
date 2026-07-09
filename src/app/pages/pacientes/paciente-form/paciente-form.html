@@ -34,7 +34,6 @@
         }
         <mat-stepper [linear]="!isEdicao">
           <mat-step [stepControl]="dadosGroup" formGroupName="dados">
-            <ng-template matStepLabel>Dados cadastrais</ng-template>
             <h2 class="section-title">Dados cadastrais</h2>
             <div class="form-grid two-cols">
               <mat-form-field appearance="outline">
@@ -107,7 +106,6 @@
           </mat-step>
 
           <mat-step [stepControl]="anamneseGroup" formGroupName="anamnese">
-            <ng-template matStepLabel>Anamnese</ng-template>
             <div class="anamnese-step">
               <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 2 de 7</p>
               <h2 class="section-title anamnese-title">Anamnese</h2>
@@ -175,7 +173,6 @@
           </mat-step>
 
           <mat-step [stepControl]="fisicaGroup" formGroupName="fisica">
-            <ng-template matStepLabel>Avaliação física</ng-template>
             <div class="avaliacao-fisica-step">
               <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 3 de 7</p>
               <h2 class="section-title avaliacao-fisica-title">Avaliação Física</h2>
@@ -235,7 +232,6 @@
           </mat-step>
 
           <mat-step [stepControl]="posturalGroup" formGroupName="postural">
-            <ng-template matStepLabel>Avaliação postural</ng-template>
             <div class="postural-step">
               <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 4 de 7</p>
               <h2 class="section-title postural-title">Avaliação Postural</h2>
@@ -287,7 +283,6 @@
           </mat-step>
 
           <mat-step [stepControl]="pilatesGroup" formGroupName="pilates">
-            <ng-template matStepLabel>Avaliação Pilates</ng-template>
             <h2 class="section-title">Avaliação Pilates</h2>
             <div class="form-grid two-cols">
               <mat-form-field appearance="outline">
@@ -324,7 +319,6 @@
           </mat-step>
 
           <mat-step [stepControl]="termoGroup" formGroupName="termo">
-            <ng-template matStepLabel>Termo</ng-template>
             <h2 class="section-title">Termo de responsabilidade</h2>
 
             <div class="termo-anexo">
@@ -398,7 +392,6 @@
           </mat-step>
 
           <mat-step>
-            <ng-template matStepLabel>Resumo</ng-template>
             <div class="resumo-step">
               <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 7 de 7</p>
               <h2 class="section-title resumo-title">Resumo do cadastro</h2>
