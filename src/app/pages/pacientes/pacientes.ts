@@ -13,6 +13,7 @@ import { Observable, Subject, of } from 'rxjs';
 import { catchError, startWith, switchMap } from 'rxjs/operators';
 import { PacienteResponse } from '../../models/paciente/PacienteResponse';
 import { PacienteFiltro, PacienteService } from '../../core/paciente/paciente.service';
+import { AtivoInativoEnum } from '../../models/enums/ativo-inativo.enum';
 
 @Component({
   selector: 'app-pacientes',
@@ -89,7 +90,7 @@ export class PacientesComponent {
     return {
       nmPaciente: this.filtroNome.trim() || undefined,
       cpf: this.filtroCpf.trim() || undefined,
-      pacienteAtivo: this.filtroAtivo ? 1 : undefined,
+      pacienteAtivo: this.filtroAtivo ? AtivoInativoEnum.ATIVO : undefined,
     };
   }
 }

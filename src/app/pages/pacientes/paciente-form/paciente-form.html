@@ -87,6 +87,17 @@
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline">
+                <mat-label>Tipo de atendimento</mat-label>
+                <mat-select formControlName="tipoAtendimento">
+                  @for (tipo of tipoAtendimentoOpcoes; track tipo.value) {
+                    <mat-option [value]="tipo.value">{{ tipo.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (dadosGroup.get('tipoAtendimento')?.touched && dadosGroup.get('tipoAtendimento')?.hasError('required')) {
+                  <mat-error>Selecione o tipo de atendimento.</mat-error>
+                }
+              </mat-form-field>
+              <mat-form-field appearance="outline">
                 <mat-label>Data de admissão</mat-label>
                 <input matInput formControlName="dataAdmissao" type="date" />
               </mat-form-field>

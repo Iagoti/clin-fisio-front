@@ -17,6 +17,8 @@ import { UsuarioService } from '../../../core/usuario/usuario.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
 import { finalize } from 'rxjs/operators';
+import { AtivoInativoEnum, ATIVO_INATIVO_OPCOES } from '../../../models/enums/ativo-inativo.enum';
+import { TipoUsuarioEnum, TIPO_USUARIO_OPCOES } from '../../../models/enums/tipo-usuario.enum';
 
 /** Snapshot dos campos ao estar em modo somente leitura (cancelar edição restaura isto). */
 type UsuarioFormSnapshot = {
@@ -28,16 +30,8 @@ type UsuarioFormSnapshot = {
   tipoCodigo: number;
 };
 
-/** Valores iguais a `AtivoInativoEnum` no backend (1 = ATIVO, 2 = INATIVO). */
-const STATUS_OPCOES = [
-  { value: 1, label: 'Ativo' },
-  { value: 2, label: 'Inativo' },
-];
-
-const TIPO_OPCOES = [
-  { codigo: 1, descricao: 'Administrador' },
-  { codigo: 2, descricao: 'Recepção' },
-];
+const STATUS_OPCOES = ATIVO_INATIVO_OPCOES;
+const TIPO_OPCOES = TIPO_USUARIO_OPCOES;
 
 @Component({
   selector: 'app-usuario-form',
@@ -103,8 +97,8 @@ export class UsuarioFormComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       login: ['', [Validators.required]],
       senha: ['', [Validators.minLength(6)]],
-      stUsuario: [1, [Validators.required]],
-      tipoCodigo: [1, [Validators.required]],
+      stUsuario: [AtivoInativoEnum.ATIVO, [Validators.required]],
+      tipoCodigo: [TipoUsuarioEnum.ADMINISTRADOR, [Validators.required]],
     });
   }
 
@@ -125,8 +119,8 @@ export class UsuarioFormComponent implements OnInit {
         email: u.email ?? '',
         login: u.login ?? '',
         senha: '',
-        stUsuario: u.stUsuario?.codigo ?? 1,
-        tipoCodigo: u.tpUsuario?.codigo ?? 1,
+        stUsuario: u.stUsuario?.codigo ?? AtivoInativoEnum.ATIVO,
+        tipoCodigo: u.tpUsuario?.codigo ?? TipoUsuarioEnum.ADMINISTRADOR,
       });
     } catch (e) {
       console.error('Erro ao preencher formulário de usuário', e);

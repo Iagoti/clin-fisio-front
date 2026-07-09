@@ -14,6 +14,7 @@ import { BtnLimpar } from './components/btn-limpar/btn-limpar';
 import { SHARED_INPUT_IMPORTS } from '../../shared/input-modules';
 import { UsuarioResponse } from '../../models/usuario/UsuarioResponse';
 import { UsuarioService, UsuarioFiltro } from '../../core/usuario/usuario.service';
+import { AtivoInativoEnum } from '../../models/enums/ativo-inativo.enum';
 
 @Component({
   selector: 'app-usuarios',
@@ -66,7 +67,7 @@ export class UsuariosComponent {
   private getFiltroAtual(): UsuarioFiltro {
     return {
       nmUsuario: this.filtroNome.trim() || undefined,
-      usuarioAtivo: this.filtroAtivo ? 1 : 0,
+      usuarioAtivo: this.filtroAtivo ? AtivoInativoEnum.ATIVO : 0,
     };
   }
 

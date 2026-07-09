@@ -19,6 +19,7 @@ export interface PacienteResponse {
   dataPagamento?: string;
   valorMensalidade?: number;
   stPaciente?: CodigoDescricao;
+  tipoAtendimento?: CodigoDescricao;
   dtCadastro?: string;
   dataAvaliacaoAnamnese?: string;
   alinhamentoCabeca?: string;

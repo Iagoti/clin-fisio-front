@@ -78,8 +78,8 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 30182, hash: 'b9af392a0ccca67a4c206de15b587c389c448a213ea9cf1b744d05c3fc323336', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 17635, hash: '92599f5635b139de4d865a24a0dbdf1184f28fe5049a22f3190236fa6e0b4540', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 30182, hash: 'b6ddeb437e158074b3f0e9e970e710058fb049b2f448e14970d6b961790c01fa', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 17635, hash: '4a31e782f192a39d7a7fbc62f35feb597cad90f570289452274daf6169826088', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
     'styles-ZIEPGAOD.css': {size: 24684, hash: 'IjSAtRI0Az4', text: () => import('./assets-chunks/styles-ZIEPGAOD_css.mjs').then(m => m.default)}
   },
 };

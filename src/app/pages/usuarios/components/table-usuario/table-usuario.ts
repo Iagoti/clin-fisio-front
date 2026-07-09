@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuarioResponse } from '../../../../models/usuario/UsuarioResponse';
+import { AtivoInativoEnum } from '../../../../models/enums/ativo-inativo.enum';
 
 @Component({
   selector: 'app-table-usuario',
@@ -13,6 +14,8 @@ import { UsuarioResponse } from '../../../../models/usuario/UsuarioResponse';
   styleUrl: './table-usuario.scss',
 })
 export class TableUsuario {
+  readonly statusAtivo = AtivoInativoEnum.ATIVO;
+
   @Input() set usuarios(value: UsuarioResponse[]) {
     this.dataSource.data = value ?? [];
   }

@@ -17,86 +17,95 @@ import { PacienteService } from '../../../core/paciente/paciente.service';
 import { PacienteRequest } from '../../../models/paciente/PacienteRequest';
 import { PacienteResponse } from '../../../models/paciente/PacienteResponse';
 import { BtnVoltar } from '../../usuarios/components/btn-voltar/btn-voltar';
+import { AtivoInativoEnum, ATIVO_INATIVO_OPCOES } from '../../../models/enums/ativo-inativo.enum';
+import { TIPO_ATENDIMENTO_OPCOES } from '../../../models/enums/tipo-atendimento.enum';
+import { AVALIACAO_PILATES_OPCOES } from '../../../models/enums/avaliacao-pilates.enum';
+import { AlinhamentoQuadrilEnum, AlinhamentoVaroValgoEnum } from '../../../models/enums/alinhamento-comum.enum';
+import {
+  AlinhamentoCabecaEnum,
+  AlinhamentoLinhaMamilarEnum,
+  AlinhamentoOmbrosAnamneseEnum,
+  AlinhamentoPesEnum,
+} from '../../../models/enums/anamnese-opcoes.enum';
+import {
+  PosturaCinturaEscapularEnum,
+  PosturaCurvaturasColunaEnum,
+  PosturaLinhaPopliteaEnum,
+  PosturaOmbrosEnum,
+  PosturaTrianguloTalesEnum,
+} from '../../../models/enums/avaliacao-postural-opcoes.enum';
+import { TESTES_AVALIACAO_FISICA_OPCOES } from '../../../models/enums/teste-avaliacao-fisica.enum';
 
-const STATUS_OPCOES = [
-  { value: 1, label: 'Ativo' },
-  { value: 2, label: 'Inativo' },
-];
+const STATUS_OPCOES = ATIVO_INATIVO_OPCOES;
 
-const AVALIACAO_OPCOES = ['Adequado', 'Parcialmente adequado', 'Inadequado'];
+const AVALIACAO_OPCOES = AVALIACAO_PILATES_OPCOES;
 const ANAMNESE_CAMPOS = [
   {
     control: 'alinhamentoCabeca',
     label: 'Alinhamento da Cabeça',
-    options: ['Normal', 'Rotação à Dir', 'Rotação à Esq', 'Inclinação à Dir', 'Inclinação à Esq'],
+    options: Object.values(AlinhamentoCabecaEnum),
   },
   {
     control: 'alinhamentoOmbros',
     label: 'Alinhamento dos Ombros',
-    options: ['Normal', 'Elevação à Dir', 'Elevação à Esq', 'Muscular Dir', 'Muscular Esq'],
+    options: Object.values(AlinhamentoOmbrosAnamneseEnum),
   },
   {
     control: 'alinhamentoLinhaMamilar',
     label: 'Alinhamento da Linha Mamilar',
-    options: ['Mamilos Alinhados', 'Elevação Dir', 'Elevação Esq', 'Muscular Dir', 'Muscular Esq'],
+    options: Object.values(AlinhamentoLinhaMamilarEnum),
   },
   {
     control: 'alinhamentoQuadril',
     label: 'Alinhamento do Quadril',
-    options: ['Alinhado', 'Inclinação à Dir', 'Inclinação à Esq', 'Rotação à Dir', 'Rotação à Esq'],
+    options: Object.values(AlinhamentoQuadrilEnum),
   },
   {
     control: 'alinhamentoJoelhos',
     label: 'Alinhamento dos Joelhos',
-    options: ['Normal', 'Varo', 'Valgo'],
+    options: Object.values(AlinhamentoVaroValgoEnum),
   },
   {
     control: 'alinhamentoPes',
     label: 'Alinhamento dos pés',
-    options: ['Normal', 'Pé abduto', 'Pé aduto'],
+    options: Object.values(AlinhamentoPesEnum),
   },
 ];
 const POSTURAL_CAMPOS = [
   {
     control: 'posturaOmbros',
     label: 'Alinhamento dos Ombros',
-    options: ['Normal', 'Elevação à Dir', 'Elevação à Esq', 'Elevado Dir', 'Muscular Esq'],
+    options: Object.values(PosturaOmbrosEnum),
   },
   {
     control: 'posturaCinturaEscapular',
     label: 'Alinhamento da Cintura Escapular',
-    options: ['Normal', 'Abduzida', 'Aduzida', 'Elevadas', 'Deprimidas'],
+    options: Object.values(PosturaCinturaEscapularEnum),
   },
   {
     control: 'posturaCurvaturasColuna',
     label: 'Curvaturas da Coluna Vertebral',
-    options: [
-      'Escoliose Torácica Direita',
-      'Escoliose Torácica Esquerda',
-      'Escoliose em S Toraco Lombar',
-      'Escoliose Lombar Direita',
-      'Escoliose Lombar Esquerda',
-    ],
+    options: Object.values(PosturaCurvaturasColunaEnum),
   },
   {
     control: 'posturaTrianguloTales',
     label: 'Alinhamento Triângulo de Tales',
-    options: ['Normal', 'Direita', 'Esquerda'],
+    options: Object.values(PosturaTrianguloTalesEnum),
   },
   {
     control: 'posturaQuadril',
     label: 'Alinhamento do Quadril',
-    options: ['Alinhado', 'Inclinação à Dir', 'Inclinação à Esq', 'Rotação à Dir', 'Rotação à Esq'],
+    options: Object.values(AlinhamentoQuadrilEnum),
   },
   {
     control: 'posturaLinhaPoplitea',
     label: 'Alinhamento da Linha Poplítea',
-    options: ['Alinhada', 'Direita Elevada', 'Esquerda Elevada'],
+    options: Object.values(PosturaLinhaPopliteaEnum),
   },
   {
     control: 'posturaTornozelo',
     label: 'Alinhamento do Tornozelo - TC',
-    options: ['Normal', 'Varo', 'Valgo'],
+    options: Object.values(AlinhamentoVaroValgoEnum),
   },
 ];
 const PILATES_CAMPOS = [
@@ -112,18 +121,7 @@ const PILATES_CAMPOS = [
 const TIPOS_ARQUIVO_TERMO_PERMITIDOS = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp'];
 const TAMANHO_MAXIMO_ARQUIVO_TERMO = 8 * 1024 * 1024;
 
-const TESTES_AVALIACAO_FISICA = [
-  'Flexão Lombar (Tocou nos pés)',
-  'Extensão de Ombro (Atrás da cabeça)',
-  'Rotação de Tronco (Sentado)',
-  'Agachamento Profundo',
-  'Elevação de Calcanhares (Unilateral)',
-  'Prancha (Tempo de Sustentação)',
-  'Flexão de Braço (Número de Repetições)',
-  'Abdominal (Número de Repetições)',
-  'Mobilidade de Quadril (Rotação Externa)',
-  'Mobilidade de Tornozelo (Dorsiflexão)',
-];
+const TESTES_AVALIACAO_FISICA = TESTES_AVALIACAO_FISICA_OPCOES;
 
 @Component({
   selector: 'app-paciente-form',
@@ -161,6 +159,7 @@ export class PacienteFormComponent implements OnInit {
   salvando = false;
   modoVisualizacao = false;
   statusOpcoes = STATUS_OPCOES;
+  tipoAtendimentoOpcoes = TIPO_ATENDIMENTO_OPCOES;
   avaliacaoOpcoes = AVALIACAO_OPCOES;
   anamneseCamposDestaque = ANAMNESE_CAMPOS.slice(0, 2);
   anamneseCamposGrid = ANAMNESE_CAMPOS.slice(2);
@@ -230,6 +229,10 @@ export class PacienteFormComponent implements OnInit {
       { label: 'Estado', value: d.estado || '-' },
       { label: 'CEP', value: d.cep || '-' },
       { label: 'Status', value: this.statusOpcoes.find(s => s.value === Number(d.stPaciente))?.label ?? '-' },
+      {
+        label: 'Tipo de atendimento',
+        value: this.tipoAtendimentoOpcoes.find(t => t.value === Number(d.tipoAtendimento))?.label ?? '-',
+      },
       { label: 'Data de admissão', value: this.formatarData(d.dataAdmissao) },
       { label: 'Data de pagamento', value: this.formatarData(d.dataPagamento) },
       { label: 'Valor da mensalidade', value: this.formatarMoeda(d.valorMensalidade) },
@@ -400,7 +403,8 @@ export class PacienteFormComponent implements OnInit {
         dataAdmissao: [''],
         dataPagamento: [''],
         valorMensalidade: [null],
-        stPaciente: [1, [Validators.required]],
+        stPaciente: [AtivoInativoEnum.ATIVO, [Validators.required]],
+        tipoAtendimento: [null, [Validators.required]],
       }),
       anamnese: this.fb.group({
         dataAvaliacaoAnamnese: [''],
@@ -490,7 +494,8 @@ export class PacienteFormComponent implements OnInit {
         dataAdmissao: p.dataAdmissao ?? '',
         dataPagamento: p.dataPagamento ?? '',
         valorMensalidade: p.valorMensalidade ?? null,
-        stPaciente: p.stPaciente?.codigo ?? 1,
+        stPaciente: p.stPaciente?.codigo ?? AtivoInativoEnum.ATIVO,
+        tipoAtendimento: p.tipoAtendimento?.codigo ?? null,
       },
       anamnese: p,
       fisica: {
@@ -526,6 +531,7 @@ export class PacienteFormComponent implements OnInit {
       dataPagamento: this.emptyToUndefined(dados.dataPagamento),
       valorMensalidade: dados.valorMensalidade,
       stPaciente: Number(dados.stPaciente),
+      tipoAtendimento: dados.tipoAtendimento != null ? Number(dados.tipoAtendimento) : undefined,
       ...this.cleanGroup(this.anamneseGroup),
       dataAvaliacaoFisica: this.emptyToUndefined(fisica.dataAvaliacaoFisica),
       mobilidadeForcaNotas: this.serializarNotasFisicas(),
