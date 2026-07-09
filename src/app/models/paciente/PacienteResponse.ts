@@ -53,6 +53,8 @@ export interface PacienteResponse {
   pilatesAlinhamentoPostural?: string;
   observacoesPilates?: string;
   assinaturaPilates?: string;
+  quantidadeSessoes?: number;
+  sessoesAgendadas?: string;
   possuiArquivoTermo?: boolean;
   arquivoTermoNome?: string;
   arquivoTermoTipo?: string;

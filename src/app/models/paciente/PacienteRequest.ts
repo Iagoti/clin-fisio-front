@@ -47,6 +47,9 @@ export interface PacienteRequest {
   pilatesAlinhamentoPostural?: string;
   observacoesPilates?: string;
   assinaturaPilates?: string;
+  quantidadeSessoes?: number;
+  /** Sessões agendadas, uma por linha, no formato "yyyy-MM-dd HH:mm". */
+  sessoesAgendadas?: string;
   arquivoTermoBase64?: string;
   arquivoTermoNome?: string;
   arquivoTermoTipo?: string;

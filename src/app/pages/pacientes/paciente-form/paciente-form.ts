@@ -1,6 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -123,6 +131,37 @@ const TAMANHO_MAXIMO_ARQUIVO_TERMO = 8 * 1024 * 1024;
 
 const TESTES_AVALIACAO_FISICA = TESTES_AVALIACAO_FISICA_OPCOES;
 
+const MAX_SESSOES_POR_SEMANA = 5;
+
+/** Retorna a segunda-feira da semana à qual a data (yyyy-MM-dd) pertence. */
+function inicioDaSemana(dataIso: string): Date {
+  const data = new Date(`${dataIso}T00:00:00`);
+  const diaSemana = data.getDay();
+  const diffParaSegunda = diaSemana === 0 ? -6 : 1 - diaSemana;
+  data.setDate(data.getDate() + diffParaSegunda);
+  return data;
+}
+
+function chaveDaSemana(dataIso: string): string {
+  return inicioDaSemana(dataIso).toISOString().slice(0, 10);
+}
+
+/** Garante que nenhuma semana tenha mais do que `MAX_SESSOES_POR_SEMANA` sessões agendadas. */
+function maxSessoesPorSemanaValidator(control: AbstractControl): ValidationErrors | null {
+  const array = control as FormArray;
+  const contagemPorSemana = new Map<string, number>();
+  array.controls.forEach(grupo => {
+    const data = grupo.get('data')?.value;
+    if (!data) return;
+    const chave = chaveDaSemana(data);
+    contagemPorSemana.set(chave, (contagemPorSemana.get(chave) ?? 0) + 1);
+  });
+  const semanaExcedida = [...contagemPorSemana.entries()].find(
+    ([, quantidade]) => quantidade > MAX_SESSOES_POR_SEMANA
+  );
+  return semanaExcedida ? { maxSessoesPorSemana: { inicioSemana: semanaExcedida[0], quantidade: semanaExcedida[1] } } : null;
+}
+
 @Component({
   selector: 'app-paciente-form',
   standalone: true,
@@ -167,6 +206,8 @@ export class PacienteFormComponent implements OnInit {
   pilatesCampos = PILATES_CAMPOS;
   testesAvaliacaoFisica = TESTES_AVALIACAO_FISICA;
 
+  readonly maxSessoesPorSemana = MAX_SESSOES_POR_SEMANA;
+
   arquivoTermoSelecionado: File | null = null;
   arquivoTermoBase64: string | null = null;
   arquivoTermoNomeExistente: string | null = null;
@@ -190,6 +231,30 @@ export class PacienteFormComponent implements OnInit {
 
   get dadosGroup(): FormGroup {
     return this.form.get('dados') as FormGroup;
+  }
+
+  get sessoesGroup(): FormGroup {
+    return this.form.get('sessoes') as FormGroup;
+  }
+
+  get sessoesDatas(): FormArray {
+    return this.sessoesGroup.get('datas') as FormArray;
+  }
+
+  get podeAdicionarSessao(): boolean {
+    const quantidade = Number(this.sessoesGroup.get('quantidadeSessoes')?.value);
+    if (!quantidade || Number.isNaN(quantidade)) return true;
+    return this.sessoesDatas.length < quantidade;
+  }
+
+  get erroMaxSessoesPorSemana(): string | null {
+    const erro = this.sessoesDatas.errors?.['maxSessoesPorSemana'];
+    if (!erro) return null;
+    const inicio = new Date(`${erro.inicioSemana}T00:00:00`);
+    const fim = new Date(inicio);
+    fim.setDate(fim.getDate() + 6);
+    const formatar = (d: Date) => d.toLocaleDateString('pt-BR');
+    return `Limite de ${MAX_SESSOES_POR_SEMANA} sessões por semana excedido na semana de ${formatar(inicio)} a ${formatar(fim)} (${erro.quantidade} sessões).`;
   }
 
   get anamneseGroup(): FormGroup {
@@ -234,9 +299,29 @@ export class PacienteFormComponent implements OnInit {
         value: this.tipoAtendimentoOpcoes.find(t => t.value === Number(d.tipoAtendimento))?.label ?? '-',
       },
       { label: 'Data de admissão', value: this.formatarData(d.dataAdmissao) },
-      { label: 'Data de pagamento', value: this.formatarData(d.dataPagamento) },
-      { label: 'Valor da mensalidade', value: this.formatarMoeda(d.valorMensalidade) },
     ];
+  }
+
+  get resumoSessoes(): { label: string; value: string }[] {
+    const s = this.sessoesGroup.getRawValue();
+    return [
+      {
+        label: 'Quantidade total de sessões',
+        value: s.quantidadeSessoes != null && s.quantidadeSessoes !== '' ? String(s.quantidadeSessoes) : '-',
+      },
+      { label: 'Data de pagamento', value: this.formatarData(s.dataPagamento) },
+      { label: 'Valor da mensalidade', value: this.formatarMoeda(s.valorMensalidade) },
+    ];
+  }
+
+  get resumoSessoesAgendadas(): { data: string; horario: string }[] {
+    return this.sessoesDatas
+      .getRawValue()
+      .filter((item: { data?: string; horario?: string }) => item.data)
+      .map((item: { data: string; horario: string }) => ({
+        data: this.formatarData(item.data),
+        horario: item.horario || '-',
+      }));
   }
 
   get resumoAnamnese(): { label: string; value: string }[] {
@@ -327,6 +412,16 @@ export class PacienteFormComponent implements OnInit {
     this.form.enable();
   }
 
+  adicionarSessao(): void {
+    if (this.modoVisualizacao || !this.podeAdicionarSessao) return;
+    this.sessoesDatas.push(this.criarSessao());
+  }
+
+  removerSessao(index: number): void {
+    if (this.modoVisualizacao) return;
+    this.sessoesDatas.removeAt(index);
+  }
+
   onArquivoTermoSelecionado(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] ?? null;
@@ -401,10 +496,14 @@ export class PacienteFormComponent implements OnInit {
         estado: [''],
         cep: [''],
         dataAdmissao: [''],
-        dataPagamento: [''],
-        valorMensalidade: [null],
         stPaciente: [AtivoInativoEnum.ATIVO, [Validators.required]],
         tipoAtendimento: [null, [Validators.required]],
+      }),
+      sessoes: this.fb.group({
+        quantidadeSessoes: [null, [Validators.required, Validators.min(1)]],
+        dataPagamento: [''],
+        valorMensalidade: [null],
+        datas: this.fb.array([], [maxSessoesPorSemanaValidator]),
       }),
       anamnese: this.fb.group({
         dataAvaliacaoAnamnese: [''],
@@ -492,10 +591,13 @@ export class PacienteFormComponent implements OnInit {
         estado: p.estado ?? '',
         cep: p.cep ?? '',
         dataAdmissao: p.dataAdmissao ?? '',
-        dataPagamento: p.dataPagamento ?? '',
-        valorMensalidade: p.valorMensalidade ?? null,
         stPaciente: p.stPaciente?.codigo ?? AtivoInativoEnum.ATIVO,
         tipoAtendimento: p.tipoAtendimento?.codigo ?? null,
+      },
+      sessoes: {
+        quantidadeSessoes: p.quantidadeSessoes ?? null,
+        dataPagamento: p.dataPagamento ?? '',
+        valorMensalidade: p.valorMensalidade ?? null,
       },
       anamnese: p,
       fisica: {
@@ -511,10 +613,12 @@ export class PacienteFormComponent implements OnInit {
     this.arquivoTermoSelecionado = null;
     this.arquivoTermoBase64 = null;
     this.aplicarTestesFisicos(p);
+    this.aplicarSessoesAgendadas(p.sessoesAgendadas);
   }
 
   private toRequest(): PacienteRequest {
     const dados = this.dadosGroup.getRawValue();
+    const sessoes = this.sessoesGroup.getRawValue();
     const fisica = this.fisicaGroup.getRawValue();
     const payload: PacienteRequest = {
       cdPaciente: this.id ?? undefined,
@@ -528,10 +632,13 @@ export class PacienteFormComponent implements OnInit {
       estado: this.trim(dados.estado),
       cep: this.trim(dados.cep),
       dataAdmissao: this.emptyToUndefined(dados.dataAdmissao),
-      dataPagamento: this.emptyToUndefined(dados.dataPagamento),
-      valorMensalidade: dados.valorMensalidade,
       stPaciente: Number(dados.stPaciente),
       tipoAtendimento: dados.tipoAtendimento != null ? Number(dados.tipoAtendimento) : undefined,
+      dataPagamento: this.emptyToUndefined(sessoes.dataPagamento),
+      valorMensalidade: sessoes.valorMensalidade,
+      quantidadeSessoes:
+        sessoes.quantidadeSessoes != null && sessoes.quantidadeSessoes !== '' ? Number(sessoes.quantidadeSessoes) : undefined,
+      sessoesAgendadas: this.serializarSessoes(),
       ...this.cleanGroup(this.anamneseGroup),
       dataAvaliacaoFisica: this.emptyToUndefined(fisica.dataAvaliacaoFisica),
       mobilidadeForcaNotas: this.serializarNotasFisicas(),
@@ -554,6 +661,38 @@ export class PacienteFormComponent implements OnInit {
       nota: [''],
       observacao: [''],
     });
+  }
+
+  private criarSessao(data = '', horario = ''): FormGroup {
+    return this.fb.group({
+      data: [data, [Validators.required]],
+      horario: [horario, [Validators.required]],
+    });
+  }
+
+  private serializarSessoes(): string | undefined {
+    const linhas = this.sessoesDatas
+      .getRawValue()
+      .filter((item: { data?: string; horario?: string }) => item.data && item.horario)
+      .map((item: { data: string; horario: string }) => `${item.data} ${item.horario}`);
+    return linhas.length ? linhas.join('\n') : undefined;
+  }
+
+  private aplicarSessoesAgendadas(valor?: string): void {
+    this.sessoesDatas.clear({ emitEvent: false });
+    (valor ?? '')
+      .split('\n')
+      .map(linha => linha.trim())
+      .filter(Boolean)
+      .forEach(linha => {
+        const [data, horario] = linha.split(' ');
+        if (data) {
+          this.sessoesDatas.push(this.criarSessao(data, horario ?? ''), { emitEvent: false });
+        }
+      });
+    if (this.modoVisualizacao) {
+      this.sessoesDatas.disable({ emitEvent: false });
+    }
   }
 
   private serializarNotasFisicas(): string | undefined {
