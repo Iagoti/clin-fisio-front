@@ -159,6 +159,7 @@ export class PacienteFormComponent implements OnInit {
   id: number | null = null;
   loading = false;
   salvando = false;
+  modoVisualizacao = false;
   statusOpcoes = STATUS_OPCOES;
   avaliacaoOpcoes = AVALIACAO_OPCOES;
   anamneseCamposDestaque = ANAMNESE_CAMPOS.slice(0, 2);
@@ -318,6 +319,11 @@ export class PacienteFormComponent implements OnInit {
     this.router.navigate(['/dashboard/pacientes']);
   }
 
+  habilitarEdicao(): void {
+    this.modoVisualizacao = false;
+    this.form.enable();
+  }
+
   onArquivoTermoSelecionado(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0] ?? null;
@@ -439,6 +445,11 @@ export class PacienteFormComponent implements OnInit {
       }),
       termo: this.fb.group({}),
     });
+
+    if (this.isEdicao) {
+      this.modoVisualizacao = true;
+      this.form.disable();
+    }
   }
 
   private prefillFromNavigationState(): boolean {

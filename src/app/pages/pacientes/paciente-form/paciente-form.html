@@ -4,10 +4,16 @@
       <app-btn-voltar (voltar)="voltar()"></app-btn-voltar>
       <h1 class="page-title text-slate-800 dark:text-slate-100">
         <mat-icon class="!text-emerald-600 dark:!text-emerald-400">
-          {{ isEdicao ? 'assignment_ind' : 'person_add' }}
+          {{ !isEdicao ? 'person_add' : modoVisualizacao ? 'visibility' : 'assignment_ind' }}
         </mat-icon>
-        {{ isEdicao ? 'Editar paciente' : 'Novo cadastro de paciente' }}
+        {{ !isEdicao ? 'Novo cadastro de paciente' : modoVisualizacao ? 'Visualizar paciente' : 'Editar paciente' }}
       </h1>
+      @if (isEdicao && modoVisualizacao) {
+        <button mat-stroked-button color="primary" type="button" class="btn-editar" (click)="habilitarEdicao()">
+          <mat-icon>edit</mat-icon>
+          Editar
+        </button>
+      }
     </div>
     <p class="breadcrumb text-slate-500 dark:text-slate-400">Pacientes > Novo cadastro</p>
   </div>
@@ -20,7 +26,13 @@
       </div>
     } @else {
       <form [formGroup]="form" (ngSubmit)="salvar()">
-        <mat-stepper linear>
+        @if (isEdicao && modoVisualizacao) {
+          <div class="modo-visualizacao-banner">
+            <mat-icon>visibility</mat-icon>
+            Visualizando cadastro. Clique em "Editar" para alterar as informações.
+          </div>
+        }
+        <mat-stepper [linear]="!isEdicao">
           <mat-step [stepControl]="dadosGroup" formGroupName="dados">
             <ng-template matStepLabel>Dados cadastrais</ng-template>
             <h2 class="section-title">Dados cadastrais</h2>
@@ -318,10 +330,17 @@
             <div class="termo-anexo">
               <label class="termo-anexo-label">Anexar termo assinado (PDF ou imagem)</label>
               <div class="termo-anexo-row">
-                <button mat-stroked-button type="button" (click)="arquivoTermoInput.click()">
-                  <mat-icon>attach_file</mat-icon>
-                  Selecionar arquivo
-                </button>
+                @if (!modoVisualizacao) {
+                  <button
+                    mat-stroked-button
+                    type="button"
+                    [disabled]="modoVisualizacao"
+                    (click)="arquivoTermoInput.click()"
+                  >
+                    <mat-icon>attach_file</mat-icon>
+                    Selecionar arquivo
+                  </button>
+                }
                 <input
                   #arquivoTermoInput
                   type="file"
@@ -334,14 +353,16 @@
                     <mat-icon>description</mat-icon>
                     {{ arquivoTermoSelecionado.name }}
                   </span>
-                  <button
-                    mat-icon-button
-                    type="button"
-                    (click)="removerArquivoTermoSelecionado()"
-                    aria-label="Remover arquivo selecionado"
-                  >
-                    <mat-icon>close</mat-icon>
-                  </button>
+                  @if (!modoVisualizacao) {
+                    <button
+                      mat-icon-button
+                      type="button"
+                      (click)="removerArquivoTermoSelecionado()"
+                      aria-label="Remover arquivo selecionado"
+                    >
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  }
                 } @else if (arquivoTermoNomeExistente) {
                   <span class="termo-anexo-nome">
                     <mat-icon>description</mat-icon>
@@ -470,12 +491,19 @@
             </div>
             <div class="step-actions">
               <button mat-button type="button" matStepperPrevious>Voltar</button>
-              <button mat-raised-button color="primary" type="submit" [disabled]="salvando">
-                @if (salvando) {
-                  <mat-spinner diameter="18"></mat-spinner>
-                }
-                Finalizar cadastro
-              </button>
+              @if (isEdicao && modoVisualizacao) {
+                <button mat-raised-button color="primary" type="button" (click)="habilitarEdicao()">
+                  <mat-icon>edit</mat-icon>
+                  Editar
+                </button>
+              } @else {
+                <button mat-raised-button color="primary" type="submit" [disabled]="salvando">
+                  @if (salvando) {
+                    <mat-spinner diameter="18"></mat-spinner>
+                  }
+                  {{ isEdicao ? 'Salvar' : 'Finalizar cadastro' }}
+                </button>
+              }
             </div>
           </mat-step>
         </mat-stepper>
