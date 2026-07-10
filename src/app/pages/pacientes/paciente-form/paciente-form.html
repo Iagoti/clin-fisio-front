@@ -87,17 +87,6 @@
                 </mat-select>
               </mat-form-field>
               <mat-form-field appearance="outline">
-                <mat-label>Tipo de atendimento</mat-label>
-                <mat-select formControlName="tipoAtendimento">
-                  @for (tipo of tipoAtendimentoOpcoes; track tipo.value) {
-                    <mat-option [value]="tipo.value">{{ tipo.label }}</mat-option>
-                  }
-                </mat-select>
-                @if (dadosGroup.get('tipoAtendimento')?.touched && dadosGroup.get('tipoAtendimento')?.hasError('required')) {
-                  <mat-error>Selecione o tipo de atendimento.</mat-error>
-                }
-              </mat-form-field>
-              <mat-form-field appearance="outline">
                 <mat-label>Data de admissão</mat-label>
                 <input matInput formControlName="dataAdmissao" type="date" />
               </mat-form-field>
@@ -108,94 +97,9 @@
             </div>
           </mat-step>
 
-          <mat-step [stepControl]="sessoesGroup" formGroupName="sessoes">
-            <div class="sessoes-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 2 de 8</p>
-              <h2 class="section-title sessoes-title">Sessões</h2>
-              <p class="section-description text-slate-500 dark:text-slate-400">
-                Defina a quantidade de sessões e agende as datas e horários.
-              </p>
-
-              <div class="form-grid two-cols">
-                <mat-form-field appearance="outline">
-                  <mat-label>Quantidade total de sessões</mat-label>
-                  <input matInput formControlName="quantidadeSessoes" type="number" min="1" />
-                  @if (sessoesGroup.get('quantidadeSessoes')?.touched && sessoesGroup.get('quantidadeSessoes')?.hasError('required')) {
-                    <mat-error>Informe a quantidade total de sessões.</mat-error>
-                  }
-                  @if (sessoesGroup.get('quantidadeSessoes')?.hasError('min')) {
-                    <mat-error>A quantidade deve ser maior que zero.</mat-error>
-                  }
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>Data de pagamento</mat-label>
-                  <input matInput formControlName="dataPagamento" type="date" />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>Valor da mensalidade</mat-label>
-                  <input matInput formControlName="valorMensalidade" type="number" min="0" step="0.01" />
-                </mat-form-field>
-              </div>
-
-              <div class="sessoes-lista">
-                <div class="sessoes-lista-header">
-                  <label>Datas e horários das sessões (máximo de {{ maxSessoesPorSemana }} por semana)</label>
-                  @if (!modoVisualizacao) {
-                    <button
-                      mat-stroked-button
-                      type="button"
-                      [disabled]="!podeAdicionarSessao"
-                      (click)="adicionarSessao()"
-                    >
-                      <mat-icon>add</mat-icon>
-                      Adicionar sessão
-                    </button>
-                  }
-                </div>
-
-                @if (!sessoesDatas.length) {
-                  <p class="sessoes-vazio">Nenhuma sessão agendada.</p>
-                }
-
-                <div formArrayName="datas" class="sessoes-grid">
-                  @for (sessao of sessoesDatas.controls; track $index) {
-                    <div [formGroupName]="$index" class="sessao-item">
-                      <mat-form-field appearance="outline">
-                        <mat-label>Data</mat-label>
-                        <input matInput formControlName="data" type="date" />
-                      </mat-form-field>
-                      <mat-form-field appearance="outline">
-                        <mat-label>Horário</mat-label>
-                        <input matInput formControlName="horario" type="time" />
-                      </mat-form-field>
-                      @if (!modoVisualizacao) {
-                        <button
-                          mat-icon-button
-                          type="button"
-                          (click)="removerSessao($index)"
-                          aria-label="Remover sessão"
-                        >
-                          <mat-icon>close</mat-icon>
-                        </button>
-                      }
-                    </div>
-                  }
-                </div>
-
-                @if (erroMaxSessoesPorSemana) {
-                  <p class="error-text">{{ erroMaxSessoesPorSemana }}</p>
-                }
-              </div>
-            </div>
-            <div class="step-actions">
-              <button mat-button type="button" matStepperPrevious>Voltar</button>
-              <button mat-raised-button color="primary" type="button" matStepperNext>Próximo passo</button>
-            </div>
-          </mat-step>
-
           <mat-step [stepControl]="anamneseGroup" formGroupName="anamnese">
             <div class="anamnese-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 3 de 8</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 2 de 7</p>
               <h2 class="section-title anamnese-title">Anamnese</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">
                 Avaliação inicial do paciente.
@@ -262,7 +166,7 @@
 
           <mat-step [stepControl]="fisicaGroup" formGroupName="fisica">
             <div class="avaliacao-fisica-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 4 de 8</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 3 de 7</p>
               <h2 class="section-title avaliacao-fisica-title">Avaliação Física</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">Testes e medidas.</p>
 
@@ -321,7 +225,7 @@
 
           <mat-step [stepControl]="posturalGroup" formGroupName="postural">
             <div class="postural-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 5 de 8</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 4 de 7</p>
               <h2 class="section-title postural-title">Avaliação Postural</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">Análise postural.</p>
 
@@ -481,7 +385,7 @@
 
           <mat-step>
             <div class="resumo-step">
-              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 8 de 8</p>
+              <p class="step-kicker text-slate-500 dark:text-slate-400">Passo 7 de 7</p>
               <h2 class="section-title resumo-title">Resumo do cadastro</h2>
               <p class="section-description text-slate-500 dark:text-slate-400">
                 Confira as informações antes de finalizar o cadastro.
@@ -497,30 +401,6 @@
                     </div>
                   }
                 </div>
-              </div>
-
-              <div class="resumo-card">
-                <h3>Sessões</h3>
-                <div class="resumo-grid">
-                  @for (item of resumoSessoes; track item.label) {
-                    <div class="resumo-item">
-                      <span class="resumo-label">{{ item.label }}</span>
-                      <span class="resumo-value">{{ item.value }}</span>
-                    </div>
-                  }
-                </div>
-                @if (resumoSessoesAgendadas.length) {
-                  <div class="resumo-testes">
-                    @for (sessao of resumoSessoesAgendadas; track $index) {
-                      <div class="resumo-teste-item">
-                        <strong>{{ sessao.data }}</strong>
-                        <span>{{ sessao.horario }}</span>
-                      </div>
-                    }
-                  </div>
-                } @else {
-                  <p class="sessoes-vazio">Nenhuma sessão agendada.</p>
-                }
               </div>
 
               <div class="resumo-card">

@@ -16,10 +16,7 @@ export interface PacienteResponse {
   estado?: string;
   cep?: string;
   dataAdmissao?: string;
-  dataPagamento?: string;
-  valorMensalidade?: number;
   stPaciente?: CodigoDescricao;
-  tipoAtendimento?: CodigoDescricao;
   dtCadastro?: string;
   dataAvaliacaoAnamnese?: string;
   alinhamentoCabeca?: string;
@@ -53,8 +50,6 @@ export interface PacienteResponse {
   pilatesAlinhamentoPostural?: string;
   observacoesPilates?: string;
   assinaturaPilates?: string;
-  quantidadeSessoes?: number;
-  sessoesAgendadas?: string;
   possuiArquivoTermo?: boolean;
   arquivoTermoNome?: string;
   arquivoTermoTipo?: string;
