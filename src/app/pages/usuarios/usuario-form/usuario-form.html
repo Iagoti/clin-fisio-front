@@ -116,14 +116,14 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Tipo de usuário</mat-label>
-            <mat-select formControlName="tipoCodigo">
-              @for (t of tipoOpcoes; track t.codigo) {
-                <mat-option [value]="t.codigo">{{ t.descricao }}</mat-option>
+            <mat-label>Perfis de acesso</mat-label>
+            <mat-select formControlName="cdRoles" multiple>
+              @for (r of rolesDisponiveis; track r.cdRole) {
+                <mat-option [value]="r.cdRole">{{ r.nmRole }}</mat-option>
               }
             </mat-select>
-            @if (form.get('tipoCodigo')?.touched && form.get('tipoCodigo')?.hasError('required')) {
-              <mat-error>Tipo é obrigatório.</mat-error>
+            @if (form.get('cdRoles')?.touched && form.get('cdRoles')?.hasError('required')) {
+              <mat-error>Selecione ao menos um perfil.</mat-error>
             }
           </mat-form-field>
         </div>

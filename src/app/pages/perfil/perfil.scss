@@ -1,23 +1,46 @@
-.perfil-page {
-  max-width: 48rem;
-}
-
 .page-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
-
-  mat-icon {
-    font-size: 1.75rem;
-    width: 1.75rem;
-    height: 1.75rem;
-  }
+  margin: 0;
 }
 
 .page-description {
+  margin: 0.25rem 0 0;
+}
+
+.loading-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.perfil-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
   margin: 0;
-  font-size: 0.9375rem;
+}
+
+.perfil-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  dt {
+    font-size: 0.8125rem;
+    color: rgb(100 116 139);
+  }
+
+  dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: rgb(30 41 59);
+
+    :host-context(.dark) & {
+      color: rgb(226 232 240);
+    }
+  }
 }

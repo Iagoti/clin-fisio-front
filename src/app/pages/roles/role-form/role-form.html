@@ -1,0 +1,113 @@
+<div class="role-form-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="header-actions">
+      <button mat-icon-button type="button" (click)="voltar()" matTooltip="Voltar">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1 class="page-title text-slate-800 dark:text-slate-100">
+        <mat-icon class="!text-emerald-600 dark:!text-emerald-400">admin_panel_settings</mat-icon>
+        @if (!isEdicao) {
+          Novo perfil
+        } @else {
+          {{ flSistema ? 'Perfil de sistema' : 'Editar perfil' }}
+        }
+      </h1>
+    </div>
+    <p class="page-description text-slate-500 dark:text-slate-400">
+      @if (flSistema) {
+        Perfis de sistema (ADMINISTRADOR/RECEPCAO) não podem ser alterados ou excluídos — a lista de permissões abaixo é somente leitura.
+      } @else {
+        Defina o nome do perfil e marque as permissões que ele concede.
+      }
+    </p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    @if (loading) {
+      <div class="loading-wrap">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="text-slate-500 dark:text-slate-400">Carregando...</p>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="salvar()" class="form-fields">
+        <div class="form-row two-cols">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome do perfil</mat-label>
+            <mat-icon matPrefix class="mr-2">badge</mat-icon>
+            <input matInput formControlName="nmRole" type="text" />
+            @if (form.get('nmRole')?.touched && form.get('nmRole')?.hasError('required')) {
+              <mat-error>Nome é obrigatório.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="stRole">
+              @for (op of statusOpcoes; track op.value) {
+                <mat-option [value]="op.value">{{ op.label }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descrição</mat-label>
+            <mat-icon matPrefix class="mr-2">description</mat-icon>
+            <input matInput formControlName="dsRole" type="text" />
+          </mat-form-field>
+        </div>
+
+        <div class="permissoes-section">
+          <h2 class="text-slate-800 dark:text-slate-100 font-semibold">Permissões</h2>
+          @for (grupo of grupos; track grupo.modulo) {
+            <div class="permissoes-grupo">
+              <h3 class="grupo-titulo text-slate-600 dark:text-slate-300">{{ grupo.modulo }}</h3>
+              <div class="grupo-checkboxes">
+                @for (p of grupo.permissoes; track p.cdPermissao) {
+                  <mat-checkbox
+                    [checked]="isSelecionada(p.cdPermissao)"
+                    [disabled]="flSistema"
+                    (change)="toggle(p.cdPermissao)"
+                  >
+                    {{ p.dsPermissao || p.cdChave }}
+                  </mat-checkbox>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="form-actions">
+          <button type="button" mat-button (click)="voltar()">Voltar</button>
+          <div class="right-actions">
+            @if (isEdicao && !flSistema) {
+              <button
+                type="button"
+                mat-button
+                color="warn"
+                [disabled]="excluindo"
+                (click)="onSolicitarExclusao()"
+              >
+                <mat-icon>delete</mat-icon>
+                Excluir
+              </button>
+            }
+            @if (!flSistema) {
+              <button type="submit" mat-raised-button color="primary" [disabled]="salvando">
+                @if (salvando) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                } @else {
+                  <span class="btn-content">
+                    <mat-icon>save</mat-icon>
+                    <span>{{ isEdicao ? 'Salvar alterações' : 'Cadastrar perfil' }}</span>
+                  </span>
+                }
+              </button>
+            }
+          </div>
+        </div>
+      </form>
+    }
+  </div>
+</div>

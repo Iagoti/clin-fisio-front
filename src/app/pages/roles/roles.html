@@ -1,0 +1,73 @@
+<div class="roles-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <h1 class="page-title text-slate-800 dark:text-slate-100">
+      <mat-icon class="!text-emerald-600 dark:!text-emerald-400">admin_panel_settings</mat-icon>
+      Perfis de acesso
+    </h1>
+    <p class="page-description text-slate-500 dark:text-slate-400">
+      Gerencie os perfis (roles) e as permissões que cada um concede.
+    </p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="list-header">
+      <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-0">Lista de perfis</h2>
+      <a mat-raised-button color="primary" routerLink="/dashboard/roles/novo">
+        <mat-icon>add</mat-icon>
+        Novo perfil
+      </a>
+    </div>
+
+    <div class="table-container mt-4">
+      <table mat-table [dataSource]="dataSource" class="roles-table w-full">
+        <ng-container matColumnDef="nmRole">
+          <th mat-header-cell *matHeaderCellDef>Nome</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="cell-clickable">{{ row.nmRole }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="dsRole">
+          <th mat-header-cell *matHeaderCellDef>Descrição</th>
+          <td mat-cell *matCellDef="let row">{{ row.dsRole || '—' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="stRole">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="status-badge" [class.status-ativo]="row.stRole?.codigo === statusAtivo" [class.status-inativo]="row.stRole?.codigo !== statusAtivo">
+              <mat-icon class="status-icon">{{ row.stRole?.codigo === statusAtivo ? 'check_circle' : 'cancel' }}</mat-icon>
+              {{ row.stRole?.descricao ?? '—' }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="flSistema">
+          <th mat-header-cell *matHeaderCellDef>Sistema</th>
+          <td mat-cell *matCellDef="let row">
+            @if (row.flSistema) {
+              <mat-icon class="!text-amber-500" matTooltip="Perfil de sistema — não pode ser alterado ou excluído">lock</mat-icon>
+            } @else {
+              —
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="qtdPermissoes">
+          <th mat-header-cell *matHeaderCellDef>Permissões</th>
+          <td mat-cell *matCellDef="let row">{{ row.permissoes?.length ?? 0 }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="table-row row-clickable" (click)="onRowClick(row)"></tr>
+
+        <tr class="mat-row empty-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <div class="empty-icon">
+                <mat-icon>rule_folder</mat-icon>
+              </div>
+              <p class="empty-title">Nenhum perfil encontrado</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

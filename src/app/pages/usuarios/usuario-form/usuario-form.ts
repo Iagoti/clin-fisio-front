@@ -14,11 +14,12 @@ import { BtnSalvarUsuario } from '../components/btn-salvar-usuario/btn-salvar-us
 import { BtnVoltar } from '../components/btn-voltar/btn-voltar';
 import { ExcluirUsuarioComConfirmacao } from '../components/excluir-usuario-com-confirmacao/excluir-usuario-com-confirmacao';
 import { UsuarioService } from '../../../core/usuario/usuario.service';
+import { RoleService } from '../../../core/role/role.service';
 import { UsuarioRequest } from '../../../models/usuario/UsuarioRequest';
 import { UsuarioResponse } from '../../../models/usuario/UsuarioResponse';
+import { RoleResponse } from '../../../models/role/RoleResponse';
 import { finalize } from 'rxjs/operators';
 import { AtivoInativoEnum, ATIVO_INATIVO_OPCOES } from '../../../models/enums/ativo-inativo.enum';
-import { TipoUsuarioEnum, TIPO_USUARIO_OPCOES } from '../../../models/enums/tipo-usuario.enum';
 
 /** Snapshot dos campos ao estar em modo somente leitura (cancelar edição restaura isto). */
 type UsuarioFormSnapshot = {
@@ -27,11 +28,10 @@ type UsuarioFormSnapshot = {
   login: string;
   senha: string;
   stUsuario: number;
-  tipoCodigo: number;
+  cdRoles: number[];
 };
 
 const STATUS_OPCOES = ATIVO_INATIVO_OPCOES;
-const TIPO_OPCOES = TIPO_USUARIO_OPCOES;
 
 @Component({
   selector: 'app-usuario-form',
@@ -60,6 +60,7 @@ export class UsuarioFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   private usuarioService = inject(UsuarioService);
+  private roleService = inject(RoleService);
   private snackBar = inject(MatSnackBar);
   private cdr = inject(ChangeDetectorRef);
 
@@ -73,12 +74,13 @@ export class UsuarioFormComponent implements OnInit {
   private snapshotLeitura: UsuarioFormSnapshot | null = null;
   id: number | null = null;
   statusOpcoes = STATUS_OPCOES;
-  tipoOpcoes = TIPO_OPCOES;
+  rolesDisponiveis: RoleResponse[] = [];
 
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.id = idParam && idParam !== 'novo' ? +idParam : null;
     this.buildForm();
+    this.carregarRolesDisponiveis();
     if (this.id != null) {
       const prefilled = this.prefillFromNavigationState();
       this.loading = !prefilled;
@@ -91,6 +93,18 @@ export class UsuarioFormComponent implements OnInit {
     }
   }
 
+  private carregarRolesDisponiveis(): void {
+    this.roleService.listar().subscribe({
+      next: (roles) => (this.rolesDisponiveis = roles ?? []),
+      error: () => {
+        this.snackBar.open('Não foi possível carregar os perfis disponíveis.', 'Fechar', {
+          duration: 6000,
+          panelClass: ['snackbar-erro'],
+        });
+      },
+    });
+  }
+
   private buildForm(): void {
     this.form = this.fb.group({
       nome: ['', [Validators.required]],
@@ -98,7 +112,7 @@ export class UsuarioFormComponent implements OnInit {
       login: ['', [Validators.required]],
       senha: ['', [Validators.minLength(6)]],
       stUsuario: [AtivoInativoEnum.ATIVO, [Validators.required]],
-      tipoCodigo: [TipoUsuarioEnum.ADMINISTRADOR, [Validators.required]],
+      cdRoles: [[] as number[], [Validators.required, Validators.minLength(1)]],
     });
   }
 
@@ -120,7 +134,7 @@ export class UsuarioFormComponent implements OnInit {
         login: u.login ?? '',
         senha: '',
         stUsuario: u.stUsuario?.codigo ?? AtivoInativoEnum.ATIVO,
-        tipoCodigo: u.tpUsuario?.codigo ?? TipoUsuarioEnum.ADMINISTRADOR,
+        cdRoles: (u.roles ?? []).map((r) => r.cdRole),
       });
     } catch (e) {
       console.error('Erro ao preencher formulário de usuário', e);
@@ -187,7 +201,7 @@ export class UsuarioFormComponent implements OnInit {
       email: this.form.get('email')?.value?.trim() ?? '',
       login: this.form.get('login')?.value?.trim() ?? '',
       stUsuario: Number(this.form.get('stUsuario')?.value),
-      tipo: Number(this.form.get('tipoCodigo')?.value),
+      cdRoles: (this.form.get('cdRoles')?.value ?? []).map((v: number) => Number(v)),
     };
     if (this.id != null) {
       payload.cdUsuario = this.id;

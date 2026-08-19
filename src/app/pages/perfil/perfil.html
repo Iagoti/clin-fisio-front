@@ -1,10 +1,46 @@
 <div class="perfil-page">
-  <h1 class="page-title text-slate-800 dark:text-slate-100">
-    <mat-icon class="!text-emerald-600 dark:!text-emerald-400">person</mat-icon>
-    Meu perfil
-  </h1>
-  <p class="page-description text-slate-500 dark:text-slate-400">Edite suas informações. (Página em construção.)</p>
-  @if (user) {
-    <p class="text-slate-600 dark:text-slate-300 text-sm mt-2">{{ user.nmUsuario }}</p>
-  }
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <h1 class="page-title text-slate-800 dark:text-slate-100">
+      <mat-icon class="!text-emerald-600 dark:!text-emerald-400">person</mat-icon>
+      Meu perfil
+    </h1>
+    <p class="page-description text-slate-500 dark:text-slate-400">Dados da sua conta no sistema.</p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    @if (loading) {
+      <div class="loading-wrap">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+    } @else if (erro || !usuario) {
+      <p class="text-slate-500 dark:text-slate-400">Não foi possível carregar os dados do seu perfil.</p>
+    } @else {
+      <dl class="perfil-fields">
+        <div class="perfil-field">
+          <dt>Nome</dt>
+          <dd>{{ usuario.nmUsuario }}</dd>
+        </div>
+        <div class="perfil-field">
+          <dt>E-mail</dt>
+          <dd>{{ usuario.email }}</dd>
+        </div>
+        <div class="perfil-field">
+          <dt>Login</dt>
+          <dd>{{ usuario.login }}</dd>
+        </div>
+        <div class="perfil-field">
+          <dt>Status</dt>
+          <dd>{{ usuario.stUsuario.descricao }}</dd>
+        </div>
+        <div class="perfil-field">
+          <dt>Perfis de acesso</dt>
+          <dd>{{ nomesRoles }}</dd>
+        </div>
+        <div class="perfil-field">
+          <dt>Cadastro</dt>
+          <dd>{{ usuario.dtCadastro | date:'dd/MM/yyyy HH:mm' }}</dd>
+        </div>
+      </dl>
+    }
+  </div>
 </div>

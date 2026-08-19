@@ -1,0 +1,56 @@
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.page-description {
+  margin: 0.25rem 0 0;
+}
+
+.inline-form {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgb(226 232 240);
+  border-radius: 0.75rem;
+
+  :host-context(.dark) & {
+    border-color: rgb(51 65 85);
+  }
+}
+
+.inline-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.row-clickable {
+  cursor: pointer;
+}
+
+.empty-state {
+  padding: 1.5rem 0;
+  text-align: center;
+  color: rgb(100 116 139);
+}

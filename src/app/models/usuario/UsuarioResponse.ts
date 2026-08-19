@@ -1,7 +1,9 @@
+import { RoleResumoResponse } from '../role/RoleResumoResponse';
+
 /**
  * Espelha o retorno do backend (UsuarioResponse).
  * dtCadastro vem como string ISO (LocalDateTime serializado).
- * stUsuario e tpUsuario vêm como objetos { codigo, descricao }.
+ * stUsuario vem como objeto { codigo, descricao }.
  */
 export interface CodigoDescricao {
   codigo: number;
@@ -15,6 +17,6 @@ export interface UsuarioResponse {
   email: string;
   login: string;
   stUsuario: CodigoDescricao;
-  tpUsuario: CodigoDescricao;
+  roles: RoleResumoResponse[];
   dtCadastro: string;
 }

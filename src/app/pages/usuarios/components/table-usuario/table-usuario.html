@@ -32,11 +32,11 @@
           </span>
         </td>
       </ng-container>
-      <ng-container matColumnDef="tpUsuario">
+      <ng-container matColumnDef="roles">
         <th mat-header-cell *matHeaderCellDef>
-          <span class="column-label">Tipo</span>
+          <span class="column-label">Perfis</span>
         </th>
-        <td mat-cell *matCellDef="let row">{{ row.tpUsuario?.descricao ?? '—' }}</td>
+        <td mat-cell *matCellDef="let row">{{ formatarRoles(row) }}</td>
       </ng-container>
       <ng-container matColumnDef="dtCadastro">
         <th mat-header-cell *matHeaderCellDef>

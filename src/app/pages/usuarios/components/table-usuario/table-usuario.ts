@@ -23,9 +23,13 @@ export class TableUsuario {
   @Output() rowClick = new EventEmitter<UsuarioResponse>();
 
   dataSource = new MatTableDataSource<UsuarioResponse>([]);
-  displayedColumns: string[] = ['nmUsuario', 'email', 'login', 'stUsuario', 'tpUsuario', 'dtCadastro'];
+  displayedColumns: string[] = ['nmUsuario', 'email', 'login', 'stUsuario', 'roles', 'dtCadastro'];
 
   constructor(private router: Router) {}
+
+  formatarRoles(row: UsuarioResponse): string {
+    return (row.roles ?? []).map((r) => r.nmRole).join(', ') || '—';
+  }
 
   onRowClick(row: UsuarioResponse): void {
     const id = row.cdUsuario ?? row.id;

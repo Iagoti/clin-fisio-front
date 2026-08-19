@@ -16,10 +16,26 @@
         <mat-icon>groups</mat-icon>
         <span>Pacientes</span>
       </a>
-      @if (isAdmin()) {
+      <a routerLink="/dashboard/agendamentos" routerLinkActive="active" class="nav-item text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <mat-icon>event</mat-icon>
+        <span>Agendamentos</span>
+      </a>
+      @if (podeVerFinanceiro()) {
+        <a routerLink="/dashboard/financeiro" routerLinkActive="active" class="nav-item text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <mat-icon>account_balance_wallet</mat-icon>
+          <span>Financeiro</span>
+        </a>
+      }
+      @if (podeVerUsuarios()) {
         <a routerLink="/dashboard/usuarios" routerLinkActive="active" class="nav-item text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
           <mat-icon>people</mat-icon>
           <span>Usuários</span>
+        </a>
+      }
+      @if (podeVerRoles()) {
+        <a routerLink="/dashboard/roles" routerLinkActive="active" class="nav-item text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+          <mat-icon>admin_panel_settings</mat-icon>
+          <span>Perfis de acesso</span>
         </a>
       }
     </nav>

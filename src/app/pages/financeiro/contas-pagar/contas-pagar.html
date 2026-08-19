@@ -1,0 +1,74 @@
+<div class="contas-pagar-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <h1 class="page-title text-slate-800 dark:text-slate-100">
+      <mat-icon class="!text-emerald-600 dark:!text-emerald-400">payments</mat-icon>
+      Contas a pagar
+    </h1>
+    <p class="page-description text-slate-500 dark:text-slate-400">Despesas da clínica.</p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="list-header">
+      <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-0">Lista de despesas</h2>
+      <a mat-raised-button color="primary" routerLink="/dashboard/financeiro/contas-pagar/novo">
+        <mat-icon>add</mat-icon>
+        Nova despesa
+      </a>
+    </div>
+
+    <form [formGroup]="form" class="filtro-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status" (selectionChange)="filtrar()">
+          <mat-option [value]="null">Todos</mat-option>
+          @for (op of statusOpcoes; track op.value) {
+            <mat-option [value]="op.value">{{ op.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button type="button" mat-button (click)="limpar()">Limpar</button>
+    </form>
+
+    <div class="table-container mt-4">
+      <table mat-table [dataSource]="dataSource" class="w-full">
+        <ng-container matColumnDef="descricao">
+          <th mat-header-cell *matHeaderCellDef>Descrição</th>
+          <td mat-cell *matCellDef="let row">{{ row.descricao }}</td>
+        </ng-container>
+        <ng-container matColumnDef="nmCategoria">
+          <th mat-header-cell *matHeaderCellDef>Categoria</th>
+          <td mat-cell *matCellDef="let row">{{ row.nmCategoria }}</td>
+        </ng-container>
+        <ng-container matColumnDef="valor">
+          <th mat-header-cell *matHeaderCellDef>Valor</th>
+          <td mat-cell *matCellDef="let row">{{ row.valor | currency:'BRL' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dtVencimento">
+          <th mat-header-cell *matHeaderCellDef>Vencimento</th>
+          <td mat-cell *matCellDef="let row">{{ row.dtVencimento | date:'dd/MM/yyyy' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="status-badge"
+                  [class.status-pago]="row.status?.codigo === statusPago"
+                  [class.status-cancelado]="row.status?.codigo === statusCancelado">
+              {{ row.status?.descricao ?? '—' }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns" class="table-row row-clickable" (click)="onRowClick(row)"></tr>
+
+        <tr class="mat-row empty-row" *matNoDataRow>
+          <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+            <div class="empty-state">
+              <p class="empty-title">Nenhuma despesa encontrada</p>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

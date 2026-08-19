@@ -1,0 +1,105 @@
+<div class="agendamentos-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <h1 class="page-title text-slate-800 dark:text-slate-100">
+      <mat-icon class="!text-emerald-600 dark:!text-emerald-400">event</mat-icon>
+      Agendamentos
+    </h1>
+    <p class="page-description text-slate-500 dark:text-slate-400">
+      Gerencie os agendamentos de fisioterapia e pilates.
+    </p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="list-header">
+      <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-0">Lista de agendamentos</h2>
+      <a mat-raised-button color="primary" routerLink="/dashboard/agendamentos/novo">
+        <mat-icon>add</mat-icon>
+        Novo agendamento
+      </a>
+    </div>
+
+    <div class="filtro-row">
+      <mat-form-field appearance="outline">
+        <mat-label>Paciente</mat-label>
+        <input matInput [(ngModel)]="filtroNome" placeholder="Digite o nome para buscar" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Data</mat-label>
+        <input matInput type="date" [(ngModel)]="filtroData" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de atendimento</mat-label>
+        <mat-select [(ngModel)]="filtroTipo">
+          <mat-option [value]="null">Todos</mat-option>
+          @for (tipo of tipoOpcoes; track tipo.value) {
+            <mat-option [value]="tipo.value">{{ tipo.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select [(ngModel)]="filtroStatus">
+          <mat-option [value]="null">Todos</mat-option>
+          @for (status of statusOpcoes; track status.value) {
+            <mat-option [value]="status.value">{{ status.label }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="filtro-actions">
+        <button mat-raised-button color="primary" type="button" (click)="pesquisar()">
+          <mat-icon>search</mat-icon>
+          Pesquisar
+        </button>
+        <button mat-button type="button" (click)="limpar()">Limpar</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table mat-table [dataSource]="(agendamentos | async) ?? []">
+        <ng-container matColumnDef="nmPaciente">
+          <th mat-header-cell *matHeaderCellDef>Paciente</th>
+          <td mat-cell *matCellDef="let row">{{ row.nmPaciente || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoAtendimento">
+          <th mat-header-cell *matHeaderCellDef>Tipo</th>
+          <td mat-cell *matCellDef="let row">{{ row.tipoAtendimento?.descricao || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dataAgendamento">
+          <th mat-header-cell *matHeaderCellDef>Data</th>
+          <td mat-cell *matCellDef="let row">{{ formatarData(row.dataAgendamento) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="horaAgendamento">
+          <th mat-header-cell *matHeaderCellDef>Horário</th>
+          <td mat-cell *matCellDef="let row">{{ formatarHorario(row.horaAgendamento) }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let row">
+            <span [class]="statusClasse(row.status)">{{ row.status?.descricao || 'Agendado' }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="valor">
+          <th mat-header-cell *matHeaderCellDef>Valor</th>
+          <td mat-cell *matCellDef="let row">{{ formatarMoeda(row.valor) }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          class="clickable-row"
+          (click)="abrirAgendamento(row)"
+        ></tr>
+      </table>
+    </div>
+  </div>
+</div>

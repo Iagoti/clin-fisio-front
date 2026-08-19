@@ -1,0 +1,230 @@
+<div class="agendamento-form-page">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="header-actions">
+      <app-btn-voltar (voltar)="voltar()"></app-btn-voltar>
+      <h1 class="page-title text-slate-800 dark:text-slate-100">
+        <mat-icon class="!text-emerald-600 dark:!text-emerald-400">
+          {{ isEdicao ? 'event' : 'event_available' }}
+        </mat-icon>
+        @if (!isEdicao) {
+          Novo agendamento
+        } @else if (somenteLeitura) {
+          Agendamento
+        } @else {
+          Editar agendamento
+        }
+      </h1>
+    </div>
+    <p class="page-description text-slate-500 dark:text-slate-400">
+      @if (!isEdicao) {
+        Preencha os dados para criar um novo agendamento.
+      } @else if (somenteLeitura) {
+        Dados do agendamento. Clique em Editar para alterar.
+      } @else {
+        Altere os dados do agendamento.
+      }
+    </p>
+  </div>
+
+  <div class="mt-8 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    @if (loading) {
+      <div class="loading-wrap">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p class="text-slate-500 dark:text-slate-400">Carregando...</p>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="salvar()" class="form-fields">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Paciente</mat-label>
+            <mat-icon matPrefix class="mr-2">person</mat-icon>
+            <input
+              matInput
+              formControlName="pacienteNome"
+              [matAutocomplete]="autoPaciente"
+              (input)="filtrarPacientes()"
+            />
+            <mat-autocomplete
+              #autoPaciente="matAutocomplete"
+              [displayWith]="displayPaciente"
+              (optionSelected)="selecionarPaciente($event.option.value)"
+            >
+              @for (paciente of pacientesFiltrados; track paciente.cdPaciente ?? paciente.id) {
+                <mat-option [value]="paciente">{{ paciente.nmPaciente }}</mat-option>
+              }
+            </mat-autocomplete>
+            @if (form.get('pacienteNome')?.touched && form.get('pacienteNome')?.hasError('required')) {
+              <mat-error>Paciente é obrigatório.</mat-error>
+            }
+            @if (form.get('cdPaciente')?.touched && form.get('cdPaciente')?.hasError('required')) {
+              <mat-error>Selecione um paciente da lista.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row two-cols">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Tipo de atendimento</mat-label>
+            <mat-select formControlName="tipoAtendimento">
+              @for (tipo of tipoOpcoes; track tipo.value) {
+                <mat-option [value]="tipo.value">{{ tipo.label }}</mat-option>
+              }
+            </mat-select>
+            @if (form.get('tipoAtendimento')?.touched && form.get('tipoAtendimento')?.hasError('required')) {
+              <mat-error>Tipo de atendimento é obrigatório.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              @for (status of statusOpcoes; track status.value) {
+                <mat-option [value]="status.value">{{ status.label }}</mat-option>
+              }
+            </mat-select>
+            @if (form.get('status')?.touched && form.get('status')?.hasError('required')) {
+              <mat-error>Status é obrigatório.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="form-row two-cols">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Data</mat-label>
+            <input matInput type="date" formControlName="dataAgendamento" />
+            @if (form.get('dataAgendamento')?.touched && form.get('dataAgendamento')?.hasError('required')) {
+              <mat-error>Data é obrigatória.</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Horário</mat-label>
+            <input matInput type="time" formControlName="horaAgendamento" />
+            @if (form.get('horaAgendamento')?.touched && form.get('horaAgendamento')?.hasError('required')) {
+              <mat-error>Horário é obrigatório.</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        @if (form.get('tipoAtendimento')?.value === tipoFisioterapia && form.get('cdPaciente')?.value) {
+          <div class="pacote-info">
+            @if (carregandoPacote) {
+              <span class="text-slate-500 dark:text-slate-400">Verificando pacote de fisioterapia...</span>
+            } @else if (pacoteAtivo && pacoteAtivo.sessoesRestantes > 0) {
+              <mat-icon class="!text-emerald-600 dark:!text-emerald-400">inventory_2</mat-icon>
+              <span>
+                Pacote ativo: <strong>{{ pacoteAtivo.sessoesRestantes }}</strong> de {{ pacoteAtivo.qtSessoesTotal }} sessões restantes.
+              </span>
+            } @else {
+              <mat-icon class="!text-amber-500">warning</mat-icon>
+              <span>Paciente sem pacote de fisioterapia ativo.</span>
+              <button type="button" mat-stroked-button color="primary" [disabled]="iniciandoPacote" (click)="iniciarNovoPacote()">
+                @if (iniciandoPacote) { <mat-spinner diameter="16"></mat-spinner> } @else { Iniciar novo pacote (R$ 100,00 / 10 sessões) }
+              </button>
+            }
+          </div>
+        }
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Valor</mat-label>
+            <input matInput type="number" min="0" step="0.01" formControlName="valor" />
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Observações</mat-label>
+            <textarea matInput rows="3" formControlName="observacoes"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" mat-button (click)="cancelarOuVoltar()">
+            {{ isEdicao && !somenteLeitura ? 'Cancelar edição' : 'Cancelar' }}
+          </button>
+          <div class="right-actions">
+            @if (isEdicao && somenteLeitura) {
+              <button type="button" mat-raised-button color="primary" (click)="iniciarEdicao()">
+                <span class="btn-content">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar</span>
+                </span>
+              </button>
+            }
+            @if (isEdicao && !somenteLeitura) {
+              <button
+                type="button"
+                mat-stroked-button
+                color="warn"
+                (click)="excluir()"
+                [disabled]="excluindo"
+              >
+                @if (excluindo) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                } @else {
+                  <mat-icon>delete</mat-icon>
+                }
+                Excluir
+              </button>
+            }
+            @if (!isEdicao || !somenteLeitura) {
+              <button type="submit" mat-raised-button color="primary" [disabled]="salvando">
+                @if (salvando) {
+                  <mat-spinner diameter="18"></mat-spinner>
+                }
+                {{ isEdicao ? 'Salvar' : 'Criar agendamento' }}
+              </button>
+            }
+          </div>
+        </div>
+      </form>
+
+      @if (isEdicao && form.get('status')?.value !== statusFaltou) {
+        <div class="secondary-section">
+          <h2 class="section-title text-slate-800 dark:text-slate-100">Falta</h2>
+          <p class="text-slate-500 dark:text-slate-400">Registre caso o paciente não tenha comparecido a esta sessão.</p>
+          <mat-checkbox [(ngModel)]="comAtestado" [ngModelOptions]="{standalone: true}">
+            Falta com atestado médico
+          </mat-checkbox>
+          @if (comAtestado) {
+            <div class="arquivo-row">
+              <input type="file" accept=".pdf,.png,.jpg,.jpeg,.webp" (change)="onArquivoAtestadoSelecionado($event)" />
+              @if (arquivoAtestadoSelecionado) {
+                <span class="text-slate-500 dark:text-slate-400">{{ arquivoAtestadoSelecionado.name }}</span>
+              }
+              @if (arquivoAtestadoErro) {
+                <span class="erro-arquivo">{{ arquivoAtestadoErro }}</span>
+              }
+            </div>
+          }
+          <button type="button" mat-stroked-button color="warn" [disabled]="registrandoFalta" (click)="registrarFalta()">
+            @if (registrandoFalta) { <mat-spinner diameter="16"></mat-spinner> } @else { Registrar falta }
+          </button>
+        </div>
+      }
+
+      @if (isEdicao && form.get('status')?.value === statusFaltou) {
+        <div class="secondary-section">
+          <h2 class="section-title text-slate-800 dark:text-slate-100">Reposição</h2>
+          <p class="text-slate-500 dark:text-slate-400">
+            Crie uma sessão de reposição para esta falta (1 gratuita por mês sem atestado; ilimitadas com atestado).
+          </p>
+          <form [formGroup]="formReposicao" class="form-row two-cols">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Data</mat-label>
+              <input matInput type="date" formControlName="dataAgendamento" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Horário</mat-label>
+              <input matInput type="time" formControlName="horaAgendamento" />
+            </mat-form-field>
+          </form>
+          <button type="button" mat-raised-button color="accent" [disabled]="criandoReposicao" (click)="criarReposicao()">
+            @if (criandoReposicao) { <mat-spinner diameter="16"></mat-spinner> } @else { Criar reposição }
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

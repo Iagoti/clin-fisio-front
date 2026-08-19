@@ -1,0 +1,61 @@
+.list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.page-description {
+  margin: 0.25rem 0 0;
+}
+
+.filtro-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.row-clickable {
+  cursor: pointer;
+}
+
+.status-badge {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgb(226 232 240);
+  color: rgb(71 85 105);
+
+  &.status-pago {
+    background: rgb(209 250 229);
+    color: rgb(5 150 105);
+  }
+
+  &.status-cancelado {
+    background: rgb(254 226 226);
+    color: rgb(220 38 38);
+  }
+}
+
+.empty-state {
+  padding: 1.5rem 0;
+  text-align: center;
+  color: rgb(100 116 139);
+}

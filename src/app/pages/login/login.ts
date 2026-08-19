@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -19,7 +19,6 @@ import { ThemeService } from '../../core/theme/theme.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule,
     MatIconModule,
     MatButtonModule,
     MatProgressSpinnerModule,

@@ -1,0 +1,99 @@
+.agendamentos-page {
+  width: 100%;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+
+  mat-icon {
+    font-size: 1.75rem;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+}
+
+.page-description {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.list-header,
+.filtro-row,
+.filtro-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.list-header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.list-header h2 {
+  margin: 0;
+}
+
+.filtro-row {
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.filtro-row mat-form-field {
+  min-width: 200px;
+  margin-bottom: -1.34375em;
+}
+
+.filtro-actions {
+  gap: 0.5rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.status-agendado {
+  background: rgba(59, 130, 246, 0.12);
+  color: rgb(37, 99, 235);
+}
+
+.status-confirmado {
+  background: rgba(16, 185, 129, 0.12);
+  color: rgb(4, 120, 87);
+}
+
+.status-concluido {
+  background: rgba(100, 116, 139, 0.12);
+  color: rgb(71, 85, 105);
+}
+
+.status-cancelado {
+  background: rgba(239, 68, 68, 0.12);
+  color: rgb(220, 38, 38);
+}

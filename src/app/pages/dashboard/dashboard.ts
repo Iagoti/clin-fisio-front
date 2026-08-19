@@ -28,7 +28,9 @@ export class DashboardComponent {
   theme = inject(ThemeService);
 
   user = computed(() => this.auth.getCurrentUser());
-  isAdmin = computed(() => this.auth.isAdmin());
+  podeVerUsuarios = computed(() => this.auth.hasPermission('USUARIO_LISTAR'));
+  podeVerRoles = computed(() => this.auth.hasPermission('ROLE_LISTAR'));
+  podeVerFinanceiro = computed(() => this.auth.hasPermission('FINANCEIRO_RELATORIO_VISUALIZAR'));
 
   toggleTheme(): void {
     this.theme.toggle();

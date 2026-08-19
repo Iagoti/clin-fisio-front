@@ -5,6 +5,6 @@ export interface UsuarioRequest {
   login: string;
   senha?: string;
   stUsuario: number;
-  tipo: number;
+  cdRoles: number[];
   dataCadastro?: string;
 }

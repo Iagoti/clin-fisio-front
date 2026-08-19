@@ -1,0 +1,163 @@
+<div class="financeiro-page viz-root">
+  <div class="mt-1 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <h1 class="page-title text-slate-800 dark:text-slate-100">
+      <mat-icon class="!text-emerald-600 dark:!text-emerald-400">account_balance_wallet</mat-icon>
+      Financeiro
+    </h1>
+    <p class="page-description text-slate-500 dark:text-slate-400">Visão geral de contas a receber, contas a pagar e fluxo de caixa.</p>
+
+    <div class="quick-links">
+      <a routerLink="/dashboard/financeiro/contas-receber" mat-stroked-button>
+        <mat-icon>account_balance_wallet</mat-icon> Contas a receber
+      </a>
+      <a routerLink="/dashboard/financeiro/contas-pagar" mat-stroked-button>
+        <mat-icon>payments</mat-icon> Contas a pagar
+      </a>
+      <a routerLink="/dashboard/financeiro/categorias-despesa" mat-stroked-button>
+        <mat-icon>category</mat-icon> Categorias
+      </a>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="mt-6 stat-grid">
+    <div class="stat-tile">
+      <span class="stat-label">A receber (pendente)</span>
+      <span class="stat-value">{{ dashboard ? (dashboard.totalAReceber | currency:'BRL') : '—' }}</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">Recebido no mês</span>
+      <span class="stat-value stat-good">{{ dashboard ? (dashboard.recebidoNoMes | currency:'BRL') : '—' }}</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">A pagar (pendente)</span>
+      <span class="stat-value">{{ dashboard ? (dashboard.totalAPagar | currency:'BRL') : '—' }}</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">Pago no mês</span>
+      <span class="stat-value">{{ dashboard ? (dashboard.pagoNoMes | currency:'BRL') : '—' }}</span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">Saldo do período</span>
+      <span class="stat-value" [class.stat-good]="(dashboard?.saldoPeriodo ?? 0) >= 0" [class.stat-critical]="(dashboard?.saldoPeriodo ?? 0) < 0">
+        {{ dashboard ? (dashboard.saldoPeriodo | currency:'BRL') : '—' }}
+      </span>
+    </div>
+    <div class="stat-tile">
+      <span class="stat-label">Inadimplência</span>
+      <span class="stat-value" [class.stat-warning]="(dashboard?.inadimplencia ?? 0) > 0">
+        {{ dashboard ? (dashboard.inadimplencia | currency:'BRL') : '—' }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Fluxo de caixa -->
+  <div class="mt-6 p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+    <div class="chart-header">
+      <h2 class="text-slate-800 dark:text-slate-100 font-semibold mb-0">Fluxo de caixa</h2>
+      <div class="periodo-presets">
+        <button type="button" mat-button [class.active]="periodoAtivo === '7d'" (click)="selecionarPeriodo('7d')">7 dias</button>
+        <button type="button" mat-button [class.active]="periodoAtivo === '30d'" (click)="selecionarPeriodo('30d')">30 dias</button>
+        <button type="button" mat-button [class.active]="periodoAtivo === 'mes'" (click)="selecionarPeriodo('mes')">Mês atual</button>
+      </div>
+    </div>
+
+    <!-- Legenda -->
+    <div class="legend">
+      <span class="legend-item"><span class="legend-swatch legend-line series-entradas"></span>Entradas</span>
+      <span class="legend-item"><span class="legend-swatch legend-line series-saidas"></span>Saídas</span>
+      <span class="legend-item"><span class="legend-swatch legend-line series-saldo"></span>Saldo acumulado</span>
+    </div>
+
+    @if (carregandoFluxo) {
+      <div class="chart-loading">Carregando...</div>
+    } @else if (!pontos.length) {
+      <div class="chart-empty">Nenhuma movimentação no período selecionado.</div>
+    } @else {
+      <div class="chart-wrap">
+        <svg [attr.viewBox]="'0 0 ' + chartWidth + ' ' + chartHeight" class="chart-svg" (mouseleave)="onLeave()">
+          <!-- Gridlines Y + labels -->
+          @for (tick of yTicks; track tick.y) {
+            <line class="gridline" [attr.x1]="innerLeft" [attr.x2]="chartWidth - 16" [attr.y1]="tick.y" [attr.y2]="tick.y" />
+            <text class="axis-label" [attr.x]="innerLeft - 8" [attr.y]="tick.y + 3" text-anchor="end">{{ tick.label }}</text>
+          }
+          <!-- Baseline zero -->
+          <line class="baseline" [attr.x1]="innerLeft" [attr.x2]="chartWidth - 16" [attr.y1]="zeroY" [attr.y2]="zeroY" />
+
+          <!-- X labels -->
+          @for (tick of xTicks; track tick.x) {
+            <text class="axis-label" [attr.x]="tick.x" [attr.y]="chartHeight - 6" text-anchor="middle">{{ tick.label }}</text>
+          }
+
+          <!-- Series -->
+          <path class="serie-line series-entradas" [attr.d]="entradasPath" />
+          <path class="serie-line series-saidas" [attr.d]="saidasPath" />
+          <path class="serie-line series-saldo" [attr.d]="saldoPath" />
+
+          <!-- Crosshair -->
+          @if (geomHover) {
+            <line class="crosshair" [attr.x1]="geomHover.x" [attr.x2]="geomHover.x" [attr.y1]="innerTop" [attr.y2]="chartHeight - 28" />
+            <circle class="hover-dot series-entradas" [attr.cx]="geomHover.x" [attr.cy]="geomHover.entradasY" r="4"></circle>
+            <circle class="hover-dot series-saidas" [attr.cx]="geomHover.x" [attr.cy]="geomHover.saidasY" r="4"></circle>
+            <circle class="hover-dot series-saldo" [attr.cx]="geomHover.x" [attr.cy]="geomHover.saldoY" r="4"></circle>
+          }
+
+          <!-- Hit areas (uma faixa por ponto, maior que a marca para facilitar o hover) -->
+          @for (g of pontosGeom; track g.x; let i = $index) {
+            <rect
+              class="hit-area"
+              [attr.x]="g.x - (innerWidth / (pontosGeom.length * 2))"
+              [attr.y]="innerTop"
+              [attr.width]="innerWidth / pontosGeom.length"
+              [attr.height]="innerHeight"
+              (mouseenter)="onHover(i)"
+              (focus)="onHover(i)"
+              tabindex="0"
+            ></rect>
+          }
+        </svg>
+
+        @if (pontoHover) {
+          <div class="tooltip">
+            <div class="tooltip-title">{{ formatarDataCurta(pontoHover.data) }}</div>
+            <div class="tooltip-row"><span class="legend-swatch legend-line series-entradas"></span>Entradas <strong>{{ pontoHover.entradas | currency:'BRL' }}</strong></div>
+            <div class="tooltip-row"><span class="legend-swatch legend-line series-saidas"></span>Saídas <strong>{{ pontoHover.saidas | currency:'BRL' }}</strong></div>
+            <div class="tooltip-row"><span class="legend-swatch legend-line series-saldo"></span>Saldo <strong>{{ pontoHover.saldoAcumulado | currency:'BRL' }}</strong></div>
+          </div>
+        }
+      </div>
+
+      <button type="button" mat-button class="tabela-toggle" (click)="toggleTabela()">
+        <mat-icon>{{ mostrarTabela ? 'expand_less' : 'table_chart' }}</mat-icon>
+        {{ mostrarTabela ? 'Ocultar tabela' : 'Ver tabela' }}
+      </button>
+
+      @if (mostrarTabela) {
+        <div class="tabela-container">
+          <table class="tabela-fluxo">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Entradas</th>
+                <th>Saídas</th>
+                <th>Saldo do dia</th>
+                <th>Saldo acumulado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of pontos; track p.data) {
+                <tr>
+                  <td>{{ formatarDataCurta(p.data) }}</td>
+                  <td>{{ p.entradas | currency:'BRL' }}</td>
+                  <td>{{ p.saidas | currency:'BRL' }}</td>
+                  <td>{{ p.saldoDia | currency:'BRL' }}</td>
+                  <td>{{ p.saldoAcumulado | currency:'BRL' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </div>
+</div>
